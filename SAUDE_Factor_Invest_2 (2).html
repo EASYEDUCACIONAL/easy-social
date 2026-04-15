@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Factor Invest — Setor Saúde B3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --white: #ffffff;
+    --bg: #f7f8fa;
+    --bg-card: #ffffff;
+    --border: #e8eaee;
+    --border-light: #f0f2f5;
+    --text-primary: #0d1117;
+    --text-secondary: #5a6272;
+    --text-muted: #8a94a6;
+    --accent: #0f4c81;
+    --accent-light: #e8f0fa;
+
+    --green-strong: #166534;
+    --green-bg: #dcfce7;
+    --green-mid: #16a34a;
+    --yellow-strong: #854d0e;
+    --yellow-bg: #fef9c3;
+    --yellow-mid: #ca8a04;
+    --red-strong: #991b1b;
+    --red-bg: #fee2e2;
+    --red-mid: #dc2626;
+
+    --compra-forte: #166534;
+    --compra: #15803d;
+    --neutro: #92400e;
+    --venda: #991b1b;
+    --venda-forte: #7f1d1d;
+
+    --radius: 10px;
+    --radius-sm: 6px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.04);
+    --shadow-hover: 0 4px 20px rgba(0,0,0,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ─── HEADER ─── */
+  .page-header {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .header-logo {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    letter-spacing: -1px;
+  }
+  .header-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: var(--accent);
+    letter-spacing: -0.3px;
+  }
+  .header-subtitle {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+  .header-meta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .live-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--green-mid);
+    background: var(--green-bg);
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+  .live-dot {
+    width: 7px; height: 7px;
+    background: var(--green-mid);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity:1; transform:scale(1); }
+    50% { opacity:0.5; transform:scale(1.3); }
+  }
+  .update-info {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ─── NAV TABS ─── */
+  .nav-tabs {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 0;
+    padding: 0 32px;
+    overflow-x: auto;
+  }
+  .nav-tab {
+    padding: 12px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.18s;
+    user-select: none;
+  }
+  .nav-tab:hover { color: var(--accent); }
+  .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* ─── MAIN CONTAINER ─── */
+  .container { max-width: 1400px; margin: 0 auto; padding: 24px 24px 60px; }
+
+  /* ─── SECTION HEADER ─── */
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .section-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+
+  /* ─── PANEL ─── */
+  .panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .panel-header {
+    padding: 16px 20px 14px;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .panel-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel-badge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: var(--accent-light);
+    color: var(--accent);
+  }
+
+  /* ─── TOP PICKS ROW ─── */
+  .top-picks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    padding: 20px;
+  }
+  .top-pick-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    transition: all 0.18s;
+    cursor: default;
+  }
+  .top-pick-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-1px); }
+  .pick-rank {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .pick-ticker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+  }
+  .pick-name { font-size: 12px; color: var(--text-secondary); margin-bottom: 10px; }
+  .pick-price {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .pick-change {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 2px;
+  }
+  .change-up { color: var(--green-mid); }
+  .change-down { color: var(--red-mid); }
+  .change-flat { color: var(--text-muted); }
+  .pick-verdict {
+    margin-top: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+  .verdict-compra-forte { background: var(--green-bg); color: var(--green-strong); }
+  .verdict-compra { background: #d1fae5; color: #065f46; }
+  .verdict-neutro { background: var(--yellow-bg); color: var(--yellow-strong); }
+  .verdict-venda { background: var(--red-bg); color: var(--red-strong); }
+  .verdict-venda-forte { background: #fecaca; color: var(--venda-forte); }
+
+  /* ─── RANKING TABLE ─── */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    padding: 10px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    white-space: nowrap;
+  }
+  thead th.right { text-align: right; }
+  thead th.center { text-align: center; }
+  tbody tr {
+    border-bottom: 1px solid var(--border-light);
+    transition: background 0.12s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--bg); }
+  tbody td {
+    padding: 11px 14px;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  td.right { text-align: right; }
+  td.center { text-align: center; }
+
+  .sub-sector-row td {
+    background: var(--bg);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: 0.3px;
+  }
+
+  .ticker-cell { display: flex; align-items: center; gap: 10px; }
+  .ticker-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--accent);
+    font-size: 14px;
+  }
+  .ticker-name { font-size: 13px; color: var(--text-secondary); }
+
+  .price-cell {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .price-loading {
+    color: var(--text-muted);
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .upside-cell {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .upside-pos { color: var(--green-mid); }
+  .upside-neg { color: var(--red-mid); }
+  .upside-flat { color: var(--text-muted); }
+
+  .score-bar-wrap { display: flex; align-items: center; gap: 8px; min-width: 120px; }
+  .score-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .score-bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s; }
+  .score-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    min-width: 40px;
+  }
+
+  .metric-chip {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 4px;
+  }
+  .chip-green { background: var(--green-bg); color: var(--green-strong); }
+  .chip-yellow { background: var(--yellow-bg); color: var(--yellow-strong); }
+  .chip-red { background: var(--red-bg); color: var(--red-strong); }
+  .chip-neutral { background: var(--bg); color: var(--text-secondary); border: 1px solid var(--border); }
+
+  /* ─── HEATMAP ─── */
+  .heatmap-scroll { overflow-x: auto; }
+  .heatmap-table { border-collapse: collapse; width: 100%; }
+  .heatmap-table th {
+    padding: 8px 10px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--text-muted);
+    border: 1px solid var(--border-light);
+    background: var(--bg);
+    text-align: center;
+    white-space: nowrap;
+  }
+  .heatmap-table th.indicator-col { text-align: left; min-width: 220px; }
+  .heatmap-table td {
+    padding: 8px 10px;
+    border: 1px solid var(--border-light);
+    text-align: center;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+  }
+  .hm-strong { background: #dcfce7; color: var(--green-strong); }
+  .hm-mid { background: #fef9c3; color: var(--yellow-strong); }
+  .hm-weak { background: #fee2e2; color: var(--red-strong); }
+  .hm-total { background: var(--accent); color: white; font-weight: 700; }
+  .hm-indicator { text-align: left; font-size: 12px; font-family: 'DM Sans', sans-serif; color: var(--text-secondary); font-weight: 400; }
+  .hm-sector-row td { background: #f0f4fa; color: var(--accent); font-weight: 600; font-family: 'DM Sans', sans-serif; text-align: left; font-size: 12px; letter-spacing: 0.3px; }
+
+  /* ─── PROJEÇÕES ─── */
+  .proj-table th { padding: 10px 14px; font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 1px solid var(--border); background: var(--bg); text-align: right; white-space: nowrap; }
+  .proj-table th:first-child { text-align: left; }
+  .proj-table td { padding: 10px 14px; border-bottom: 1px solid var(--border-light); text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+  .proj-table td:first-child { text-align: left; font-family: 'DM Sans', sans-serif; font-size: 13px; }
+  .proj-table tr:last-child td { border-bottom: none; }
+  .proj-table tr:hover td { background: var(--bg); }
+  .proj-pessim { color: var(--red-mid); }
+  .proj-real { color: var(--accent); font-weight: 600; }
+  .proj-otim { color: var(--green-mid); }
+
+  /* ─── DECISÓRIO ─── */
+  .decisorio-table th { padding: 10px 14px; font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 1px solid var(--border); background: var(--bg); white-space: nowrap; }
+  .decisorio-table td { padding: 11px 14px; border-bottom: 1px solid var(--border-light); vertical-align: middle; }
+  .decisorio-table tr:last-child td { border-bottom: none; }
+  .decisorio-table tr:hover td { background: var(--bg); }
+  .sinal-compra-forte { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; color: var(--green-strong); background: var(--green-bg); padding: 4px 10px; border-radius: 4px; }
+  .sinal-compra { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; color: #065f46; background: #d1fae5; padding: 4px 10px; border-radius: 4px; }
+  .sinal-neutro { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; color: var(--yellow-strong); background: var(--yellow-bg); padding: 4px 10px; border-radius: 4px; }
+  .sinal-venda { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; color: var(--red-strong); background: var(--red-bg); padding: 4px 10px; border-radius: 4px; }
+  .sinal-venda-forte { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; color: var(--venda-forte); background: #fecaca; padding: 4px 10px; border-radius: 4px; }
+
+  .strategy-text { font-size: 12px; color: var(--text-secondary); max-width: 260px; white-space: normal; line-height: 1.4; }
+
+  /* ─── TABS CONTENT ─── */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* ─── LEGENDA ─── */
+  .legenda-bar {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-size: 12px;
+  }
+  .leg-item { display: flex; align-items: center; gap: 6px; }
+  .leg-dot { width: 10px; height: 10px; border-radius: 2px; }
+
+  /* ─── FOOTER ─── */
+  .page-footer {
+    text-align: center;
+    padding: 20px 0 10px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* ─── TOP PICKS TEXT ─── */
+  .top-picks-text {
+    padding: 16px 20px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border-light);
+    line-height: 1.6;
+  }
+  .top-picks-text strong { color: var(--text-primary); }
+
+  /* ─── SUMMARY STATS ─── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+  }
+  .stat-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 6px; }
+  .stat-value { font-size: 24px; font-family: 'DM Serif Display', serif; color: var(--text-primary); }
+  .stat-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  /* Tooltip */
+  [data-tip] { position: relative; cursor: help; }
+  [data-tip]:hover::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%; transform: translateX(-50%);
+    background: var(--text-primary);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 11px;
+    white-space: nowrap;
+    z-index: 999;
+    pointer-events: none;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+  }
+
+  @media (max-width: 768px) {
+    .page-header { padding: 0 16px; }
+    .container { padding: 16px 12px 40px; }
+    .header-title { font-size: 16px; }
+    .header-meta { display: none; }
+    .nav-tabs { padding: 0 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="page-header">
+  <div class="header-brand">
+    <div class="header-logo">FI</div>
+    <div>
+      <div class="header-title">Factor Invest — Setor Saúde B3</div>
+      <div class="header-subtitle">Market View · 18 empresas analisadas · 13 fatores × 26 pts</div>
+    </div>
+  </div>
+  <div class="header-meta">
+    <div class="live-badge"><div class="live-dot"></div>Carregando cotações…</div>
+    <div class="update-info" id="last-update">Atualizando…</div>
+  </div>
+</header>
+
+<!-- NAV TABS -->
+<nav class="nav-tabs">
+  <div class="nav-tab active" onclick="switchTab('ranking')">🏆 Ranking</div>
+  <div class="nav-tab" onclick="switchTab('heatmap')">🔍 Factor Invest Detalhado</div>
+  <div class="nav-tab" onclick="switchTab('tabela')">📊 Tabela Mestra</div>
+  <div class="nav-tab" onclick="switchTab('projecoes')">💰 Projeções</div>
+  <div class="nav-tab" onclick="switchTab('decisorio')">🎯 Quadro Decisório</div>
+</nav>
+
+<div class="container">
+
+<!-- ══════════════════════════════════════════
+     TAB 1 — RANKING
+══════════════════════════════════════════ -->
+<div id="tab-ranking" class="tab-content active">
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Empresas analisadas</div>
+      <div class="stat-value">18</div>
+      <div class="stat-sub">Saúde B3</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">✅ Compras</div>
+      <div class="stat-value" style="color:var(--green-mid)">9</div>
+      <div class="stat-sub">5 Fortes + 4 Compras</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">🟡 Neutros</div>
+      <div class="stat-value" style="color:var(--yellow-mid)">4</div>
+      <div class="stat-sub">Aguardar confirmação</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">🔴 Vendas</div>
+      <div class="stat-value" style="color:var(--red-mid)">5</div>
+      <div class="stat-sub">4 Vendas + 1 Forte</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Beta médio setor</div>
+      <div class="stat-value">0.45</div>
+      <div class="stat-sub">Defensivo</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Referência</div>
+      <div class="stat-value" style="font-size:16px;margin-top:4px">29/03/2026</div>
+      <div class="stat-sub">Market View</div>
+    </div>
+  </div>
+
+  <!-- TOP PICKS -->
+  <div class="panel" style="margin-bottom:24px">
+    <div class="panel-header">
+      <div class="panel-title">🏆 Top Picks do Setor <span class="panel-badge">Melhores oportunidades</span></div>
+    </div>
+    <div class="top-picks-grid">
+      <!-- RDOR3 -->
+      <div class="top-pick-card">
+        <div class="pick-rank">#1 · Hospital</div>
+        <div class="pick-ticker">RDOR3</div>
+        <div class="pick-name">Rede D'Or</div>
+        <div class="price-cell price-loading" id="price-card-RDOR3">—</div>
+        <div class="pick-change" id="change-card-RDOR3">—</div>
+        <div class="pick-verdict verdict-compra-forte">✅ COMPRA FORTE</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:6px">22/26 · Upside 46.2% · DY 11%</div>
+      </div>
+      <!-- FLRY3 -->
+      <div class="top-pick-card">
+        <div class="pick-rank">#2 · Diagnóstico</div>
+        <div class="pick-ticker">FLRY3</div>
+        <div class="pick-name">Fleury</div>
+        <div class="price-cell price-loading" id="price-card-FLRY3">—</div>
+        <div class="pick-change" id="change-card-FLRY3">—</div>
+        <div class="pick-verdict verdict-compra-forte">✅ COMPRA FORTE</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:6px">21/26 · Upside 42.2% · FCF 22%</div>
+      </div>
+      <!-- GMAT3 -->
+      <div class="top-pick-card">
+        <div class="pick-rank">#3 · Farmácias</div>
+        <div class="pick-ticker">GMAT3</div>
+        <div class="pick-name">Grupo Mateus</div>
+        <div class="price-cell price-loading" id="price-card-GMAT3">—</div>
+        <div class="pick-change" id="change-card-GMAT3">—</div>
+        <div class="pick-verdict verdict-compra-forte">✅ COMPRA FORTE</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:6px">22/26 · Pechincha · Upside 73%</div>
+      </div>
+      <!-- RADL3 -->
+      <div class="top-pick-card">
+        <div class="pick-rank">#4 · Farmácias</div>
+        <div class="pick-ticker">RADL3</div>
+        <div class="pick-name">Raia Drogasil</div>
+        <div class="price-cell price-loading" id="price-card-RADL3">—</div>
+        <div class="pick-change" id="change-card-RADL3">—</div>
+        <div class="pick-verdict verdict-compra">✅ COMPRA</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:6px">20/26 · Líder de setor · 3.547 lojas</div>
+      </div>
+      <!-- OFSA3 -->
+      <div class="top-pick-card">
+        <div class="pick-rank">#5 · Farmácias</div>
+        <div class="pick-ticker">OFSA3</div>
+        <div class="pick-name">Ouro Fino</div>
+        <div class="price-cell price-loading" id="price-card-OFSA3">—</div>
+        <div class="pick-change" id="change-card-OFSA3">—</div>
+        <div class="pick-verdict verdict-compra">✅ COMPRA</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:6px">21/26 · ROIC 16.9% mais alto</div>
+      </div>
+    </div>
+    <div class="top-picks-text">
+      ⚠️ <strong>Evitar:</strong> ONCO3 (ROIC -20%, dívida crítica), DASA3 (ROE -15.3%, Dívida/Ativo 71.6%), HAPV3 (crise operacional, retorno -72.5% em 1 ano)
+    </div>
+  </div>
+
+  <!-- RANKING FARMÁCIAS -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title">💊 Comércio de Medicamentos — Farmácias & Distribuidoras</div>
+      <div class="panel-badge">9 empresas</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Ticker / Nome</th>
+            <th>Sub-Setor</th>
+            <th class="right">💡 Cotação Atual</th>
+            <th class="right">Var. Dia</th>
+            <th class="right">P. Justo</th>
+            <th class="right">Classif.</th>
+            <th class="right">Upside FV</th>
+            <th class="right">ROIC</th>
+            <th class="right">ROA</th>
+            <th class="right">ROE</th>
+            <th class="right">P/L</th>
+            <th class="right">EV/EBIT</th>
+            <th class="right">DY</th>
+            <th class="right">Dív/Ativo</th>
+            <th class="right">Ret. 1A</th>
+            <th class="center">Veredicto</th>
+            <th class="right">Score</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-farmacias">
+          <!-- JS preenchido -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- RANKING HOSPITAIS -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title">🏥 Diagnóstico, Serviços & Planos de Saúde</div>
+      <div class="panel-badge">9 empresas</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Ticker / Nome</th>
+            <th>Sub-Setor</th>
+            <th class="right">💡 Cotação Atual</th>
+            <th class="right">Var. Dia</th>
+            <th class="right">P. Justo</th>
+            <th class="right">Classif.</th>
+            <th class="right">Upside FV</th>
+            <th class="right">ROIC</th>
+            <th class="right">ROA</th>
+            <th class="right">ROE</th>
+            <th class="right">P/L</th>
+            <th class="right">EV/EBIT</th>
+            <th class="right">DY</th>
+            <th class="right">Dív/Ativo</th>
+            <th class="right">Ret. 1A</th>
+            <th class="center">Veredicto</th>
+            <th class="right">Score</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-hospitais">
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="legenda-bar">
+    <strong style="font-size:12px;color:var(--text-secondary)">Legenda:</strong>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--green-bg);border:1px solid var(--green-mid)"></div>✅ COMPRA FORTE (≥20/26)</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#d1fae5;border:1px solid #16a34a"></div>✅ COMPRA (15–19)</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--yellow-bg);border:1px solid var(--yellow-mid)"></div>🟡 NEUTRO (10–14)</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--red-bg);border:1px solid var(--red-mid)"></div>🔴 VENDA (6–9)</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#fecaca;border:1px solid var(--venda-forte)"></div>🔴 VENDA FORTE (≤5)</div>
+    <div class="leg-item" style="margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted)">Factor Invest: 13 fatores × 2pts (máx 26pts)</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB 2 — HEATMAP DETALHADO
+══════════════════════════════════════════ -->
+<div id="tab-heatmap" class="tab-content">
+  <div class="section-title">🔍 Factor Invest Detalhado — Heatmap por Indicador</div>
+  <div class="section-desc">🟢 Forte (2pts) · 🟡 Neutro (1pt) · 🔴 Fraco (0pt) · Empresas ordenadas por ranking</div>
+
+  <div class="panel">
+    <div class="panel-header"><div class="panel-title">💊 Comércio de Medicamentos</div></div>
+    <div class="heatmap-scroll">
+      <table class="heatmap-table">
+        <thead>
+          <tr>
+            <th class="indicator-col">INDICADOR / FATOR</th>
+            <th>#1<br>RADL3<br>20/26</th>
+            <th>#2<br>GMAT3<br>22/26</th>
+            <th>#3<br>PGMN3<br>15/26</th>
+            <th>#4<br>OFSA3<br>21/26</th>
+            <th>#5<br>PNVL3<br>13/26</th>
+            <th>#6<br>HYPE3<br>12/26</th>
+            <th>#7<br>PFRM3<br>11/26</th>
+            <th>#8<br>DMVF3<br>9/26</th>
+            <th>#9<br>VVEO3<br>6/26</th>
+          </tr>
+        </thead>
+        <tbody id="heatmap-farmacias"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header"><div class="panel-title">🏥 Diagnóstico, Serviços & Planos de Saúde</div></div>
+    <div class="heatmap-scroll">
+      <table class="heatmap-table">
+        <thead>
+          <tr>
+            <th class="indicator-col">INDICADOR / FATOR</th>
+            <th>#1<br>RDOR3<br>22/26</th>
+            <th>#2<br>FLRY3<br>21/26</th>
+            <th>#3<br>ODPV3<br>18/26</th>
+            <th>#4<br>MATD3<br>13/26</th>
+            <th>#5<br>QUAL3<br>11/26</th>
+            <th>#6<br>HAPV3<br>10/26</th>
+            <th>#7<br>DASA3<br>7/26</th>
+            <th>#8<br>AALR3<br>7/26</th>
+            <th>#9<br>ONCO3<br>3/26</th>
+          </tr>
+        </thead>
+        <tbody id="heatmap-hospitais"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB 3 — TABELA MESTRA
+══════════════════════════════════════════ -->
+<div id="tab-tabela" class="tab-content">
+  <div class="section-title">📊 Tabela Mestra — Comparativo Completo</div>
+  <div class="section-desc">Dados diretos Market View 29/03/2026 + Relatórios Investing.com · Separado por sub-setor</div>
+
+  <div class="panel">
+    <div class="panel-header"><div class="panel-title">💊 Comércio de Medicamentos</div></div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Indicador</th>
+            <th class="right">RADL3</th>
+            <th class="right">GMAT3</th>
+            <th class="right">PGMN3</th>
+            <th class="right">OFSA3</th>
+            <th class="right">PNVL3</th>
+            <th class="right">HYPE3</th>
+            <th class="right">PFRM3</th>
+            <th class="right">DMVF3</th>
+            <th class="right">VVEO3</th>
+          </tr>
+        </thead>
+        <tbody id="tabela-farmacias"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header"><div class="panel-title">🏥 Diagnóstico, Serviços & Planos de Saúde</div></div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Indicador</th>
+            <th class="right">RDOR3</th>
+            <th class="right">FLRY3</th>
+            <th class="right">ODPV3</th>
+            <th class="right">MATD3</th>
+            <th class="right">QUAL3</th>
+            <th class="right">HAPV3</th>
+            <th class="right">DASA3</th>
+            <th class="right">AALR3</th>
+            <th class="right">ONCO3</th>
+          </tr>
+        </thead>
+        <tbody id="tabela-hospitais"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB 4 — PROJEÇÕES
+══════════════════════════════════════════ -->
+<div id="tab-projecoes" class="tab-content">
+  <div class="section-title">💰 Projeções Fundamentalistas — DCF & Cenários</div>
+  <div class="section-desc">Pessimista = desconto 20% ao PJ · Realista = PJ modelo · Otimista = PJ +20% · WACC: 10% (Hospital) / 10.5% (Diagnóstico) / 11% (Farmácia) / 12% (Planos) · Beta médio: 0.45</div>
+
+  <div class="panel">
+    <div class="panel-header"><div class="panel-title">💊 Comércio de Medicamentos</div></div>
+    <div class="table-wrap">
+      <table class="proj-table">
+        <thead>
+          <tr>
+            <th>Empresa</th>
+            <th>💡 Cotação Atual</th>
+            <th>P. Justo (PJ)</th>
+            <th>Upside vs PJ</th>
+            <th>Alvo Pessimista</th>
+            <th>Alvo Realista</th>
+            <th>Alvo Otimista</th>
+            <th>Ret. Pessim.</th>
+            <th>Ret. Realista</th>
+            <th>Ret. Otimista</th>
+          </tr>
+        </thead>
+        <tbody id="proj-farmacias"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header"><div class="panel-title">🏥 Diagnóstico, Serviços & Planos</div></div>
+    <div class="table-wrap">
+      <table class="proj-table">
+        <thead>
+          <tr>
+            <th>Empresa</th>
+            <th>💡 Cotação Atual</th>
+            <th>P. Justo (PJ)</th>
+            <th>Upside vs PJ</th>
+            <th>Alvo Pessimista</th>
+            <th>Alvo Realista</th>
+            <th>Alvo Otimista</th>
+            <th>Ret. Pessim.</th>
+            <th>Ret. Realista</th>
+            <th>Ret. Otimista</th>
+          </tr>
+        </thead>
+        <tbody id="proj-hospitais"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB 5 — QUADRO DECISÓRIO
+══════════════════════════════════════════ -->
+<div id="tab-decisorio" class="tab-content">
+  <div class="section-title">🎯 Quadro Decisório Final — Setor Saúde B3</div>
+  <div class="section-desc">Ranking integrado: Factor Invest + Saúde Financeira + DCF + Valuation + Momento · 29/03/2026</div>
+
+  <div class="panel">
+    <div class="panel-header"><div class="panel-title">💊 Comércio de Medicamentos <span class="panel-badge">Cotação & Upside em tempo real</span></div></div>
+    <div class="table-wrap">
+      <table class="decisorio-table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Ticker</th>
+            <th>Nome</th>
+            <th>Score</th>
+            <th>Veredicto</th>
+            <th>Momento</th>
+            <th>Preço × FV</th>
+            <th>📡 Cotação Atual</th>
+            <th>🎯 Preço Justo</th>
+            <th>📊 Upside Atual</th>
+            <th>🚦 Sinal Dinâmico</th>
+            <th>Estratégia Sugerida</th>
+          </tr>
+        </thead>
+        <tbody id="decisorio-farmacias"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header"><div class="panel-title">🏥 Diagnóstico, Serviços & Planos <span class="panel-badge">Cotação & Upside em tempo real</span></div></div>
+    <div class="table-wrap">
+      <table class="decisorio-table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Ticker</th>
+            <th>Nome</th>
+            <th>Score</th>
+            <th>Veredicto</th>
+            <th>Momento</th>
+            <th>Preço × FV</th>
+            <th>📡 Cotação Atual</th>
+            <th>🎯 Preço Justo</th>
+            <th>📊 Upside Atual</th>
+            <th>🚦 Sinal Dinâmico</th>
+            <th>Estratégia Sugerida</th>
+          </tr>
+        </thead>
+        <tbody id="decisorio-hospitais"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel" style="padding:20px;">
+    <div style="font-size:13px;font-weight:600;margin-bottom:10px;color:var(--accent)">🏆 Top Picks Consolidado do Setor Saúde</div>
+    <div style="font-size:13px;color:var(--text-secondary);line-height:1.8">
+      <strong style="color:var(--green-strong)">(1) RDOR3</strong> — Compra Forte, maior hospital privado, upside 46% + DY 11%&nbsp;&nbsp;
+      <strong style="color:var(--green-strong)">(2) FLRY3</strong> — Compra Forte, ROIC 16.6%, FCF Yield 22%&nbsp;&nbsp;
+      <strong style="color:var(--green-strong)">(3) GMAT3</strong> — Compra Forte, Pechincha, upside 73%&nbsp;&nbsp;
+      <strong style="color:var(--green-mid)">(4) RADL3</strong> — Compra, líder farmácias, qualidade comprovada&nbsp;&nbsp;
+      <strong style="color:var(--green-mid)">(5) OFSA3</strong> — Compra, ROIC 16.9% mais alto do sub-setor<br>
+      <strong style="color:var(--red-strong)">⚠️ Evitar:</strong> ONCO3, DASA3, HAPV3
+    </div>
+  </div>
+</div>
+
+<div class="page-footer">
+  Factor Invest — Setor Saúde B3 · Market View 29/03/2026 · Cotações via Yahoo Finance (tempo real ou último fechamento) · Para fins informativos, não constitui recomendação de investimento
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ── DATA ────────────────────────────────────────────────────────────────────
+
+const FARMACIAS = [
+  { rank:1, ticker:'RADL3', nome:'Raia Drogasil',  sub:'💊 Farmácias/Dist.', pj:28.18, classif:'Barato',    upside_base:'+20.9%', roic:'15.0%', roa:'5.5%',  roe:'18.9%', pl:'31.5x', evebit:'16.2x', dy:'1.6%',  divAtivo:'35.1%', ret1a:'+23.5%', veredicto:'✅ COMPRA',        score:'20/26', score_n:20 },
+  { rank:2, ticker:'GMAT3', nome:'Grupo Mateus',   sub:'💊 Farmácias/Dist.', pj:7.85,  classif:'Pechincha', upside_base:'+73.3%', roic:'11.2%', roa:'8.6%',  roe:'17.3%', pl:'5.7x',  evebit:'7.3x',  dy:'5.5%',  divAtivo:'37.1%', ret1a:'-',       veredicto:'✅ COMPRA FORTE', score:'22/26', score_n:22 },
+  { rank:3, ticker:'PGMN3', nome:'Pague Menos',    sub:'💊 Farmácias/Dist.', pj:8.85,  classif:'Barato',    upside_base:'+44.6%', roic:'10.6%', roa:'2.8%',  roe:'9.0%',  pl:'15.5x', evebit:'8.7x',  dy:'9.5%',  divAtivo:'47.7%', ret1a:'+107.6%',veredicto:'✅ COMPRA',        score:'15/26', score_n:15 },
+  { rank:4, ticker:'OFSA3', nome:'Ouro Fino',      sub:'💊 Farmácias/Dist.', pj:34.08, classif:'Barato',    upside_base:'+21.7%', roic:'16.9%', roa:'15.1%', roe:'28.6%', pl:'6.8x',  evebit:'7.3x',  dy:'4.6%',  divAtivo:'25.1%', ret1a:'-',       veredicto:'✅ COMPRA',        score:'21/26', score_n:21 },
+  { rank:5, ticker:'PNVL3', nome:'Dimed',          sub:'💊 Farmácias/Dist.', pj:17.39, classif:'Barato',    upside_base:'+21.9%', roic:'7.8%',  roa:'3.5%',  roe:'9.9%',  pl:'17.1x', evebit:'12.6x', dy:'2.4%',  divAtivo:'41.4%', ret1a:'+74.1%', veredicto:'✅ COMPRA',        score:'13/26', score_n:13 },
+  { rank:6, ticker:'HYPE3', nome:'Hypera',         sub:'💊 Farmácias/Dist.', pj:31.65, classif:'Barato',    upside_base:'+42.9%', roic:'6.5%',  roa:'4.8%',  roe:'9.7%',  pl:'11.7x', evebit:'12.5x', dy:'5.8%',  divAtivo:'40.4%', ret1a:'-',       veredicto:'🟡 NEUTRO',       score:'12/26', score_n:12 },
+  { rank:7, ticker:'PFRM3', nome:'Profarma',       sub:'💊 Farmácias/Dist.', pj:9.49,  classif:'Barato',    upside_base:'+29.1%', roic:'9.7%',  roa:'2.1%',  roe:'7.8%',  pl:'7.6x',  evebit:'6.7x',  dy:'8.8%',  divAtivo:'54.1%', ret1a:'-',       veredicto:'🟡 NEUTRO',       score:'11/26', score_n:11 },
+  { rank:8, ticker:'DMVF3', nome:'D1000',          sub:'💊 Farmácias/Dist.', pj:6.75,  classif:'Justo',     upside_base:'+4.6%',  roic:'5.4%',  roa:'1.2%',  roe:'2.5%',  pl:'14.5x', evebit:'9.0x',  dy:'0.0%',  divAtivo:'51.7%', ret1a:'-',       veredicto:'🟡 NEUTRO',       score:'9/26',  score_n:9  },
+  { rank:9, ticker:'VVEO3', nome:'CM Hospitalar',  sub:'💊 Farmácias/Dist.', pj:1.75,  classif:'Barato',    upside_base:'+44.6%', roic:'7.2%',  roa:'0.2%',  roe:'0.9%',  pl:'21.0x', evebit:'6.8x',  dy:'0.0%',  divAtivo:'91.0%', ret1a:'-',       veredicto:'🔴 VENDA',        score:'6/26',  score_n:6  },
+];
+
+const HOSPITAIS = [
+  { rank:1, ticker:'RDOR3', nome:"Rede D'Or",     sub:'🏥 Hospital',          pj:55.15, classif:'Barato',    upside_base:'+46.2%', roic:'11.7%', roa:'4.6%',   roe:'20.0%',   pl:'18.1x',   evebit:'9.1x',  dy:'11.0%', divAtivo:'37.9%', ret1a:'+52.6%', veredicto:'✅ COMPRA FORTE', score:'22/26', score_n:22 },
+  { rank:2, ticker:'FLRY3', nome:'Fleury',         sub:'🏥 Diagnóstico/Serv.', pj:21.90, classif:'Barato',    upside_base:'+42.2%', roic:'16.6%', roa:'4.5%',   roe:'11.4%',   pl:'13.7x',   evebit:'9.1x',  dy:'10.8%', divAtivo:'38.3%', ret1a:'+46.0%', veredicto:'✅ COMPRA FORTE', score:'21/26', score_n:21 },
+  { rank:3, ticker:'ODPV3', nome:'Odontoprev',     sub:'🦷 Odontologia',       pj:12.37, classif:'Justo',     upside_base:'-6.9%',  roic:'47.5%', roa:'25.2%',  roe:'44.7%',   pl:'12.6x',   evebit:'7.8x',  dy:'7.0%',  divAtivo:'0.3%',  ret1a:'+17.4%', veredicto:'🟡 NEUTRO',       score:'18/26', score_n:18 },
+  { rank:4, ticker:'MATD3', nome:'Mater Dei',      sub:'🏥 Hospital',          pj:7.07,  classif:'Barato',    upside_base:'+30.9%', roic:'6.5%',  roa:'2.6%',   roe:'7.6%',    pl:'16.1x',   evebit:'9.5x',  dy:'2.8%',  divAtivo:'54.9%', ret1a:'-',       veredicto:'✅ COMPRA',        score:'13/26', score_n:13 },
+  { rank:5, ticker:'QUAL3', nome:'Qualicorp',      sub:'📋 Planos de Saúde',   pj:2.46,  classif:'Barato',    upside_base:'+28.1%', roic:'6.1%',  roa:'0.4%',   roe:'1.3%',    pl:'-214.5x', evebit:'5.1x',  dy:'0.5%',  divAtivo:'75.8%', ret1a:'+12.9%', veredicto:'🟡 NEUTRO',       score:'11/26', score_n:11 },
+  { rank:6, ticker:'HAPV3', nome:'Hapvida',        sub:'📋 Planos de Saúde',   pj:15.53, classif:'Pechincha', upside_base:'+60.3%', roic:'1.4%',  roa:'-0.2%',  roe:'-0.3%',   pl:'-32.5x',  evebit:'8.1x',  dy:'0.0%',  divAtivo:'32.1%', ret1a:'-72.5%', veredicto:'🔴 VENDA',        score:'10/26', score_n:10 },
+  { rank:7, ticker:'DASA3', nome:'DASA',           sub:'🏥 Diagnóstico/Serv.', pj:5.02,  classif:'Pechincha', upside_base:'+80.6%', roic:'3.5%',  roa:'-5.0%',  roe:'-15.3%',  pl:'-3.0x',   evebit:'5.0x',  dy:'0.0%',  divAtivo:'71.6%', ret1a:'-',       veredicto:'🔴 VENDA',        score:'7/26',  score_n:7  },
+  { rank:8, ticker:'AALR3', nome:'Aliança Saúde',  sub:'🏥 Diagnóstico/Serv.', pj:4.97,  classif:'Barato',    upside_base:'+19.8%', roic:'5.1%',  roa:'-2.5%',  roe:'-6.2%',   pl:'-7.9x',   evebit:'10.7x', dy:'0.0%',  divAtivo:'51.9%', ret1a:'-',       veredicto:'🔴 VENDA',        score:'7/26',  score_n:7  },
+  { rank:9, ticker:'ONCO3', nome:'Oncoclinicas',   sub:'🏥 Hospital',          pj:1.73,  classif:'Justo',     upside_base:'+6.1%',  roic:'-20.3%',roa:'-28.4%', roe:'-108.8%', pl:'-0.6x',   evebit:'-3.2x', dy:'0.0%',  divAtivo:'70.7%', ret1a:'-',       veredicto:'🔴 VENDA FORTE',  score:'3/26',  score_n:3  },
+];
+
+// Heatmap data
+const HM_INDICATORS = [
+  { label:'ROIC (>15%=2 | 8-15%=1 | <8%=0)', tip:'>15%=Forte | 8-15%=Neutro | <8%=Fraco' },
+  { label:'ROA (>8%=2 | 3-8%=1 | <3%=0)', tip:'>8%=Forte | 3-8%=Neutro | <3%=Fraco' },
+  { label:'ROE (>15%=2 | 8-15%=1 | <8%=0)', tip:'>15%=Forte | 8-15%=Neutro | <8%=Fraco' },
+  { label:'P/L (abaixo média=2 | na média=1 | acima=0)', tip:'Menor múltiplo = melhor' },
+  { label:'EV/EBIT (<8x=2 | 8-15x=1 | >15x=0)', tip:'<8x=Forte | 8-15x=Neutro | >15x=Fraco' },
+  { label:'Div. Yield (>7%=2 | 3-7%=1 | <3%=0)', tip:'>7%=Forte | 3-7%=Neutro | <3%=Fraco' },
+  { label:'Dívida/Ativo (<30%=2 | 30-55%=1 | >55%=0)', tip:'<30%=Forte | 30-55%=Neutro | >55%=Fraco' },
+  { label:'Retorno 1 Ano (>30%=2 | 0-30%=1 | <0%=0)', tip:'>30%=Forte | 0-30%=Neutro | <0%=Fraco' },
+  { label:'Upside FV (>35%=2 | 15-35%=1 | <15%=0)', tip:'>35%=Forte | 15-35%=Neutro | <15%=Fraco' },
+  { label:'Crescimento Receita (>15%=2 | 5-15%=1 | <5%=0)', tip:'>15%=Forte | 5-15%=Neutro | <5%=Fraco' },
+  { label:'Margem EBITDA (>20%=2 | 10-20%=1 | <10%=0)', tip:'>20%=Forte | 10-20%=Neutro | <10%=Fraco' },
+  { label:'Alavancagem Dív/EBITDA (<1.5x=2 | 1.5-3x=1 | >3x=0)', tip:'<1.5x=Forte | 1.5-3x=Neutro | >3x=Fraco' },
+  { label:'Saúde Financeira Investing (>7/10=2 | 5-7=1 | <5=0)', tip:'>7/10=Forte | 5-7=Neutro | <5=Fraco' },
+];
+
+// [RADL3, GMAT3, PGMN3, OFSA3, PNVL3, HYPE3, PFRM3, DMVF3, VVEO3]
+const HM_FARM = [
+  ['🟢 2','🟡 1','🟡 1','🟢 2','🟡 1','🔴 0','🟡 1','🔴 0','🔴 0'],
+  ['🟡 1','🟢 2','🔴 0','🟢 2','🟡 1','🟡 1','🔴 0','🔴 0','🔴 0'],
+  ['🟢 2','🟢 2','🟡 1','🟢 2','🟡 1','🟡 1','🟡 1','🔴 0','🔴 0'],
+  ['🔴 0','🟢 2','🟡 1','🟢 2','🟡 1','🟡 1','🟢 2','🟡 1','🔴 0'],
+  ['🔴 0','🟢 2','🟡 1','🟢 2','🟡 1','🟡 1','🟢 2','🟢 2','🟡 1'],
+  ['🔴 0','🟡 1','🟢 2','🟡 1','🔴 0','🟡 1','🟢 2','🔴 0','🔴 0'],
+  ['🟢 2','🟢 2','🟡 1','🟢 2','🟡 1','🟢 2','🔴 0','🔴 0','🔴 0'],
+  ['🟡 1','🟡 1','🟢 2','🟡 1','🟢 2','🟡 1','🟡 1','🟡 1','🔴 0'],
+  ['🟡 1','🟢 2','🟢 2','🟡 1','🟡 1','🟢 2','🟡 1','🔴 0','🟢 2'],
+  ['🟢 2','🟢 2','🟢 2','🟡 1','🟡 1','🟡 1','🟡 1','🟡 1','🔴 0'],
+  ['🟡 1','🟢 2','🟡 1','🟢 2','🟡 1','🟡 1','🟡 1','🟡 1','🔴 0'],
+  ['🟡 1','🟡 1','🔴 0','🟢 2','🟡 1','🔴 0','🔴 0','🔴 0','🔴 0'],
+  ['🟢 2','🟢 2','🟡 1','🟡 1','🟡 1','🟡 1','🔴 0','🟡 1','🔴 0'],
+];
+const HM_FARM_TOTAL = ['20/26','22/26','15/26','21/26','13/26','12/26','11/26','9/26','6/26'];
+
+// [RDOR3, FLRY3, ODPV3, MATD3, QUAL3, HAPV3, DASA3, AALR3, ONCO3]
+const HM_HOSP = [
+  ['🟡 1','🟢 2','🟢 2','🔴 0','🔴 0','🔴 0','🔴 0','🔴 0','🔴 0'],
+  ['🟡 1','🟡 1','🟢 2','🔴 0','🔴 0','🔴 0','🔴 0','🔴 0','🔴 0'],
+  ['🟢 2','🟡 1','🟢 2','🟡 1','🔴 0','🔴 0','🔴 0','🔴 0','🔴 0'],
+  ['🟡 1','🟡 1','🟡 1','🟡 1','🔴 0','🔴 0','🔴 0','🔴 0','🔴 0'],
+  ['🟢 2','🟢 2','🟢 2','🟢 2','🟢 2','🟢 2','🟢 2','🟡 1','🔴 0'],
+  ['🟢 2','🟢 2','🟢 2','🔴 0','🔴 0','🔴 0','🔴 0','🔴 0','🔴 0'],
+  ['🟢 2','🟢 2','🟢 2','🟡 1','🔴 0','🟢 2','🔴 0','🟡 1','🔴 0'],
+  ['🟢 2','🟢 2','🟡 1','🟡 1','🟡 1','🔴 0','🔴 0','🔴 0','🔴 0'],
+  ['🟢 2','🟢 2','🔴 0','🟡 1','🟡 1','🟢 2','🟢 2','🟡 1','🔴 0'],
+  ['🟢 2','🟡 1','🟡 1','🟡 1','🔴 0','🟡 1','🔴 0','🔴 0','🔴 0'],
+  ['🟢 2','🟡 1','🟢 2','🟡 1','🟢 2','🔴 0','🔴 0','🔴 0','🔴 0'],
+  ['🟡 1','🟢 2','🟢 2','🟡 1','🟡 1','🟡 1','🔴 0','🟡 1','🔴 0'],
+  ['🟢 2','🟢 2','🟢 2','🟡 1','🟡 1','🟡 1','🔴 0','🟡 1','🔴 0'],
+];
+const HM_HOSP_TOTAL = ['22/26','21/26','18/26','13/26','11/26','10/26','7/26','7/26','3/26'];
+
+// Projeções
+const PROJ_FARM = [
+  { nome:'1. GMAT3 — Grupo Mateus',  ticker:'GMAT3', pj:'R$7.85',  upside:'+73.3%', pess:'R$6.28',  real:'R$7.85',  otim:'R$9.42',  rpess:'+38.6%',  rreal:'+73.3%',  rotim:'+107.9%' },
+  { nome:'2. OFSA3 — Ouro Fino',     ticker:'OFSA3', pj:'R$34.08', upside:'+21.7%', pess:'R$27.26', real:'R$34.08', otim:'R$40.90', rpess:'-2.6%',   rreal:'+21.7%',  rotim:'+46.1%'  },
+  { nome:'3. RADL3 — Raia Drogasil', ticker:'RADL3', pj:'R$28.18', upside:'+20.9%', pess:'R$22.54', real:'R$28.18', otim:'R$33.82', rpess:'-3.3%',   rreal:'+20.9%',  rotim:'+45.2%'  },
+  { nome:'4. PGMN3 — Pague Menos',   ticker:'PGMN3', pj:'R$8.85',  upside:'+44.6%', pess:'R$7.08',  real:'R$8.85',  otim:'R$10.62', rpess:'+15.7%',  rreal:'+44.6%',  rotim:'+73.5%'  },
+  { nome:'5. PNVL3 — Dimed',         ticker:'PNVL3', pj:'R$17.39', upside:'+21.9%', pess:'R$13.91', real:'R$17.39', otim:'R$20.87', rpess:'-2.5%',   rreal:'+21.9%',  rotim:'+46.3%'  },
+  { nome:'6. HYPE3 — Hypera',        ticker:'HYPE3', pj:'R$31.65', upside:'+42.9%', pess:'R$25.32', real:'R$31.65', otim:'R$37.98', rpess:'+14.3%',  rreal:'+42.9%',  rotim:'+71.5%'  },
+  { nome:'7. PFRM3 — Profarma',      ticker:'PFRM3', pj:'R$9.49',  upside:'+29.1%', pess:'R$7.59',  real:'R$9.49',  otim:'R$11.39', rpess:'+3.3%',   rreal:'+29.1%',  rotim:'+55.0%'  },
+  { nome:'8. DMVF3 — D1000',         ticker:'DMVF3', pj:'R$6.75',  upside:'+4.6%',  pess:'R$5.40',  real:'R$6.75',  otim:'R$8.10',  rpess:'-16.4%',  rreal:'+4.5%',   rotim:'+25.4%'  },
+  { nome:'9. VVEO3 — CM Hospitalar', ticker:'VVEO3', pj:'R$1.75',  upside:'+44.6%', pess:'R$1.40',  real:'R$1.75',  otim:'R$2.10',  rpess:'+15.7%',  rreal:'+44.6%',  rotim:'+73.6%'  },
+];
+const PROJ_HOSP = [
+  { nome:"1. RDOR3 — Rede D'Or",     ticker:'RDOR3', pj:'R$55.15', upside:'+46.2%', pess:'R$44.12', real:'R$55.15', otim:'R$66.18', rpess:'+17.0%',  rreal:'+46.2%',  rotim:'+75.5%'  },
+  { nome:'2. FLRY3 — Fleury',        ticker:'FLRY3', pj:'R$21.90', upside:'+42.2%', pess:'R$17.52', real:'R$21.90', otim:'R$26.28', rpess:'+13.8%',  rreal:'+42.2%',  rotim:'+70.6%'  },
+  { nome:'3. ODPV3 — Odontoprev',    ticker:'ODPV3', pj:'R$12.37', upside:'-6.9%',  pess:'R$9.90',  real:'R$12.37', otim:'R$14.84', rpess:'-25.5%',  rreal:'-6.9%',   rotim:'+11.7%'  },
+  { nome:'4. MATD3 — Mater Dei',     ticker:'MATD3', pj:'R$7.07',  upside:'+30.9%', pess:'R$5.66',  real:'R$7.07',  otim:'R$8.48',  rpess:'+4.8%',   rreal:'+30.9%',  rotim:'+57.0%'  },
+  { nome:'5. QUAL3 — Qualicorp',     ticker:'QUAL3', pj:'R$2.46',  upside:'+28.1%', pess:'R$1.97',  real:'R$2.46',  otim:'R$2.95',  rpess:'+2.6%',   rreal:'+28.1%',  rotim:'+53.6%'  },
+  { nome:'6. HAPV3 — Hapvida',       ticker:'HAPV3', pj:'R$15.53', upside:'+60.3%', pess:'R$12.42', real:'R$15.53', otim:'R$18.64', rpess:'+28.2%',  rreal:'+60.3%',  rotim:'+92.4%'  },
+  { nome:'7. AALR3 — Aliança Saúde', ticker:'AALR3', pj:'R$4.97',  upside:'+19.8%', pess:'R$3.98',  real:'R$4.97',  otim:'R$5.96',  rpess:'-4.1%',   rreal:'+19.8%',  rotim:'+43.6%'  },
+  { nome:'8. DASA3 — DASA',          ticker:'DASA3', pj:'R$5.02',  upside:'+80.6%', pess:'R$4.02',  real:'R$5.02',  otim:'R$6.02',  rpess:'+44.6%',  rreal:'+80.6%',  rotim:'+116.5%' },
+  { nome:'9. ONCO3 — Oncoclinicas',  ticker:'ONCO3', pj:'R$1.73',  upside:'+6.1%',  pess:'R$1.38',  real:'R$1.73',  otim:'R$2.08',  rpess:'-15.3%',  rreal:'+6.1%',   rotim:'+27.6%'  },
+];
+
+// Decisório
+const DEC_FARM = [
+  { rank:1, ticker:'GMAT3', nome:'Grupo Mateus',  score:'22/26', veredicto:'✅ COMPRA FORTE', momento:'OPORTUNIDADE DE COMPRA', prefv:'Pechincha +73.3%', pj:7.85,  estrategia:'Compra Forte · Stop R$3.85 · Alvo R$8.00 · Posição 4-6% · DY 5.5%' },
+  { rank:2, ticker:'OFSA3', nome:'Ouro Fino',     score:'21/26', veredicto:'✅ COMPRA',       momento:'OPORTUNIDADE DE COMPRA', prefv:'Barato +21.7%',    pj:34.08, estrategia:'Compra · Stop R$23.80 · Alvo R$34.08 · Posição 3-5% · Qualidade premium' },
+  { rank:3, ticker:'RADL3', nome:'Raia Drogasil', score:'20/26', veredicto:'✅ COMPRA',       momento:'OPORTUNIDADE DE COMPRA', prefv:'Barato +20.9%',    pj:28.18, estrategia:'Compra · Stop R$19.80 · Alvo R$28.22 · Posição 4-6% core · Líder de setor' },
+  { rank:4, ticker:'PGMN3', nome:'Pague Menos',   score:'15/26', veredicto:'✅ COMPRA',       momento:'OPORTUNIDADE DE COMPRA', prefv:'Barato +44.6%',    pj:8.85,  estrategia:'Compra especulativa · Stop R$5.20 · Alvo R$8.85 · 2-3% carteira' },
+  { rank:5, ticker:'PNVL3', nome:'Dimed',         score:'13/26', veredicto:'✅ COMPRA',       momento:'OPORTUNIDADE DE COMPRA', prefv:'Barato +21.9%',    pj:17.39, estrategia:'Compra · Stop R$12.13 · Alvo R$19.40 · Posição 2-3%' },
+  { rank:6, ticker:'HYPE3', nome:'Hypera',        score:'13/26', veredicto:'🟡 NEUTRO',      momento:'MOMENTO NEUTRO',         prefv:'Barato +42.9%',    pj:31.65, estrategia:'Neutro · Stop R$18.83 · Alvo R$31.65 · Aguardar confirmação de crescimento' },
+  { rank:7, ticker:'PFRM3', nome:'Profarma',      score:'12/26', veredicto:'🟡 NEUTRO',      momento:'MOMENTO NEUTRO',         prefv:'Barato +29.1%',    pj:9.49,  estrategia:'Neutro · Stop R$6.25 · 1-2% especulativo · DY 8.8% sustentado' },
+  { rank:8, ticker:'DMVF3', nome:'D1000',         score:'7/26',  veredicto:'🟡 NEUTRO',      momento:'MOMENTO NEUTRO',         prefv:'Justo +4.6%',      pj:6.75,  estrategia:'Neutro · Aguardar melhora de margens · Sem stop definido' },
+  { rank:9, ticker:'VVEO3', nome:'CM Hospitalar', score:'3/26',  veredicto:'🔴 VENDA',       momento:'OPORTUNIDADE DE VENDA',  prefv:'Barato +44.6%',    pj:1.75,  estrategia:'Venda · Empresa altamente alavancada · Upside nominal mascarado pelo risco' },
+];
+const DEC_HOSP = [
+  { rank:1, ticker:'RDOR3', nome:"Rede D'Or",    score:'22/26', veredicto:'✅ COMPRA FORTE', momento:'OPORTUNIDADE DE COMPRA', prefv:'Barato +46.2%',    pj:55.15, estrategia:"Compra Forte · Stop R$32.05 · Alvo R$55.15 · Posição 5-8% · DY 11%" },
+  { rank:2, ticker:'FLRY3', nome:'Fleury',        score:'21/26', veredicto:'✅ COMPRA FORTE', momento:'OPORTUNIDADE DE COMPRA', prefv:'Barato +42.2%',    pj:21.90, estrategia:'Compra Forte · Stop R$13.09 · Alvo R$21.90 · Posição 4-6% · FCF Yield 22%' },
+  { rank:3, ticker:'ODPV3', nome:'Odontoprev',    score:'18/26', veredicto:'🟡 NEUTRO',      momento:'MOMENTO NEUTRO',         prefv:'Justo -6.9%',      pj:12.37, estrategia:'Neutro · Manter · Stop R$11.29 · DY 7% remunera · Aguardar recuo R$11' },
+  { rank:4, ticker:'MATD3', nome:'Mater Dei',     score:'13/26', veredicto:'✅ COMPRA',       momento:'OPORTUNIDADE DE COMPRA', prefv:'Barato +30.9%',    pj:7.07,  estrategia:'Compra · Stop R$4.59 · Alvo R$7.80 · Posição 2-3% · Hospital em crescimento' },
+  { rank:5, ticker:'QUAL3', nome:'Qualicorp',     score:'11/26', veredicto:'🟡 NEUTRO',      momento:'MOMENTO NEUTRO',         prefv:'Barato +28.1%',    pj:2.46,  estrategia:'Neutro/Especulativo · Stop R$1.63 · Alvo R$3.01 · Máx 2% carteira' },
+  { rank:6, ticker:'HAPV3', nome:'Hapvida',       score:'10/26', veredicto:'🔴 VENDA',       momento:'OPORTUNIDADE DE VENDA',  prefv:'Pechincha +60.3%', pj:15.53, estrategia:'Venda · Crise operacional · Monitorar MLR 2 trimestres antes de reconsiderar' },
+  { rank:7, ticker:'AALR3', nome:'Aliança Saúde', score:'7/26',  veredicto:'🔴 VENDA',       momento:'OPORTUNIDADE DE VENDA',  prefv:'Barato +19.8%',    pj:4.97,  estrategia:'Venda · ROA negativo · Empresa deficitária · Sem visibilidade de recuperação' },
+  { rank:8, ticker:'DASA3', nome:'DASA',          score:'7/26',  veredicto:'🔴 VENDA',       momento:'OPORTUNIDADE DE VENDA',  prefv:'Pechincha +80.6%', pj:5.02,  estrategia:'Venda · ROE -15.3% · Dívida/Ativo 71.6% · Risco de restructuring' },
+  { rank:9, ticker:'ONCO3', nome:'Oncoclinicas',  score:'3/26',  veredicto:'🔴 VENDA FORTE', momento:'OPORTUNIDADE DE VENDA',  prefv:'Justo +6.1%',      pj:1.73,  estrategia:'Venda Forte · ROIC -20% · Dívida crítica · Evitar totalmente' },
+];
+
+// Tabela Mestra data
+const TBL_ROWS_FARM = [
+  { label:'💡 Cotação Atual (R$)', key:'price', dynamic:true },
+  { label:'Preço Justo Investing', vals:['R$28.18','R$7.85','R$8.85','R$34.08','R$17.39','R$31.65','R$9.49','R$6.75','R$1.75'] },
+  { label:'Classificação FV',      vals:['Barato','Pechincha','Barato','Barato','Barato','Barato','Barato','Justo','Barato'] },
+  { label:'Upside vs PJ',          vals:['+20.9%','+73.3%','+44.6%','+21.7%','+21.9%','+42.9%','+29.1%','+4.6%','+44.6%'] },
+  { label:'Alvo Analistas',        vals:['R$28.22','R$8.00','R$7.50','R$35.00','R$19.40','R$32.00','N/D','N/D','N/D'] },
+  { label:'— RETORNO & QUALIDADE','section':true },
+  { label:'ROIC',  vals:['15.0%','11.2%','10.6%','16.9%','7.8%','6.5%','9.7%','5.4%','7.2%'] },
+  { label:'ROA',   vals:['5.5%','8.6%','2.8%','15.1%','3.5%','4.8%','2.1%','1.2%','0.2%'] },
+  { label:'ROE',   vals:['18.9%','17.3%','9.0%','28.6%','9.9%','9.7%','7.8%','2.5%','0.9%'] },
+  { label:'— VALUATION','section':true },
+  { label:'P/L',     vals:['31.5x','5.7x','15.5x','6.8x','17.1x','11.7x','7.6x','14.5x','21.0x'] },
+  { label:'EV/EBIT', vals:['16.2x','7.3x','8.7x','7.3x','12.6x','12.5x','6.7x','9.0x','6.8x'] },
+  { label:'— PROVENTOS','section':true },
+  { label:'Dividend Yield', vals:['1.6%','5.5%','9.5%','4.6%','2.4%','5.8%','8.8%','0.0%','0.0%'] },
+  { label:'— ENDIVIDAMENTO','section':true },
+  { label:'Dívida/Ativo', vals:['35.1%','37.1%','47.7%','25.1%','41.4%','40.4%','54.1%','51.7%','91.0%'] },
+  { label:'— MOMENTO','section':true },
+  { label:'Retorno 1 Ano', vals:['+23.5%','-','+107.6%','-','+74.1%','-','-','-','-'] },
+  { label:'— VEREDICTO','section':true },
+  { label:'Veredicto',        vals:['✅ COMPRA','✅ COMPRA FORTE','✅ COMPRA','✅ COMPRA','✅ COMPRA','🟡 NEUTRO','🟡 NEUTRO','🟡 NEUTRO','🔴 VENDA'] },
+  { label:'Pontuação Factor', vals:['20/26','22/26','15/26','21/26','13/26','12/26','11/26','9/26','6/26'] },
+];
+const TBL_ROWS_HOSP = [
+  { label:'💡 Cotação Atual (R$)', key:'price', dynamic:true, tickers:['RDOR3','FLRY3','ODPV3','MATD3','QUAL3','HAPV3','DASA3','AALR3','ONCO3'] },
+  { label:'Preço Justo Investing', vals:['R$55.15','R$21.90','R$12.37','R$7.07','R$2.46','R$15.53','R$5.02','R$4.97','R$1.73'] },
+  { label:'Classificação FV',      vals:['Barato','Barato','Justo','Barato','Barato','Pechincha','Pechincha','Barato','Justo'] },
+  { label:'Upside vs PJ',          vals:['+46.2%','+42.2%','-6.9%','+30.9%','+28.1%','+60.3%','+80.6%','+19.8%','+6.1%'] },
+  { label:'Alvo Analistas',        vals:['R$50.44','R$17.48','R$12.70','R$7.80','R$3.01','R$17.52','R$5.00','N/D','N/D'] },
+  { label:'— RETORNO & QUALIDADE','section':true },
+  { label:'ROIC',  vals:['11.7%','16.6%','47.5%','6.5%','6.1%','1.4%','3.5%','5.1%','-20.3%'] },
+  { label:'ROA',   vals:['4.6%','4.5%','25.2%','2.6%','0.4%','-0.2%','-5.0%','-2.5%','-28.4%'] },
+  { label:'ROE',   vals:['20.0%','11.4%','44.7%','7.6%','1.3%','-0.3%','-15.3%','-6.2%','-108.8%'] },
+  { label:'— VALUATION','section':true },
+  { label:'P/L',     vals:['18.1x','13.7x','12.6x','16.1x','-214.5x','-32.5x','-3.0x','-7.9x','-0.6x'] },
+  { label:'EV/EBIT', vals:['9.1x','9.1x','7.8x','9.5x','5.1x','8.1x','5.0x','10.7x','-3.2x'] },
+  { label:'— PROVENTOS','section':true },
+  { label:'Dividend Yield', vals:['11.0%','10.8%','7.0%','2.8%','0.5%','0.0%','0.0%','0.0%','0.0%'] },
+  { label:'— ENDIVIDAMENTO','section':true },
+  { label:'Dívida/Ativo', vals:['37.9%','38.3%','0.3%','54.9%','75.8%','32.1%','71.6%','51.9%','70.7%'] },
+  { label:'— MOMENTO','section':true },
+  { label:'Retorno 1 Ano', vals:['+52.6%','+46.0%','+17.4%','-','+12.9%','-72.5%','-','-','-'] },
+  { label:'— VEREDICTO','section':true },
+  { label:'Veredicto',        vals:['✅ COMPRA FORTE','✅ COMPRA FORTE','🟡 NEUTRO','✅ COMPRA','🟡 NEUTRO','🔴 VENDA','🔴 VENDA','🔴 VENDA','🔴 VENDA FORTE'] },
+  { label:'Pontuação Factor', vals:['22/26','21/26','18/26','13/26','11/26','10/26','7/26','7/26','3/26'] },
+];
+
+// ── LIVE PRICE STATE ─────────────────────────────────────────────────────────
+const prices = {};
+const prevClose = {};
+let marketOpen = false;
+let priceSource = '';
+
+const ALL_TICKERS = [
+  'RADL3','GMAT3','PGMN3','OFSA3','PNVL3','HYPE3','PFRM3','DMVF3','VVEO3',
+  'RDOR3','FLRY3','ODPV3','MATD3','QUAL3','HAPV3','DASA3','AALR3','ONCO3'
+];
+
+// B3 opens 10:00–17:55 BRT (UTC-3), Mon–Fri
+function isB3Open() {
+  const brt = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));
+  const day = brt.getDay();
+  const mins = brt.getHours() * 60 + brt.getMinutes();
+  return day >= 1 && day <= 5 && mins >= 600 && mins <= 1075;
+}
+
+function updateLiveBadge() {
+  const badge = document.querySelector('.live-badge');
+  if (!badge) return;
+  if (marketOpen) {
+    badge.style.cssText = 'color:var(--green-mid);background:var(--green-bg)';
+    badge.innerHTML = '<div class="live-dot" style="background:var(--green-mid)"></div>Mercado aberto';
+  } else {
+    badge.style.cssText = 'color:var(--text-muted);background:var(--bg)';
+    badge.innerHTML = '<div class="live-dot" style="background:var(--text-muted);animation:none"></div>Último fechamento B3';
+  }
+}
+
+// ── CORS PROXY LIST — tried in order until one works ─────────────────────────
+// These are free, public, no-auth CORS proxies. The file:// origin triggers
+// browser CORS blocks on Yahoo Finance directly, so we route through a proxy.
+const CORS_PROXIES = [
+  'https://corsproxy.io/?',
+  'https://api.allorigins.win/raw?url=',
+  'https://cors-anywhere.herokuapp.com/',
+  'https://thingproxy.freeboard.io/fetch/',
+];
+
+async function fetchViaProxy(targetUrl) {
+  for (const proxy of CORS_PROXIES) {
+    try {
+      const url = proxy + encodeURIComponent(targetUrl);
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 8000);
+      const res = await fetch(url, { signal: ctrl.signal });
+      clearTimeout(timer);
+      if (!res.ok) continue;
+      const text = await res.text();
+      if (!text || text.length < 10) continue;
+      return JSON.parse(text);
+    } catch (_) { /* try next proxy */ }
+  }
+  return null;
+}
+
+// ── STRATEGY 1: Yahoo Finance v7/quote via CORS proxy ────────────────────────
+async function tryYahooQuote() {
+  const syms = ALL_TICKERS.map(t => t + '.SA').join(',');
+  const target = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${syms}&fields=regularMarketPrice,regularMarketPreviousClose,marketState`;
+  const data = await fetchViaProxy(target);
+  if (!data) return false;
+  const quotes = data?.quoteResponse?.result || [];
+  if (!quotes.length) return false;
+  let n = 0;
+  quotes.forEach(q => {
+    const t = q.symbol.replace('.SA','');
+    if (q.regularMarketPrice) { prices[t] = q.regularMarketPrice; n++; }
+    if (q.regularMarketPreviousClose) prevClose[t] = q.regularMarketPreviousClose;
+    if (q.marketState) marketOpen = (q.marketState === 'REGULAR');
+  });
+  return n > 0;
+}
+
+// ── STRATEGY 2: Yahoo Finance v8/chart per ticker (via proxy) ────────────────
+async function tryYahooChart() {
+  const missing = ALL_TICKERS.filter(t => !prices[t]);
+  if (!missing.length) return true;
+  await Promise.allSettled(missing.map(async ticker => {
+    try {
+      const target = `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}.SA?range=5d&interval=1d&includePrePost=false`;
+      const data = await fetchViaProxy(target);
+      if (!data) return;
+      const result = data?.chart?.result?.[0];
+      if (!result) return;
+      const closes = result?.indicators?.quote?.[0]?.close || [];
+      const valid = closes.filter(v => v != null);
+      if (valid.length >= 2) {
+        prices[ticker] = valid[valid.length - 1];
+        prevClose[ticker] = valid[valid.length - 2];
+      } else if (valid.length === 1) {
+        prices[ticker] = valid[0];
+      }
+    } catch (_) {}
+  }));
+  return ALL_TICKERS.some(t => prices[t]);
+}
+
+// ── STRATEGY 3: Brapi.dev — Brazilian stocks API (free, CORS-enabled) ────────
+// brapi.dev is a Brazilian finance API that explicitly supports CORS.
+async function tryBrapi() {
+  const missing = ALL_TICKERS.filter(t => !prices[t]);
+  if (!missing.length) return true;
+  // Brapi supports up to ~20 tickers in one call, no auth needed for basic quotes
+  const syms = missing.join(',');
+  try {
+    const ctrl = new AbortController();
+    setTimeout(() => ctrl.abort(), 10000);
+    const res = await fetch(`https://brapi.dev/api/quote/${syms}?range=1d&interval=1d&fundamental=false`, { signal: ctrl.signal });
+    if (!res.ok) return false;
+    const data = await res.json();
+    const results = data?.results || [];
+    let n = 0;
+    results.forEach(q => {
+      const ticker = q.symbol;
+      if (q.regularMarketPrice) { prices[ticker] = q.regularMarketPrice; n++; }
+      if (q.regularMarketPreviousClose) prevClose[ticker] = q.regularMarketPreviousClose;
+      if (q.marketState) marketOpen = (q.marketState === 'REGULAR');
+    });
+    return n > 0;
+  } catch (_) { return false; }
+}
+
+// ── STRATEGY 4: HG Brasil Finance API (free, CORS-friendly) ──────────────────
+async function tryHGBrasil() {
+  const missing = ALL_TICKERS.filter(t => !prices[t]);
+  if (!missing.length) return true;
+  try {
+    const ctrl = new AbortController();
+    setTimeout(() => ctrl.abort(), 10000);
+    const syms = missing.join(',');
+    const res = await fetch(`https://api.hgbrasil.com/finance/stock_price?symbol=${syms}&format=json-cors`, { signal: ctrl.signal });
+    if (!res.ok) return false;
+    const data = await res.json();
+    const results = data?.results || {};
+    let n = 0;
+    Object.entries(results).forEach(([sym, q]) => {
+      if (q?.price) { prices[sym] = q.price; n++; }
+    });
+    return n > 0;
+  } catch (_) { return false; }
+}
+
+// ── STRATEGY 5: Fetch direct with no-cors mode to warm cache, then retry ─────
+// Last resort: direct Yahoo with mode:'no-cors' won't give readable data,
+// so we use a jsonp-style approach via a <script> tag for any still missing.
+function tryScriptJsonp(ticker) {
+  return new Promise(resolve => {
+    const cbName = '_yf_' + ticker + '_' + Date.now();
+    const script = document.createElement('script');
+    const timer = setTimeout(() => {
+      delete window[cbName];
+      document.head.removeChild(script);
+      resolve(false);
+    }, 6000);
+    window[cbName] = (data) => {
+      clearTimeout(timer);
+      delete window[cbName];
+      try { document.head.removeChild(script); } catch(_) {}
+      const q = data?.quoteResponse?.result?.[0];
+      if (q?.regularMarketPrice) {
+        prices[ticker] = q.regularMarketPrice;
+        if (q.regularMarketPreviousClose) prevClose[ticker] = q.regularMarketPreviousClose;
+        resolve(true);
+      } else resolve(false);
+    };
+    script.src = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${ticker}.SA&fields=regularMarketPrice,regularMarketPreviousClose&callback=${cbName}`;
+    script.onerror = () => { clearTimeout(timer); resolve(false); };
+    document.head.appendChild(script);
+  });
+}
+
+// ── MAIN FETCH ORCHESTRATOR ───────────────────────────────────────────────────
+async function fetchPrices() {
+  marketOpen = isB3Open();
+  updateTimestamp('⏳ Buscando cotações…');
+
+  // Round 1: Brapi (most reliable, native CORS for Brazilian stocks)
+  const brapiOk = await tryBrapi();
+  if (brapiOk) priceSource = 'Brapi.dev';
+
+  // Round 2: Yahoo via CORS proxy for anything still missing
+  const missing1 = ALL_TICKERS.filter(t => !prices[t]);
+  if (missing1.length) {
+    const yahooOk = await tryYahooQuote();
+    if (yahooOk && !priceSource) priceSource = 'Yahoo Finance';
+  }
+
+  // Round 3: Yahoo chart endpoint per ticker via proxy
+  const missing2 = ALL_TICKERS.filter(t => !prices[t]);
+  if (missing2.length) {
+    await tryYahooChart();
+    if (!priceSource) priceSource = 'Yahoo Finance';
+  }
+
+  // Round 4: HG Brasil
+  const missing3 = ALL_TICKERS.filter(t => !prices[t]);
+  if (missing3.length) {
+    const hgOk = await tryHGBrasil();
+    if (hgOk && !priceSource) priceSource = 'HG Brasil';
+  }
+
+  // Round 5: JSONP per ticker for any still missing
+  const missing4 = ALL_TICKERS.filter(t => !prices[t]);
+  if (missing4.length) {
+    await Promise.allSettled(missing4.map(t => tryScriptJsonp(t)));
+    if (!priceSource) priceSource = 'Yahoo Finance';
+  }
+
+  updateAllPrices();
+  updateLiveBadge();
+
+  const loaded = ALL_TICKERS.filter(t => prices[t]).length;
+  const timeStr = new Date().toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+  if (loaded > 0) {
+    const stato = marketOpen ? 'Tempo real' : 'Último fechamento';
+    updateTimestamp(`${stato} via ${priceSource} · ${loaded}/18 ações · ${timeStr}`);
+  } else {
+    updateTimestamp('⚠️ Não foi possível carregar cotações — tente recarregar a página');
+  }
+}
+
+// ── FORMATTERS ────────────────────────────────────────────────────────────────
+function fmtPrice(p) {
+  if (p == null || isNaN(p)) return '—';
+  return 'R$\u00a0' + p.toFixed(2).replace('.', ',');
+}
+
+function calcUpside(price, pj) {
+  if (!price || !pj || isNaN(price)) return null;
+  return ((pj - price) / price * 100);
+}
+
+function fmtUpside(pct) {
+  if (pct === null) return { text:'—', cls:'upside-flat' };
+  const sign = pct >= 0 ? '+' : '';
+  return { text: sign + pct.toFixed(1) + '%', cls: pct > 5 ? 'upside-pos' : pct < -2 ? 'upside-neg' : 'upside-flat' };
+}
+
+function fmtChange(p, pc) {
+  if (!p || !pc || isNaN(p) || isNaN(pc)) return { text:'—', cls:'change-flat' };
+  const pct = (p - pc) / pc * 100;
+  const sign = pct >= 0 ? '+' : '';
+  return { text: sign + pct.toFixed(2) + '%', cls: pct > 0 ? 'change-up' : pct < 0 ? 'change-down' : 'change-flat' };
+}
+
+function getSinal(upside) {
+  if (upside === null) return { html:'<span class="sinal-neutro">—</span>' };
+  if (upside >= 35) return { html:'<span class="sinal-compra-forte">🟢 Compra Forte</span>' };
+  if (upside >= 15) return { html:'<span class="sinal-compra">✅ Compra</span>' };
+  if (upside >= -5) return { html:'<span class="sinal-neutro">🟡 Neutro</span>' };
+  return { html:'<span class="sinal-venda">🔴 Venda</span>' };
+}
+
+// ── DOM UPDATER ───────────────────────────────────────────────────────────────
+function updateAllPrices() {
+  ALL_TICKERS.forEach(t => {
+    const p = prices[t];
+    const pc = prevClose[t];
+    const chg = fmtChange(p, pc);
+
+    // Top pick cards
+    const cardEl = document.getElementById('price-card-' + t);
+    if (cardEl) { cardEl.textContent = fmtPrice(p); cardEl.classList.remove('price-loading'); }
+    const changeEl = document.getElementById('change-card-' + t);
+    if (changeEl) { changeEl.textContent = chg.text; changeEl.className = 'pick-change ' + chg.cls; }
+
+    // All price cells
+    document.querySelectorAll('[data-price-ticker="' + t + '"]').forEach(el => {
+      el.textContent = fmtPrice(p);
+      el.classList.remove('price-loading');
+    });
+    document.querySelectorAll('[data-change-ticker="' + t + '"]').forEach(el => {
+      el.textContent = chg.text;
+      el.className = el.className.replace(/change-\w+/g,'') + ' ' + chg.cls;
+    });
+  });
+
+  // Upside dinâmico (Quadro Decisório / Ranking)
+  document.querySelectorAll('[data-upside-pj]').forEach(el => {
+    const ticker = el.getAttribute('data-ticker');
+    const pj = parseFloat(el.getAttribute('data-upside-pj'));
+    const u = fmtUpside(calcUpside(prices[ticker], pj));
+    el.textContent = u.text;
+    el.className = 'upside-cell ' + u.cls;
+  });
+
+  // Sinal dinâmico
+  document.querySelectorAll('[data-sinal-ticker]').forEach(el => {
+    const ticker = el.getAttribute('data-sinal-ticker');
+    const pj = parseFloat(el.getAttribute('data-sinal-pj'));
+    el.innerHTML = getSinal(calcUpside(prices[ticker], pj)).html;
+  });
+
+  // Projeções upside
+  document.querySelectorAll('[data-proj-upside-ticker]').forEach(el => {
+    const ticker = el.getAttribute('data-proj-upside-ticker');
+    const pj = parseFloat(el.getAttribute('data-proj-upside-pj'));
+    const u = fmtUpside(calcUpside(prices[ticker], pj));
+    el.textContent = u.text;
+    el.className = u.cls === 'upside-pos' ? 'proj-otim' : u.cls === 'upside-neg' ? 'proj-pessim' : 'proj-real';
+  });
+}
+
+function updateTimestamp(msg) {
+  const el = document.getElementById('last-update');
+  if (el) el.textContent = msg || '…';
+}
+
+// ── TAB SWITCHING ─────────────────────────────────────────────────────────────
+function switchTab(id) {
+  document.querySelectorAll('.nav-tab').forEach((t, i) => t.classList.toggle('active', ['ranking','heatmap','tabela','projecoes','decisorio'][i] === id));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function verdictClass(v) {
+  if (v.includes('COMPRA FORTE')) return 'verdict-compra-forte';
+  if (v.includes('COMPRA'))       return 'verdict-compra';
+  if (v.includes('NEUTRO'))       return 'verdict-neutro';
+  if (v.includes('VENDA FORTE'))  return 'verdict-venda-forte';
+  return 'verdict-venda';
+}
+function sinalHtml(v) {
+  if (v.includes('COMPRA FORTE')) return '<span class="sinal-compra-forte">✅ COMPRA FORTE</span>';
+  if (v.includes('COMPRA'))       return '<span class="sinal-compra">✅ COMPRA</span>';
+  if (v.includes('NEUTRO'))       return '<span class="sinal-neutro">🟡 NEUTRO</span>';
+  if (v.includes('VENDA FORTE'))  return '<span class="sinal-venda-forte">🔴 VENDA FORTE</span>';
+  return '<span class="sinal-venda">🔴 VENDA</span>';
+}
+function scoreColor(n) {
+  if (n >= 20) return '#166534';
+  if (n >= 15) return '#15803d';
+  if (n >= 10) return '#92400e';
+  if (n >= 6)  return '#991b1b';
+  return '#7f1d1d';
+}
+function scoreBarColor(n) {
+  if (n >= 20) return '#16a34a';
+  if (n >= 15) return '#22c55e';
+  if (n >= 10) return '#eab308';
+  if (n >= 6)  return '#ef4444';
+  return '#b91c1c';
+}
+
+// ── BUILD RANKING TABLE ────────────────────────────────────────────────────────
+function buildRankingRow(d) {
+  const pct = (d.score_n / 26 * 100).toFixed(0);
+  return `<tr>
+    <td style="font-weight:700;color:var(--text-muted);font-size:13px">${d.rank}</td>
+    <td>
+      <div class="ticker-cell">
+        <div>
+          <div class="ticker-code">${d.ticker}</div>
+          <div class="ticker-name">${d.nome}</div>
+        </div>
+      </div>
+    </td>
+    <td style="font-size:12px;color:var(--text-muted)">${d.sub}</td>
+    <td class="right"><span class="price-cell price-loading" data-price-ticker="${d.ticker}">—</span></td>
+    <td class="right"><span style="font-family:'JetBrains Mono',monospace;font-size:12px" class="change-flat" data-change-ticker="${d.ticker}">—</span></td>
+    <td class="right" style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent)">${d.pj.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}</td>
+    <td class="right"><span class="metric-chip ${d.classif==='Pechincha'?'chip-green':d.classif==='Barato'?'chip-green':d.classif==='Justo'?'chip-yellow':'chip-red'}">${d.classif}</span></td>
+    <td class="right"><span class="upside-cell upside-flat" data-upside-pj="${d.pj}" data-ticker="${d.ticker}">—</span></td>
+    <td class="right" style="font-family:'JetBrains Mono',monospace;font-size:13px">${d.roic}</td>
+    <td class="right" style="font-family:'JetBrains Mono',monospace;font-size:13px">${d.roa}</td>
+    <td class="right" style="font-family:'JetBrains Mono',monospace;font-size:13px">${d.roe}</td>
+    <td class="right" style="font-family:'JetBrains Mono',monospace;font-size:13px">${d.pl}</td>
+    <td class="right" style="font-family:'JetBrains Mono',monospace;font-size:13px">${d.evebit}</td>
+    <td class="right" style="font-family:'JetBrains Mono',monospace;font-size:13px">${d.dy}</td>
+    <td class="right" style="font-family:'JetBrains Mono',monospace;font-size:13px">${d.divAtivo}</td>
+    <td class="right" style="font-family:'JetBrains Mono',monospace;font-size:13px">${d.ret1a}</td>
+    <td class="center"><span class="pick-verdict ${verdictClass(d.veredicto)}">${d.veredicto}</span></td>
+    <td class="right">
+      <div class="score-bar-wrap" style="justify-content:flex-end">
+        <div class="score-bar"><div class="score-bar-fill" style="width:${pct}%;background:${scoreBarColor(d.score_n)}"></div></div>
+        <span class="score-text" style="color:${scoreColor(d.score_n)}">${d.score}</span>
+      </div>
+    </td>
+  </tr>`;
+}
+
+// ── BUILD HEATMAP ─────────────────────────────────────────────────────────────
+function hmClass(v) {
+  if (v.includes('🟢')) return 'hm-strong';
+  if (v.includes('🟡')) return 'hm-mid';
+  return 'hm-weak';
+}
+function buildHeatmap(tbodyId, hmData, totals) {
+  const tb = document.getElementById(tbodyId);
+  let html = '';
+  HM_INDICATORS.forEach((ind, i) => {
+    html += `<tr><td class="hm-indicator" data-tip="${ind.tip}">${ind.label}</td>`;
+    hmData[i].forEach(v => { html += `<td class="${hmClass(v)}">${v}</td>`; });
+    html += '</tr>';
+  });
+  html += `<tr><td class="hm-indicator" style="font-weight:700;color:var(--accent)">PONTUAÇÃO TOTAL</td>`;
+  totals.forEach(t => { html += `<td class="hm-total">${t}</td>`; });
+  html += '</tr>';
+  tb.innerHTML = html;
+}
+
+// ── BUILD TABELA MESTRA ───────────────────────────────────────────────────────
+function buildTabela(tbodyId, rows, tickers) {
+  const tb = document.getElementById(tbodyId);
+  let html = '';
+  rows.forEach(row => {
+    if (row.section) {
+      html += `<tr><td colspan="10" style="background:var(--bg);font-size:11px;font-weight:700;color:var(--text-muted);padding:8px 14px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border)">${row.label.replace('— ','')}</td></tr>`;
+      return;
+    }
+    if (row.key === 'price') {
+      html += `<tr><td style="font-weight:500;font-size:13px">${row.label}</td>`;
+      tickers.forEach(t => {
+        html += `<td class="right"><span class="price-cell price-loading" data-price-ticker="${t}">—</span></td>`;
+      });
+      html += '</tr>';
+      return;
+    }
+    html += `<tr><td style="font-size:13px;color:var(--text-secondary)">${row.label}</td>`;
+    row.vals.forEach(v => {
+      let cls = '';
+      if (v.includes('✅')) cls = 'style="color:var(--green-strong);font-weight:600"';
+      else if (v.includes('🟡')) cls = 'style="color:var(--yellow-strong);font-weight:600"';
+      else if (v.includes('🔴')) cls = 'style="color:var(--red-strong);font-weight:600"';
+      html += `<td class="right" ${cls} style="font-family:'JetBrains Mono',monospace;font-size:12px;${cls?'':'color:var(--text-primary)'}">${v}</td>`;
+    });
+    html += '</tr>';
+  });
+  tb.innerHTML = html;
+}
+
+// ── BUILD PROJEÇÕES ───────────────────────────────────────────────────────────
+function buildProjecoes(tbodyId, rows) {
+  const tb = document.getElementById(tbodyId);
+  let html = '';
+  rows.forEach(r => {
+    const pjNum = parseFloat(r.pj.replace('R$','').replace(',','.'));
+    html += `<tr>
+      <td style="font-size:13px;color:var(--text-primary)">${r.nome}</td>
+      <td class="right"><span class="price-cell price-loading" data-price-ticker="${r.ticker}">—</span></td>
+      <td class="right" style="color:var(--accent)">${r.pj}</td>
+      <td class="right"><span data-proj-upside-ticker="${r.ticker}" data-proj-upside-pj="${pjNum}" class="proj-real">—</span></td>
+      <td class="right proj-pessim">${r.pess}</td>
+      <td class="right proj-real">${r.real}</td>
+      <td class="right proj-otim">${r.otim}</td>
+      <td class="right proj-pessim">${r.rpess}</td>
+      <td class="right proj-real">${r.rreal}</td>
+      <td class="right proj-otim">${r.rotim}</td>
+    </tr>`;
+  });
+  tb.innerHTML = html;
+}
+
+// ── BUILD DECISÓRIO ───────────────────────────────────────────────────────────
+function buildDecisorio(tbodyId, rows) {
+  const tb = document.getElementById(tbodyId);
+  let html = '';
+  rows.forEach(r => {
+    html += `<tr>
+      <td style="font-weight:700;color:var(--text-muted)">${r.rank}</td>
+      <td><span class="ticker-code">${r.ticker}</span></td>
+      <td style="font-size:13px">${r.nome}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:${scoreColor(parseInt(r.score))}">${r.score}</td>
+      <td>${sinalHtml(r.veredicto)}</td>
+      <td style="font-size:12px;color:var(--text-secondary)">${r.momento}</td>
+      <td style="font-size:12px;color:var(--text-secondary)">${r.prefv}</td>
+      <td><span class="price-cell price-loading" data-price-ticker="${r.ticker}">—</span></td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent)">R$${r.pj.toFixed(2).replace('.',',')}</td>
+      <td><span class="upside-cell upside-flat" data-upside-pj="${r.pj}" data-ticker="${r.ticker}">—</span></td>
+      <td data-sinal-ticker="${r.ticker}" data-sinal-pj="${r.pj}">—</td>
+      <td><div class="strategy-text">${r.estrategia}</div></td>
+    </tr>`;
+  });
+  tb.innerHTML = html;
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Build all tables
+  document.getElementById('tbody-farmacias').innerHTML = FARMACIAS.map(buildRankingRow).join('');
+  document.getElementById('tbody-hospitais').innerHTML = HOSPITAIS.map(buildRankingRow).join('');
+
+  buildHeatmap('heatmap-farmacias', HM_FARM, HM_FARM_TOTAL);
+  buildHeatmap('heatmap-hospitais', HM_HOSP, HM_HOSP_TOTAL);
+
+  buildTabela('tabela-farmacias', TBL_ROWS_FARM, ['RADL3','GMAT3','PGMN3','OFSA3','PNVL3','HYPE3','PFRM3','DMVF3','VVEO3']);
+  buildTabela('tabela-hospitais', TBL_ROWS_HOSP, ['RDOR3','FLRY3','ODPV3','MATD3','QUAL3','HAPV3','DASA3','AALR3','ONCO3']);
+
+  buildProjecoes('proj-farmacias', PROJ_FARM);
+  buildProjecoes('proj-hospitais', PROJ_HOSP);
+
+  buildDecisorio('decisorio-farmacias', DEC_FARM);
+  buildDecisorio('decisorio-hospitais', DEC_HOSP);
+
+  // Make update-info clickable to retry
+  const upd = document.getElementById('last-update');
+  if (upd) {
+    upd.style.cursor = 'pointer';
+    upd.title = 'Clique para atualizar cotações';
+    upd.addEventListener('click', () => fetchPrices());
+  }
+
+  // Initial fetch
+  fetchPrices();
+  // Refresh: every 90s if market open, every 5 min if closed
+  setInterval(() => {
+    fetchPrices();
+  }, isB3Open() ? 90000 : 300000);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Factor Invest · Setor Equipamentos B3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f8f7f4;
+    --surface: #ffffff;
+    --surface2: #f2f1ee;
+    --border: #e8e5df;
+    --text-primary: #1a1814;
+    --text-secondary: #6b6760;
+    --text-muted: #9e9b96;
+    --accent: #1a1814;
+    --green-strong: #1a7a4a;
+    --green-bg: #edf7f1;
+    --green-border: #b6dfc9;
+    --yellow-strong: #8a6500;
+    --yellow-bg: #fef9ec;
+    --yellow-border: #f0d882;
+    --red-strong: #b53030;
+    --red-bg: #fdf0f0;
+    --red-border: #f0b8b8;
+    --blue-accent: #1a4a8a;
+    --gold: #c9a84c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 40px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 12px rgba(0,0,0,0.04);
+  }
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .header-title-block h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    letter-spacing: -0.3px;
+    color: var(--text-primary);
+    line-height: 1.2;
+  }
+  .header-title-block .subtitle {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    margin-top: 3px;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+  }
+  .header-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+  .live-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--green-bg);
+    border: 1px solid var(--green-border);
+    color: var(--green-strong);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+  }
+  .live-dot {
+    width: 7px; height: 7px;
+    background: var(--green-strong);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .data-date {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+  }
+  .update-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 7px 16px;
+    border-radius: 6px;
+    font-size: 11.5px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.2px;
+    transition: opacity 0.15s;
+  }
+  .update-btn:hover { opacity: 0.8; }
+
+  .tab-nav {
+    display: flex;
+    gap: 0;
+    margin-top: 18px;
+    border-bottom: 1px solid var(--border);
+    margin-left: -40px;
+    margin-right: -40px;
+    padding: 0 40px;
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    padding: 10px 18px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.15s;
+    letter-spacing: 0.2px;
+  }
+  .tab-btn.active {
+    color: var(--text-primary);
+    border-bottom-color: var(--text-primary);
+  }
+  .tab-btn:hover { color: var(--text-primary); }
+
+  /* ── MAIN CONTENT ── */
+  .main { padding: 32px 40px; max-width: 1600px; margin: 0 auto; }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── SECTION LABELS ── */
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+  }
+
+  /* ── RANKING TABLE ── */
+  .ranking-intro {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .stat-pill {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 18px;
+    min-width: 130px;
+  }
+  .stat-pill .label { font-size: 10px; color: var(--text-muted); letter-spacing: 0.5px; font-weight: 500; }
+  .stat-pill .value { font-family: 'DM Serif Display', serif; font-size: 22px; margin-top: 2px; }
+  .stat-pill .value.green { color: var(--green-strong); }
+  .stat-pill .value.yellow { color: var(--yellow-strong); }
+  .stat-pill .value.red { color: var(--red-strong); }
+
+  /* ── TABLE GENERAL ── */
+  .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); }
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    background: var(--surface2);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-secondary);
+    padding: 10px 12px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  thead th:first-child,
+  thead th:nth-child(2),
+  thead th:nth-child(3) { text-align: left; }
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #fafaf8; }
+  td {
+    padding: 10px 12px;
+    font-size: 12.5px;
+    text-align: center;
+    vertical-align: middle;
+  }
+  td:first-child,
+  td:nth-child(2),
+  td:nth-child(3) { text-align: left; }
+
+  /* Rank badge */
+  .rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 700;
+    background: var(--surface2);
+    color: var(--text-secondary);
+  }
+  .rank-badge.gold { background: #fdf5dc; color: #9a6f00; }
+  .rank-badge.silver { background: #f0f0f4; color: #5a5a6e; }
+  .rank-badge.bronze { background: #fdf0e8; color: #8a4a20; }
+
+  /* Ticker */
+  .ticker-cell { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; letter-spacing: 0.5px; }
+
+  /* Segment */
+  .segment-cell { font-size: 11px; color: var(--text-secondary); max-width: 160px; }
+
+  /* Score badge */
+  .score-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .score-a { background: var(--green-bg); color: var(--green-strong); border: 1px solid var(--green-border); }
+  .score-b { background: var(--yellow-bg); color: var(--yellow-strong); border: 1px solid var(--yellow-border); }
+  .score-c { background: var(--red-bg); color: var(--red-strong); border: 1px solid var(--red-border); }
+
+  /* Factor cell colors */
+  .cell-green { background: var(--green-bg); color: var(--green-strong); font-weight: 500; }
+  .cell-yellow { background: var(--yellow-bg); color: var(--yellow-strong); font-weight: 500; }
+  .cell-red { background: var(--red-bg); color: var(--red-strong); font-weight: 500; }
+  .cell-na { color: var(--text-muted); font-size: 11px; }
+
+  /* Classification */
+  .classif {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .classif-barato { background: var(--green-bg); color: var(--green-strong); }
+  .classif-justo { background: var(--yellow-bg); color: var(--yellow-strong); }
+  .classif-caro { background: var(--red-bg); color: var(--red-strong); }
+
+  /* Price cells */
+  .price-live {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .price-loading { color: var(--text-muted); font-size: 11px; font-style: italic; }
+  .price-error { color: var(--red-strong); font-size: 10px; }
+
+  /* Upside */
+  .upside-pos { color: var(--green-strong); font-weight: 600; font-family: 'DM Mono', monospace; }
+  .upside-neg { color: var(--red-strong); font-weight: 600; font-family: 'DM Mono', monospace; }
+  .upside-neutral { color: var(--yellow-strong); font-weight: 600; font-family: 'DM Mono', monospace; }
+
+  /* Signal */
+  .signal {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .signal-buy-strong { background: #d4f0e2; color: #0d5c35; }
+  .signal-buy { background: var(--green-bg); color: var(--green-strong); }
+  .signal-hold { background: var(--yellow-bg); color: var(--yellow-strong); }
+  .signal-avoid { background: var(--red-bg); color: var(--red-strong); }
+  .signal-wait { background: #f5f5f5; color: #666; }
+
+  /* ── HEATMAP TAB ── */
+  .heatmap-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .legend-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+  .ld-green { background: var(--green-strong); }
+  .ld-yellow { background: var(--yellow-strong); }
+  .ld-red { background: var(--red-strong); }
+
+  .heatmap-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); }
+  .heatmap-wrap table { width: 100%; }
+  .hm-group-header td {
+    background: var(--surface2);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 7px 14px;
+    text-align: left;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .hm-row td {
+    padding: 9px 10px;
+    text-align: center;
+    font-size: 12px;
+    border-bottom: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+  }
+  .hm-row td:first-child {
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding-left: 14px;
+    min-width: 200px;
+    color: var(--text-secondary);
+  }
+  .hm-score-row td {
+    background: #1a1814;
+    color: #fff;
+    font-weight: 700;
+    padding: 10px;
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+  }
+  .hm-score-row td:first-child { text-align: left; padding-left: 14px; }
+
+  /* ── PROJEÇÕES TAB ── */
+  .proj-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+  }
+  .proj-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    transition: box-shadow 0.15s;
+  }
+  .proj-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+  .proj-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .proj-ticker {
+    font-family: 'DM Mono', monospace;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+  .proj-company { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .proj-scenarios {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .scenario {
+    border-radius: 6px;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid;
+  }
+  .scenario.pess { background: var(--red-bg); border-color: var(--red-border); }
+  .scenario.real { background: var(--green-bg); border-color: var(--green-border); }
+  .scenario.otim { background: #eef5fd; border-color: #b8d4f0; }
+  .scenario .s-label { font-size: 9px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 4px; color: var(--text-muted); }
+  .scenario .s-value { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; }
+  .scenario .s-ret { font-size: 10px; margin-top: 2px; font-weight: 600; }
+  .scenario.pess .s-ret { color: var(--red-strong); }
+  .scenario.real .s-ret { color: var(--green-strong); }
+  .scenario.otim .s-ret { color: var(--blue-accent); }
+  .proj-tip {
+    font-size: 11px;
+    color: var(--text-secondary);
+    padding: 8px 10px;
+    background: var(--surface2);
+    border-radius: 6px;
+    border-left: 3px solid var(--border);
+    line-height: 1.5;
+  }
+  .proj-prices {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .proj-price-item .pl { font-size: 10px; color: var(--text-muted); }
+  .proj-price-item .pv { font-family: 'DM Mono', monospace; font-weight: 500; }
+  .proj-divider { color: var(--border); }
+
+  /* ── QUADRO DECISÓRIO TAB ── */
+  .decisorio-header { margin-bottom: 24px; }
+  .decisorio-header p { font-size: 12px; color: var(--text-secondary); margin-top: 6px; }
+
+  .insights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 12px;
+    margin-top: 32px;
+  }
+  .insight-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .insight-card .i-header { font-size: 12px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .insight-card p { font-size: 11.5px; color: var(--text-secondary); line-height: 1.6; }
+
+  .methodology-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-top: 24px;
+  }
+  .methodology-box h3 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 12px; }
+  .meth-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+  .meth-item { font-size: 11px; color: var(--text-secondary); display: flex; gap: 6px; align-items: flex-start; }
+  .meth-item::before { content: '▸'; color: var(--text-muted); flex-shrink: 0; font-size: 10px; margin-top: 1px; }
+
+  /* ── TABELA MESTRA TAB ── */
+  .tabela-section { margin-bottom: 32px; }
+  .tabela-section-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 10px 14px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10.5px;
+    color: var(--text-muted);
+    background: var(--surface);
+    margin-top: 48px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .footer a { color: var(--text-muted); text-decoration: none; }
+
+  /* Loading spinner */
+  .spinner {
+    display: inline-block;
+    width: 12px; height: 12px;
+    border: 2px solid var(--border);
+    border-top-color: var(--text-primary);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    vertical-align: middle;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .header { padding: 16px 20px 12px; }
+    .main { padding: 20px; }
+    .tab-nav { margin-left: -20px; margin-right: -20px; padding: 0 20px; }
+    .footer { padding: 16px 20px; }
+    .proj-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Quadro decisório strategy col */
+  .strat-cell { font-size: 10.5px; color: var(--text-secondary); max-width: 220px; line-height: 1.5; text-align: left; }
+
+  .wacc-table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); margin-top: 24px; }
+
+  .section-divider { margin: 32px 0; border: none; border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="header-title-block">
+      <h1>Setor Equipamentos B3 — Factor Invest</h1>
+      <div class="subtitle">13 empresas · 13 fatores quantitativos · Cotações integradas ao Google Finance · Market View 28/03/2026</div>
+    </div>
+    <div class="header-meta">
+      <div class="live-badge">
+        <span class="live-dot"></span>
+        <span>COTAÇÕES AO VIVO</span>
+      </div>
+      <div class="data-date" id="lastUpdate">Carregando...</div>
+      <button class="update-btn" onclick="fetchAllPrices()">↻ Atualizar</button>
+    </div>
+  </div>
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('ranking')">🏆 Ranking</button>
+    <button class="tab-btn" onclick="switchTab('quadro')">🎯 Quadro Decisório</button>
+    <button class="tab-btn" onclick="switchTab('heatmap')">🔍 Factor Invest Detalhado</button>
+    <button class="tab-btn" onclick="switchTab('projecoes')">📈 Projeções & Preço Justo</button>
+    <button class="tab-btn" onclick="switchTab('tabela')">📊 Tabela Mestra</button>
+    <button class="tab-btn" onclick="switchTab('empresa')">📋 Análise por Empresa</button>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ═══════════════════════ RANKING TAB ═══════════════════════ -->
+<div id="tab-ranking" class="tab-panel active">
+  <div class="section-label">Ordenado por Pontuação Factor Invest Total — maior = melhor oportunidade</div>
+  <div class="ranking-intro">
+    <div class="stat-pill"><div class="label">TOTAL EMPRESAS</div><div class="value">13</div></div>
+    <div class="stat-pill"><div class="label">COMPRA FORTE</div><div class="value green" id="stat-buy-strong">—</div></div>
+    <div class="stat-pill"><div class="label">COMPRA</div><div class="value green" id="stat-buy">—</div></div>
+    <div class="stat-pill"><div class="label">NEUTRO/HOLD</div><div class="value yellow" id="stat-hold">—</div></div>
+    <div class="stat-pill"><div class="label">EVITAR</div><div class="value red" id="stat-avoid">—</div></div>
+    <div class="stat-pill"><div class="label">DY MÉDIO SETOR</div><div class="value">7.9%</div></div>
+    <div class="stat-pill"><div class="label">WACC SETORIAL</div><div class="value">11.0%</div></div>
+  </div>
+
+  <div class="table-wrap">
+    <table id="ranking-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Ticker</th>
+          <th>Segmento</th>
+          <th>📡 Cotação Atual</th>
+          <th>🎯 Preço Justo</th>
+          <th>📊 Upside</th>
+          <th>Class. FV</th>
+          <th>ROIC</th>
+          <th>ROA</th>
+          <th>ROE</th>
+          <th>P/L</th>
+          <th>EV/EBIT</th>
+          <th>DY</th>
+          <th>P/FCO</th>
+          <th>P/Book</th>
+          <th>Dív/Ativo</th>
+          <th>Class. Analistas</th>
+          <th>Factor (13)</th>
+        </tr>
+      </thead>
+      <tbody id="ranking-tbody">
+        <!-- Populated by JS -->
+      </tbody>
+    </table>
+  </div>
+
+  <div class="methodology-box" style="margin-top:20px;">
+    <h3>Escala de Cores por Indicador</h3>
+    <div style="display:flex; gap:24px; flex-wrap:wrap;">
+      <div class="legend-item"><span class="legend-dot ld-green"></span> <b>FORTE (nota 2)</b> — acima da média setorial</div>
+      <div class="legend-item"><span class="legend-dot ld-yellow"></span> <b>NEUTRO (nota 1)</b> — aceitável / em linha</div>
+      <div class="legend-item"><span class="legend-dot ld-red"></span> <b>FRACO (nota 0)</b> — abaixo da média / risco</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ QUADRO DECISÓRIO TAB ═══════════════════════ -->
+<div id="tab-quadro" class="tab-panel">
+  <div class="decisorio-header">
+    <div class="section-label">Quadro Decisório Final — Setor Equipamentos B3</div>
+    <p>Ranking integrado: Factor Invest + Saúde Financeira + FCF + Valuation + Momento · Data: 28/03/2026</p>
+  </div>
+
+  <div class="table-wrap">
+    <table id="quadro-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Ticker</th>
+          <th>Segmento</th>
+          <th>Pontuação</th>
+          <th>Veredicto</th>
+          <th>Momento</th>
+          <th>Preço x FV</th>
+          <th>📡 Cotação Atual</th>
+          <th>🎯 Preço Justo</th>
+          <th>📊 Upside Atual</th>
+          <th>🚦 Sinal Dinâmico</th>
+          <th>Estratégia Sugerida</th>
+        </tr>
+      </thead>
+      <tbody id="quadro-tbody">
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="section-divider">
+
+  <div class="section-label">Insights do Analista — Setor Equipamentos B3 · Mar/2026</div>
+  <div class="insights-grid">
+    <div class="insight-card">
+      <div class="i-header">🏆 Top Pick — EALT3</div>
+      <p>P/L=4,81x + ROIC=16% + P/FCO=3,52x + upside 38% = combinação estatisticamente rara. Small cap de qualidade com desconto injustificado. Maior potencial de reavaliação do setor se ganhar visibilidade institucional.</p>
+    </div>
+    <div class="insight-card">
+      <div class="i-header">🥈 Segunda Opção — FRAS3</div>
+      <p>Liderança defensiva em freios e fricção. ROIC=17,7% + upside 30% + 5 anos de DY crescente. Monitorar alavancagem após crescimento de dívida +175%. PJ R$27,60 é realista em 12 meses.</p>
+    </div>
+    <div class="insight-card">
+      <div class="i-header">🥉 Terceira Opção — KEPL3</div>
+      <p>Beneficiário secular do agronegócio brasileiro. ROIC=13,9%, DY=10,2%, EV/EBIT=7,2x. Combinação de valuation barato com macro-driver robusto. Upside +23%.</p>
+    </div>
+    <div class="insight-card">
+      <div class="i-header">🏅 Top Dividend — SHUL4</div>
+      <p>9 anos de crescimento consecutivo de dividendos — o MAIOR streak do setor. DY=11,3% + P/FCO=6,8x + P/L=6,35x. "Dividend compounder" clássico para carteiras de renda.</p>
+    </div>
+    <div class="insight-card">
+      <div class="i-header">⭐ Referência Qualidade — WEGE3</div>
+      <p>A melhor empresa do setor por ROIC (26%), ROA (16%) e consistência. Porém, preço já no justo com múltiplos exigentes. Comprar apenas em correções acima de 15%. Posição estrutural para longo prazo.</p>
+    </div>
+    <div class="insight-card">
+      <div class="i-header">⚠️ Atenção — MILS3</div>
+      <p>FCO negativo é o principal risco de curto prazo, mas ROIC=13% e upside=34% são atraentes. Empresa de locação com expansão acelerada — FCO deve normalizar com maturação do portfólio.</p>
+    </div>
+    <div class="insight-card">
+      <div class="i-header">🚫 Evitar — FRIO3 e INEP3</div>
+      <p>FRIO3: único ativo CARO (-18% vs PJ) + ROA=1,1% + sem dividendo. INEP3: empresa distressed, preço acima do justo, risco de insolvência real. Zerem posições nesses ativos.</p>
+    </div>
+    <div class="insight-card">
+      <div class="i-header">💡 Tese Setorial</div>
+      <p>O setor é heterogêneo: convivem blue chips mundiais (WEGE3), turnarounds especulativos (AERI3) e small caps esquecidas com valor real (EALT3, SHUL4). Com Selic em ~14,75%, empresas sem FCO positivo pagam prêmio elevado.</p>
+    </div>
+  </div>
+
+  <div style="margin-top:16px; font-size:10.5px; color:var(--text-muted); padding: 10px 14px; background:var(--surface); border-radius:8px; border:1px solid var(--border);">
+    ⚡ Sinal Dinâmico: &gt;20% COMPRA FORTE | 5–20% COMPRA | ±5% JUSTO | -5 a -15% ATENÇÃO | &lt;-15% CARO · 📡 Cotações via Google Finance · Preço Justo = Valor Intrínseco calculado pelo Factor Invest
+  </div>
+</div>
+
+<!-- ═══════════════════════ HEATMAP TAB ═══════════════════════ -->
+<div id="tab-heatmap" class="tab-panel">
+  <div class="heatmap-header">
+    <div class="section-label" style="margin-bottom:0">Heatmap por Indicador · Empresas ordenadas por ranking</div>
+    <div class="legend-row">
+      <div class="legend-item"><span class="legend-dot ld-green"></span> Forte (acima da média)</div>
+      <div class="legend-item"><span class="legend-dot ld-yellow"></span> Neutro (em linha)</div>
+      <div class="legend-item"><span class="legend-dot ld-red"></span> Fraco (abaixo da média)</div>
+    </div>
+  </div>
+  <div class="heatmap-wrap">
+    <table id="heatmap-table">
+      <!-- Populated by JS -->
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════ PROJEÇÕES TAB ═══════════════════════ -->
+<div id="tab-projecoes" class="tab-panel">
+  <div class="section-label" style="margin-bottom:20px">Projeções Fundamentalistas — DCF & Cenários · WACC Setorial: 11.0% · Beta Médio: 0.85</div>
+  <div class="proj-grid" id="proj-grid">
+  </div>
+
+  <hr class="section-divider">
+  <div class="section-label">WACC & ROIC Spread — Análise de Criação de Valor</div>
+  <div class="wacc-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align:left">Empresa</th>
+          <th>ROIC</th>
+          <th>WACC Est.</th>
+          <th>Spread ROIC-WACC</th>
+          <th>Cria Valor?</th>
+          <th>Cresc. Rev. Est.</th>
+          <th>Margem EBIT Est.</th>
+        </tr>
+      </thead>
+      <tbody id="wacc-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════ TABELA MESTRA TAB ═══════════════════════ -->
+<div id="tab-tabela" class="tab-panel">
+  <div class="section-label" style="margin-bottom:4px">Tabela Mestra — Comparativo Completo de Indicadores</div>
+  <p style="font-size:11px; color:var(--text-muted); margin-bottom:20px;">Dados Market View 28/03/2026 · Média inclui apenas ativos com dados válidos</p>
+
+  <div class="tabela-section">
+    <div class="tabela-section-title">PREÇO & CLASSIFICAÇÃO</div>
+    <div class="table-wrap" style="border-radius: 0 0 10px 10px;">
+      <table id="tabela-preco"></table>
+    </div>
+  </div>
+
+  <div class="tabela-section">
+    <div class="tabela-section-title">RETORNO SOBRE CAPITAL</div>
+    <div class="table-wrap" style="border-radius: 0 0 10px 10px;">
+      <table id="tabela-retorno"></table>
+    </div>
+  </div>
+
+  <div class="tabela-section">
+    <div class="tabela-section-title">VALUATION</div>
+    <div class="table-wrap" style="border-radius: 0 0 10px 10px;">
+      <table id="tabela-valuation"></table>
+    </div>
+  </div>
+
+  <div class="tabela-section">
+    <div class="tabela-section-title">DIVIDENDOS</div>
+    <div class="table-wrap" style="border-radius: 0 0 10px 10px;">
+      <table id="tabela-div"></table>
+    </div>
+  </div>
+
+  <div class="tabela-section">
+    <div class="tabela-section-title">DÍVIDA & ESTRUTURA</div>
+    <div class="table-wrap" style="border-radius: 0 0 10px 10px;">
+      <table id="tabela-divida"></table>
+    </div>
+  </div>
+
+  <div class="tabela-section">
+    <div class="tabela-section-title">FLUXO DE CAIXA</div>
+    <div class="table-wrap" style="border-radius: 0 0 10px 10px;">
+      <table id="tabela-fco"></table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ EMPRESA TAB ═══════════════════════ -->
+<div id="tab-empresa" class="tab-panel">
+  <div class="section-label" style="margin-bottom:20px">Análise Fundamentalista Individual — Saúde Financeira & Veredicto</div>
+  <div id="empresa-container"></div>
+</div>
+
+</div><!-- /main -->
+
+<div class="footer">
+  <div>📡 Cotações integradas ao Google Finance · Factor Invest Setor Equipamentos B3 · Market View 28/03/2026</div>
+  <div>Preço Justo = Valor Intrínseco calculado pelo modelo Factor Invest · Não constitui recomendação de investimento</div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════
+const COMPANIES = [
+  {
+    rank: 1, ticker: 'EALT3', name: 'Electro Aço Altona SA',
+    segment: 'Fundidos e Usinados em Aço',
+    pj: 19.24, pjStr: 'R$19,24',
+    roic:'16.3%', roa:'17.0%', roe:'33.3%',
+    pl:'4.81x', evEbit:'4.81x', dy:'9.3%', pfco:'3.5x', pbook:'0.86x', divAtivo:'0.29x',
+    classifFV:'Barato', classifAnal:'Indisponível',
+    score:'24/26', scoreNum:24,
+    veredicto:'✅ COMPRA FORTE', momento:'🟢 ANOMALIA DE PREÇO — SMALL CAP',
+    precoFV:'Barato +38,3%', estrategia:'Compra gradual · Stop R$11,50 · Alvo R$19,24 (PJ) · Posição 3-5% · Monitorar liquidez',
+    // heatmap colors [ROIC,ROA,ROE,PL,EVEBIT,DY,CrescDiv,PBook,PFCO,DivAtivo,UpsidePJ,EVCap,AnosDY]
+    hm:[2,2,2,2,2,2,2,2,2,2,2,2,1],
+    // projeções
+    pess:'R$15,50', real:'R$19,24', otim:'R$24,00',
+    retPess:'+11.5%', retReal:'+38.4%', retOtim:'+72.7%',
+    tip:'Empresa sem dívida + ROIC 16% + P/FCO 3.5x = enorme desconto. Reavaliação quando small cap ganhar visibilidade.',
+    // WACC
+    roicVal:'16.3%', waccVal:'11.0%', spread:'+5.3%', criaValor:'✅ SIM', crescRev:'12%', margemEbit:'22%',
+    // análise
+    pontos_pos:'• ROIC 16,3% e ROA 17,0% — retornos excelentes, acima do WACC\n• ROE 33,3% — um dos mais altos do setor\n• P/L apenas 4,81x — múltiplo mais barato do setor com qualidade real\n• P/Book 0,865x — negociando abaixo do patrimônio líquido (raro + ROIC alto)\n• Upside +38,3% vs preço justo — maior upside do grupo com fundamentos sólidos\n• P/FCO 3,52x — geração de caixa extraordinária\n• Dívida/Ativo 29% — estrutura conservadora',
+    pontos_neg:'• Liquidez baixa — empresa de micro cap\n• Sem cobertura de analistas institucionais\n• Crescimento de dívida -13% — pode indicar subinvestimento\n• Setor de fundidos expostos a ciclo industrial',
+    fco:'P/FCO=3,52x é o MENOR do setor de ativos saudáveis — empresa gera caixa muito acima do preço. FCO sólido e consistente. Dividendo de 9,4% sustentável.',
+    dcf:'Com ROIC=16% e P/L=4,8x em empresa sem dívida líquida relevante, o DCF aponta valor intrínseco entre R$18-22. Preço atual = desconto de 25-35%. Anomalia de preço em small cap de qualidade.',
+    estrategiaDetalhe:'Compra gradual · Stop R$11,50 · Alvo 12m: R$19,20 (PJ) · Posição 3-5% · Monitorar liquidez'
+  },
+  {
+    rank: 2, ticker: 'SHUL4', name: 'Schulz SA Pref',
+    segment: 'Compressores / Equipamentos Pneumáticos',
+    pj: 6.53, pjStr: 'R$6,53',
+    roic:'8.2%', roa:'10.1%', roe:'19.8%',
+    pl:'6.35x', evEbit:'7.15x', dy:'11.3%', pfco:'6.8x', pbook:'1.23x', divAtivo:'0.68x',
+    classifFV:'Barato', classifAnal:'Indisponível',
+    score:'20/26', scoreNum:20,
+    veredicto:'✅ COMPRA', momento:'🟢 DIVIDEND COMPOUNDER',
+    precoFV:'Barato +26,8%', estrategia:'Compra para renda · Stop R$4,30 · Alvo R$6,53 (PJ) · Posição 2-3% · Foco em DY',
+    hm:[1,2,1,2,2,2,1,1,2,1,2,2,2],
+    pess:'R$5,20', real:'R$6,53', otim:'R$7,80',
+    retPess:'+1.0%', retReal:'+26.8%', retOtim:'+51.5%',
+    tip:'9 anos de dividend growth = confiabilidade. Compressor nicho defensivo. Crescimento 6-8% DPA.',
+    roicVal:'8.2%', waccVal:'11.0%', spread:'-2.8%', criaValor:'❌ NÃO', crescRev:'8%', margemEbit:'14%',
+    pontos_pos:'• 9 anos consecutivos de crescimento de dividendos — MAIOR streak do setor\n• DY 11,3% + histórico de 9 anos = renda consistente e crescente\n• P/L 6,35x — múltiplo barato para empresa lucrativa\n• P/FCO 6,8x — geração de caixa sólida\n• EV/EBIT 7,15x — valuation razoável\n• EV/Capital 0,697x — negociando abaixo do capital investido',
+    pontos_neg:'• ROIC 8,2% — limítrofe ao WACC\n• Dívida/Cap.Total 34,9% combinada com crescimento de dívida +35%\n• Empresa de nicho (compressores) — mercado limitado e cíclico\n• Sem cobertura de analistas disponível',
+    fco:'P/FCO=6,8x excelente. FCO positivo e recorrente. 9 anos de dividendo crescente provam disciplina de capital.',
+    dcf:'Com P/L=6,35x e 9 anos de dividend growth, SHUL4 é candidata a "dividend compounder". DCF por Gordon: crescimento de 8-10% em DPA = preço justo R$6-7 vs R$5,15 atual.',
+    estrategiaDetalhe:'Compra para renda · Stop R$4,30 · Alvo 12m: R$6,53 (PJ) · Posição 2-3% · Foco em dividend compounding'
+  },
+  {
+    rank: 3, ticker: 'KEPL3', name: 'Kepler Weber SA',
+    segment: 'Armazenagem / Equipamentos Agrícolas',
+    pj: 10.08, pjStr: 'R$10,08',
+    roic:'13.9%', roa:'10.1%', roe:'20.6%',
+    pl:'9.10x', evEbit:'7.24x', dy:'10.2%', pfco:'11.8x', pbook:'1.84x', divAtivo:'0.43x',
+    classifFV:'Barato', classifAnal:'Justo',
+    score:'18/26', scoreNum:18,
+    veredicto:'✅ COMPRA', momento:'🟢 OPORTUNIDADE — AGRO',
+    precoFV:'Barato +22,9%', estrategia:'Compra em dips · Stop R$6,80 · Alvo R$10,08 (PJ) · Posição 3-4% · Tese agro secular',
+    hm:[2,2,2,2,2,2,2,1,1,1,2,1,0],
+    pess:'R$8,50', real:'R$10,08', otim:'R$12,50',
+    retPess:'+3.7%', retReal:'+22.9%', retOtim:'+52.4%',
+    tip:'Agronegócio como driver secular. Capacidade de armazenagem déficit no Brasil. Crescimento 10-12%.',
+    roicVal:'13.9%', waccVal:'11.0%', spread:'+2.9%', criaValor:'✅ SIM', crescRev:'11%', margemEbit:'18%',
+    pontos_pos:'• ROIC 13,9% — acima do WACC; cria valor real\n• ROA 10,1% e ROE 20,6% — retornos consistentes\n• Upside +23% vs preço justo — desconto atraente\n• DY 10,2% — yield relevante\n• EV/EBIT 7,2x e P/L 9,1x — valuation atraente\n• Beneficiário do agronegócio brasileiro\n• Dívida/Cap.Total 19% — balanço saudável',
+    pontos_neg:'• P/Book 1,84x — não é barato em valor patrimonial\n• P/FCO 11,8x — aceitável mas não excepcional\n• Sem streak de dividendos crescentes\n• Exposição a ciclo agrícola',
+    fco:'P/FCO=11,8x é moderado. FCO positivo e real. Dividendo de 10,2% sustentado.',
+    dcf:'ROIC=13,9% vs WACC~11% = spread positivo. DCF aponta R$9,5-11,5. Upside de +23% vs PJ é atraente.',
+    estrategiaDetalhe:'Compra gradual · Stop R$6,80 · Alvo 12m: R$10,08 (PJ) · Posição 3-4% · Tese agro secular'
+  },
+  {
+    rank: 4, ticker: 'INTB3', name: 'Intelbras SA',
+    segment: 'Equipamentos Telecom / Segurança / Energia',
+    pj: 19.22, pjStr: 'R$19,22',
+    roic:'8.8%', roa:'8.9%', roe:'16.2%',
+    pl:'9.36x', evEbit:'10.25x', dy:'10.2%', pfco:'4.9x', pbook:'1.51x', divAtivo:'0.30x',
+    classifFV:'Barato', classifAnal:'Justo',
+    score:'17/26', scoreNum:17,
+    veredicto:'🟡 COMPRA/NEUTRO', momento:'🟡 OPORTUNIDADE MODERADA',
+    precoFV:'Barato +39,3%', estrategia:'Compra gradual · Stop R$11,50 · Alvo R$19,22 (PJ) · Posição 2-3% · Monit. crescimento',
+    hm:[1,1,1,2,1,2,2,1,2,1,2,1,1],
+    pess:'R$16,00', real:'R$19,22', otim:'R$22,00',
+    retPess:'+15.9%', retReal:'+39.3%', retOtim:'+59.4%',
+    tip:'Crescimento solar e automação. Segurança eletrônica em expansão. PJ pode ser atingido em 12-18m.',
+    roicVal:'8.8%', waccVal:'11.0%', spread:'-2.2%', criaValor:'❌ NÃO', crescRev:'13%', margemEbit:'20%',
+    pontos_pos:'• ROIC 8,8% e ROA 8,9% — retornos razoáveis\n• DY 10,2% — yield atraente\n• Upside +39,3% vs preço justo — maior upside do grupo\n• P/FCO 4,9x — geração de caixa real e sólida\n• Dívida/Ativo 30% — estrutura conservadora\n• Cresc. dívida -5,6% — reduzindo alavancagem',
+    pontos_neg:'• ROIC 8,8% — abaixo da média setorial\n• ROE 16,2% — aceitável mas não excepcional\n• EV/EBIT 10,25x — múltiplo mediano\n• Analistas classificam como "Justo"',
+    fco:'P/FCO=4,9x é excelente. FCO positivo e real. Dividendo de 10,2% sustentável.',
+    dcf:'Com ROIC próximo ao WACC, o DCF não fecha para valorização expressiva sem aceleração de crescimento.',
+    estrategiaDetalhe:'Compra gradual · Stop R$11,50 · Alvo 12m: R$17-19 · Posição 2-3% · Monitorar crescimento solar/automação'
+  },
+  {
+    rank: 5, ticker: 'MILS3', name: 'Mills Estruturas SA',
+    segment: 'Locação de Equipamentos / Serviços de Engenharia',
+    pj: 17.86, pjStr: 'R$17,86',
+    roic:'13.2%', roa:'7.5%', roe:'19.9%',
+    pl:'10.11x', evEbit:'6.96x', dy:'8.0%', pfco:'-44.8x⚠', pbook:'1.94x', divAtivo:'1.19x',
+    classifFV:'Barato', classifAnal:'Barato',
+    score:'15/26', scoreNum:15,
+    veredicto:'✅ COMPRA / WATCHLIST', momento:'🟢 COMPRA COM ATENÇÃO AO FCO',
+    precoFV:'Barato +33,9%', estrategia:'Compra parcial · Stop R$11,00 · Alvo R$17,86 (PJ) · Posição 3-4% · Aguardar FCO+',
+    hm:[2,1,1,1,2,1,1,1,0,0,2,1,2],
+    pess:'R$14,50', real:'R$17,86', otim:'R$21,00',
+    retPess:'+8.8%', retReal:'+34.0%', retOtim:'+57.5%',
+    tip:'FCO negativo em expansão — risco curto prazo. Se normalizar, ROIC 13% justifica alvo R$18+.',
+    roicVal:'13.2%', waccVal:'12.0%', spread:'+1.2%', criaValor:'✅ SIM', crescRev:'12%', margemEbit:'40%',
+    pontos_pos:'• ROIC 13,2% — acima do WACC\n• ROE 19,9% — forte\n• Upside +33,9% vs preço justo\n• 5 anos consecutivos de crescimento de dividendos\n• Empresa de locação — modelo recorrente\n• Classificação "Barato" por analistas',
+    pontos_neg:'• P/FCO -44,8x⚠ — FCO negativo é o principal risco\n• Dívida/Ativo 1,19x — alavancagem elevada\n• Modelo de locação exige capex intensivo',
+    fco:'FCO negativo (-44,8x P/FCO) é o principal ponto de atenção. ROIC=13% > WACC=11% indica que o capex está gerando valor, mas o timing de caixa é defasado.',
+    dcf:'Com ROIC=13% e upside de +34%, MILS3 oferece valor se o FCO normalizar. DCF: preço justo R$17-19 vs R$13,33 atual.',
+    estrategiaDetalhe:'Compra parcial · Stop R$11,00 · Alvo 12m: R$17,86 (PJ) · Posição 3-4% · Aguardar confirmação FCO positivo'
+  },
+  {
+    rank: 6, ticker: 'ROMI3', name: 'Indústrias Romi SA',
+    segment: 'Máquinas e Ferramentas',
+    pj: 8.60, pjStr: 'R$8,60',
+    roic:'3.1%', roa:'3.2%', roe:'7.0%',
+    pl:'7.74x', evEbit:'15.82x', dy:'8.7%', pfco:'3.7x', pbook:'0.53x', divAtivo:'0.82x',
+    classifFV:'Barato', classifAnal:'Indisponível',
+    score:'13/26', scoreNum:13,
+    veredicto:'🟡 AGUARDAR', momento:'🔴 ROIC MUITO BAIXO — VALUE TRAP?',
+    precoFV:'Barato +22,3%', estrategia:'Watchlist · Aguardar ROIC > 8% · P/Book barato mas fundamentals fracos',
+    hm:[0,0,0,2,0,1,1,2,2,1,2,2,0],
+    pess:'R$6,50', real:'R$8,60', otim:'R$11,00',
+    retPess:'-7.5%', retReal:'+22.3%', retOtim:'+56.5%',
+    tip:'Value trap ou turnaround. Depende de recuperação de ciclo de máquinas-ferramenta.',
+    roicVal:'3.1%', waccVal:'11.0%', spread:'-7.9%', criaValor:'❌ NÃO', crescRev:'5%', margemEbit:'8%',
+    pontos_pos:'• P/Book 0,53x — desconto profundo ao patrimônio\n• P/FCO 3,7x — geração de caixa barata\n• P/Vendas 0,50x — valuation de receita muito barato\n• EV/Capital 0,54x — empresa vale menos que o capital investido\n• Upside +22,3% vs PJ',
+    pontos_neg:'• ROIC 3,1% — destrói valor vs WACC de 11%\n• ROE 7,0% — muito abaixo do custo de capital\n• EV/EBIT 15,82x — caro considerando a qualidade\n• Sem cobertura de analistas',
+    fco:'P/FCO=3,7x é barato, mas ROIC destrutivo indica que não há criação de valor real.',
+    dcf:'Com ROIC=3% vs WACC=11%, o DCF indica destruição de valor. O P/Book barato pode ser armadilha de valor.',
+    estrategiaDetalhe:'Watchlist · Aguardar ROIC > 8% · P/Book barato mas fundamentals fracos · Não entrar'
+  },
+  {
+    rank: 7, ticker: 'WEGE3', name: 'WEG SA',
+    segment: 'Motores / Automação Industrial',
+    pj: 48.80, pjStr: 'R$48,80',
+    roic:'26.0%', roa:'16.1%', roe:'32.5%',
+    pl:'31.17x', evEbit:'24.84x', dy:'4.4%', pfco:'30.8x', pbook:'11.41x', divAtivo:'0.31x',
+    classifFV:'Justo', classifAnal:'Justo',
+    score:'11/26', scoreNum:11,
+    veredicto:'🟡 HOLD/COMPRA LONGO PRAZO', momento:'🟡 PREÇO JUSTO — PREMIUM MERECIDO',
+    precoFV:'Justo +2,9%', estrategia:'Compra abaixo de R$42 · Stop R$38 · Alvo R$56 (18m) · Posição estrutural 5-8%',
+    hm:[2,2,2,0,0,0,1,0,0,1,1,0,2],
+    pess:'R$39,00', real:'R$48,80', otim:'R$58,50',
+    retPess:'-17.7%', retReal:'+2.9%', retOtim:'+23.4%',
+    tip:'Crescimento 14% a.a. CAGR receita. Margem EBIT estável ~30%. Expansão internacional acelerando.',
+    roicVal:'26.0%', waccVal:'11.0%', spread:'+14.9%', criaValor:'✅ SIM', crescRev:'14%', margemEbit:'28%',
+    pontos_pos:'• ROIC 26% — melhor do setor, criação de valor excepcional\n• ROA 16,1% e ROE 32,5% — rentabilidade premium\n• Dívida/Cap.Total apenas 2,6% — praticamente sem dívida\n• 8 anos consecutivos de crescimento de dividendos\n• Expansão internacional acelerada',
+    pontos_neg:'• P/L 31x e EV/EBIT 24,8x — múltiplos exigentes\n• P/FCO 30,8x — caro em termos de caixa\n• Upside apenas +2,9% vs PJ — sem margem de segurança',
+    fco:'P/FCO=30,8x é caro. Porém, WEGE gera FCO crescente e consistente. Valuation premium é justificado pela qualidade.',
+    dcf:'Com ROIC=26% e crescimento de 14% a.a., WEG justifica múltiplos premium. Porém, preço atual já embute cenário otimista.',
+    estrategiaDetalhe:'Compra abaixo de R$42 · Stop R$38 · Alvo R$56 (18m) · Posição estrutural 5-8%'
+  },
+  {
+    rank: 8, ticker: 'FRAS3', name: 'Fras-le SA',
+    segment: 'Autopeças / Freios e Fricção',
+    pj: 27.60, pjStr: 'R$27,60',
+    roic:'17.7%', roa:'4.7%', roe:'12.0%',
+    pl:'21.44x', evEbit:'8.02x', dy:'2.8%', pfco:'3.9x', pbook:'2.41x', divAtivo:'1.15x',
+    classifFV:'Barato', classifAnal:'Barato',
+    score:'9/26', scoreNum:9,
+    veredicto:'✅ COMPRA', momento:'🟢 OPORTUNIDADE DE COMPRA',
+    precoFV:'Barato +29,6%', estrategia:'Compra gradual · Stop R$18,00 · Alvo R$27,60 (PJ) · Posição 3-5% · Monitor. alavancagem',
+    hm:[2,0,1,0,2,0,1,0,2,0,2,1,2],
+    pess:'R$22,00', real:'R$27,60', otim:'R$33,00',
+    retPess:'+3.3%', retReal:'+29.6%', retOtim:'+54.9%',
+    tip:'Liderança em freios. Expansão internacional. Crescimento 8-10% a.a. Normalização de margem.',
+    roicVal:'17.7%', waccVal:'11.5%', spread:'+6.2%', criaValor:'✅ SIM', crescRev:'9%', margemEbit:'15%',
+    pontos_pos:'• ROIC 17,7% — forte criação de valor\n• P/FCO 3,9x — geração de caixa excelente\n• 5 anos de dividendo crescente\n• Liderança de mercado em freios e fricção\n• Upside +29,6% vs PJ\n• Classificação "Barato" por analistas',
+    pontos_neg:'• P/L 21,44x — múltiplo elevado\n• ROA 4,7% — baixo considerando o ROIC\n• Dívida cresceu +174,9% YoY — risco de alavancagem\n• P/Book 2,41x — acima de 2x',
+    fco:'P/FCO=3,9x é excelente. FCO positivo e crescente. Dividendo de 2,8% com 5 anos de streak.',
+    dcf:'ROIC=17,7% vs WACC=11,5% = spread de +6,2%. DCF aponta R$25-30. Upside de +29,6% vs PJ atraente.',
+    estrategiaDetalhe:'Compra gradual · Stop R$18,00 · Alvo 12m: R$27,60 (PJ) · Posição 3-5% · Monitor. alavancagem'
+  },
+  {
+    rank: 9, ticker: 'MTSA3', name: 'Metisa Metalúrgica SA',
+    segment: 'Ferramentas e Implementos Agrícolas',
+    pj: 73.48, pjStr: 'R$73,48',
+    roic:'4.5%', roa:'7.0%', roe:'8.9%',
+    pl:'14.56x', evEbit:'13.68x', dy:'5.8%', pfco:'9.2x', pbook:'1.30x', divAtivo:'N/D',
+    classifFV:'Justo', classifAnal:'Indisponível',
+    score:'8/26', scoreNum:8,
+    veredicto:'🟡 NEUTRO/HOLD', momento:'🟡 NO PREÇO JUSTO — SEM CATALISADOR',
+    precoFV:'Justo +2,5%', estrategia:'Não entrar · Aguardar ROIC > 10% · Hold apenas para quem já tem',
+    hm:[0,1,0,1,0,1,1,1,1,0,1,1,1],
+    pess:'R$62,00', real:'R$73,48', otim:'R$82,00',
+    retPess:'-17.8%', retReal:'-2.5%', retOtim:'+8.8%',
+    tip:'No preço justo. Sem catalisador de melhora de ROIC. Upside limitado. Hold neutro.',
+    roicVal:'4.5%', waccVal:'10.5%', spread:'-6.0%', criaValor:'❌ NÃO', crescRev:'6%', margemEbit:'12%',
+    pontos_pos:'• ROA 7,0% — moderado\n• P/FCO 9,2x — razoável\n• DY 5,8%\n• P/Book 1,30x — razoável',
+    pontos_neg:'• ROIC 4,5% — destrói valor\n• ROE 8,9% — abaixo do custo de capital\n• EV/EBIT 13,68x — caro para a qualidade\n• Upside -2,5% vs PJ — no preço justo ou ligeiramente acima',
+    fco:'P/FCO=9,2x é razoável. FCO positivo. Dividendo de 5,8% sustentado.',
+    dcf:'Com ROIC=4,5% vs WACC=10,5%, o DCF não apoia valorização. Empresa no preço justo sem catalisador.',
+    estrategiaDetalhe:'Não entrar · Aguardar ROIC > 10% · Hold apenas para quem já tem · Alvo sem convicção'
+  },
+  {
+    rank: 10, ticker: 'FRIO3', name: 'Metalfrio Solutions SA',
+    segment: 'Refrigeração Comercial',
+    pj: 139.92, pjStr: 'R$139,92',
+    roic:'7.3%', roa:'1.1%', roe:'4.9%',
+    pl:'28.87x', evEbit:'9.20x', dy:'—', pfco:'6.6x', pbook:'2.81x', divAtivo:'2.18x',
+    classifFV:'Justo', classifAnal:'Indisponível',
+    score:'6/26', scoreNum:6,
+    veredicto:'🔴 AGUARDAR/VENDER', momento:'🔴 ATIVO CARO — EVITAR',
+    precoFV:'Caro -17,8%', estrategia:'Não entrar · Reduzir se tiver · Aguardar correção > 20%',
+    hm:[1,0,0,0,1,0,1,0,2,0,0,1,0],
+    pess:'R$120,00', real:'R$139,92', otim:'R$155,00',
+    retPess:'-29.5%', retReal:'-17.8%', retOtim:'-8.9%',
+    tip:'Ativo CARO atualmente. Sem dividendo. Apenas se corrigir 20%+ se torna interessante.',
+    roicVal:'7.3%', waccVal:'12.0%', spread:'-4.7%', criaValor:'❌ NÃO', crescRev:'3%', margemEbit:'12%',
+    pontos_pos:'• P/FCO 6,6x — geração de caixa razoável\n• EV/EBIT 9,20x — múltiplo moderado',
+    pontos_neg:'• ROA 1,1% — rentabilidade de ativo pífia\n• Sem dividendo\n• P/Book 2,81x — caro\n• Dívida/Ativo 2,18x — alavancagem perigosa\n• Upside -17,8% vs PJ — ativo CARO',
+    fco:'P/FCO=6,6x é ok, mas ROA=1,1% indica que os ativos não estão sendo bem utilizados.',
+    dcf:'Com ROA=1,1% e sem dividendo, o DCF não apoia o preço atual. Ativo está 18% acima do preço justo.',
+    estrategiaDetalhe:'Não entrar · Reduzir se tiver · Aguardar correção > 20% · Stop para holder: R$150'
+  },
+  {
+    rank: 11, ticker: 'BDLL3', name: 'Bardella SA Ind. Mecânicas',
+    segment: 'Equipamentos Industriais Pesados',
+    pj: 7.79, pjStr: 'R$7,79',
+    roic:'NM', roa:'2.3%', roe:'92.3%',
+    pl:'19.75x', evEbit:'N/D', dy:'—', pfco:'21.4x', pbook:'NM', divAtivo:'N/D',
+    classifFV:'Justo', classifAnal:'Indisponível',
+    score:'6/26', scoreNum:6,
+    veredicto:'🔴 EVITAR', momento:'🔴 DADOS INSUFICIENTES',
+    precoFV:'Justo +11,1%', estrategia:'Evitar · Liquidez mínima · Sem dados confiáveis',
+    hm:[0,0,2,0,0,0,1,0,0,0,1,0,0],
+    pess:'R$6,00', real:'R$7,79', otim:'R$9,50',
+    retPess:'-14.4%', retReal:'+11.1%', retOtim:'+35.5%',
+    tip:'Dados insuficientes. Liquidez mínima. Especulativo.',
+    roicVal:'NM', waccVal:'11.5%', spread:'N/D', criaValor:'N/D', crescRev:'N/D', margemEbit:'N/D',
+    pontos_pos:'• ROE 92,3% — distorcido por PL negativo\n• Upside +11,1% vs PJ',
+    pontos_neg:'• ROIC NM — dados insuficientes\n• Liquidez mínima\n• Sem cobertura de analistas\n• PL negativo distorce métricas',
+    fco:'P/FCO=21,4x — dados insuficientes para análise confiável.',
+    dcf:'Dados insuficientes. Não é possível construir DCF confiável. Especulativo.',
+    estrategiaDetalhe:'Evitar · Liquidez mínima · Sem dados confiáveis · Não investir'
+  },
+  {
+    rank: 12, ticker: 'AERI3', name: 'Aeris Ind. Equip.',
+    segment: 'Pás Eólicas (Energia Renovável)',
+    pj: 2.76, pjStr: 'R$2,76',
+    roic:'NM', roa:'-45.0%', roe:'NM',
+    pl:'NM', evEbit:'N/D', dy:'—', pfco:'-0.2x⚠', pbook:'-0.18x', divAtivo:'N/D',
+    classifFV:'Justo', classifAnal:'Pechincha',
+    score:'4/26', scoreNum:4,
+    veredicto:'⚠️ ESPECULATIVO', momento:'⚠️ ALTO RISCO — RECUPERAÇÃO INCERTA',
+    precoFV:'Justo +10,2%', estrategia:'Especulativo 1% máx · Apenas convictos em recuperação eólica · Stop R$1,80',
+    hm:[0,0,0,0,0,0,1,0,0,0,1,0,0],
+    pess:'R$1,80', real:'R$2,76', otim:'R$4,50',
+    retPess:'-28.0%', retReal:'+10.4%', retOtim:'+80.0%',
+    tip:'Especulativo. Mercado eólico crescendo mas empresa operacionalmente frágil.',
+    roicVal:'NM', waccVal:'13.0%', spread:'N/D', criaValor:'N/D', crescRev:'N/D', margemEbit:'N/D',
+    pontos_pos:'• Analistas classificam como "Pechincha"\n• Mercado eólico em expansão no Brasil\n• Upside +10,2% vs PJ',
+    pontos_neg:'• ROA -45% — empresa destruindo valor\n• PL negativo\n• FCO negativo\n• P/Book negativo — insolvência patrimonial\n• Risco alto de diluição ou falência',
+    fco:'FCO negativo. Empresa queima caixa operacionalmente. Alto risco de insolvência.',
+    dcf:'Sem condições de construir DCF. Empresa pré-viabilidade. Apenas para investidores de risco muito alto.',
+    estrategiaDetalhe:'Especulativo 1% máx · Apenas convictos em recuperação eólica · Stop R$1,80'
+  },
+  {
+    rank: 13, ticker: 'INEP3', name: 'Inepar SA Ind. e Construções',
+    segment: 'Equipamentos Elétricos / Em dificuldades',
+    pj: 1.11, pjStr: 'R$1,11',
+    roic:'NM', roa:'-63.4%', roe:'NM',
+    pl:'NM', evEbit:'N/D', dy:'—', pfco:'-0.3x⚠', pbook:'-0.04x', divAtivo:'N/D',
+    classifFV:'Caro', classifAnal:'Indisponível',
+    score:'3/26', scoreNum:3,
+    veredicto:'🔴 EVITAR COMPLETAMENTE', momento:'🔴 EMPRESA DISTRESSED — CARO',
+    precoFV:'Caro -20,6%', estrategia:'EVITAR · Preço acima do justo · Risco de insolvência real',
+    hm:[0,0,0,0,0,0,1,0,0,0,0,0,0],
+    pess:'R$0,60', real:'R$1,11', otim:'R$1,80',
+    retPess:'-57.1%', retReal:'-20.7%', retOtim:'+28.6%',
+    tip:'Empresa distressed. Caro vs PJ. EVITAR.',
+    roicVal:'NM', waccVal:'13.5%', spread:'N/D', criaValor:'N/D', crescRev:'N/D', margemEbit:'N/D',
+    pontos_pos:'• Nenhum ponto positivo relevante',
+    pontos_neg:'• ROA -63,4% — destruição massiva de valor\n• PL negativo — insolvência patrimonial\n• FCO negativo\n• Preço -20,6% abaixo do PJ — CARO\n• Risco real de falência',
+    fco:'FCO negativo. Empresa em dificuldades financeiras graves.',
+    dcf:'Empresa distressed. Preço acima do valor justo. Risco de insolvência real. Não investir.',
+    estrategiaDetalhe:'EVITAR · Preço acima do justo · Risco de insolvência real · Não investir jamais'
+  }
+];
+
+// Prices from Google Finance (via CORS proxy or direct)
+const prices = {};
+
+// ── GOOGLE FINANCE PRICE FETCHER ──
+// Using Yahoo Finance API as proxy (publicly accessible)
+async function fetchPrice(ticker) {
+  const bvTicker = ticker.replace(/(\D+)(\d)/, '$1.SA_$2').replace('_','');
+  // Map BR tickers to Yahoo Finance format
+  const yahooTicker = ticker + '.SA';
+  
+  try {
+    // Using Yahoo Finance via allorigins proxy
+    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${yahooTicker}?interval=1d&range=1d`;
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+    
+    const resp = await fetch(proxyUrl, { signal: AbortSignal.timeout(8000) });
+    if (!resp.ok) throw new Error('fetch failed');
+    const data = await resp.json();
+    
+    const result = data?.chart?.result?.[0];
+    if (!result) throw new Error('no result');
+    
+    const meta = result.meta;
+    // Use regularMarketPrice (live) or previousClose if market closed
+    const price = meta.regularMarketPrice || meta.chartPreviousClose || meta.previousClose;
+    
+    if (!price || price <= 0) throw new Error('invalid price');
+    return { price, source: 'Yahoo Finance', live: !!meta.regularMarketPrice };
+  } catch(e) {
+    return null;
+  }
+}
+
+async function fetchAllPrices() {
+  document.getElementById('lastUpdate').textContent = 'Buscando cotações...';
+  document.querySelectorAll('.price-cell').forEach(el => {
+    el.innerHTML = '<span class="spinner"></span>';
+  });
+  
+  const results = await Promise.allSettled(
+    COMPANIES.map(c => fetchPrice(c.ticker).then(r => ({ ticker: c.ticker, result: r })))
+  );
+  
+  results.forEach(r => {
+    if (r.status === 'fulfilled' && r.value.result) {
+      prices[r.value.ticker] = r.value.result.price;
+    }
+  });
+
+  updateAllPriceCells();
+  updateLastTime();
+}
+
+function formatPrice(ticker) {
+  if (prices[ticker]) {
+    return `<span class="price-live">R$${prices[ticker].toFixed(2)}</span>`;
+  }
+  return `<span class="price-loading" title="Atualizando...">Carregando…</span>`;
+}
+
+function calcUpside(ticker, pj) {
+  if (!prices[ticker] || !pj || pj === 'N/D') return null;
+  return ((pj - prices[ticker]) / prices[ticker]) * 100;
+}
+
+function formatUpside(upside) {
+  if (upside === null) return '<span class="cell-na">N/D</span>';
+  const cls = upside > 5 ? 'upside-pos' : upside < -5 ? 'upside-neg' : 'upside-neutral';
+  const sign = upside > 0 ? '+' : '';
+  return `<span class="${cls}">${sign}${upside.toFixed(1)}%</span>`;
+}
+
+function calcSignal(upside) {
+  if (upside === null) return { label: 'N/D', cls: 'signal-wait' };
+  if (upside > 20) return { label: '🟢 COMPRA FORTE', cls: 'signal-buy-strong' };
+  if (upside > 5) return { label: '🟢 COMPRA', cls: 'signal-buy' };
+  if (upside > -5) return { label: '🟡 JUSTO', cls: 'signal-hold' };
+  if (upside > -15) return { label: '🟠 ATENÇÃO', cls: 'signal-hold' };
+  return { label: '🔴 CARO', cls: 'signal-avoid' };
+}
+
+function updateAllPriceCells() {
+  document.querySelectorAll('[data-ticker-price]').forEach(el => {
+    const ticker = el.getAttribute('data-ticker-price');
+    el.innerHTML = formatPrice(ticker);
+  });
+  document.querySelectorAll('[data-ticker-upside]').forEach(el => {
+    const ticker = el.getAttribute('data-ticker-upside');
+    const pj = parseFloat(el.getAttribute('data-pj'));
+    const upside = calcUpside(ticker, pj);
+    el.innerHTML = formatUpside(upside);
+  });
+  document.querySelectorAll('[data-ticker-signal]').forEach(el => {
+    const ticker = el.getAttribute('data-ticker-signal');
+    const pj = parseFloat(el.getAttribute('data-pj'));
+    const upside = calcUpside(ticker, pj);
+    const sig = calcSignal(upside);
+    el.innerHTML = `<span class="signal ${sig.cls}">${sig.label}</span>`;
+  });
+  // Update stats
+  updateStats();
+}
+
+function updateStats() {
+  let buyStrong = 0, buy = 0, hold = 0, avoid = 0;
+  COMPANIES.forEach(c => {
+    const upside = calcUpside(c.ticker, c.pj);
+    if (upside === null) return;
+    if (upside > 20) buyStrong++;
+    else if (upside > 5) buy++;
+    else if (upside > -5) hold++;
+    else avoid++;
+  });
+  if (document.getElementById('stat-buy-strong')) document.getElementById('stat-buy-strong').textContent = buyStrong;
+  if (document.getElementById('stat-buy')) document.getElementById('stat-buy').textContent = buy;
+  if (document.getElementById('stat-hold')) document.getElementById('stat-hold').textContent = hold;
+  if (document.getElementById('stat-avoid')) document.getElementById('stat-avoid').textContent = avoid;
+}
+
+function updateLastTime() {
+  const now = new Date();
+  document.getElementById('lastUpdate').textContent = 
+    `Atualizado: ${now.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})}`;
+}
+
+// ── COLOR HELPERS ──
+function hmColor(val) {
+  if (val === 2) return 'cell-green';
+  if (val === 1) return 'cell-yellow';
+  return 'cell-red';
+}
+
+function scoreClass(num) {
+  if (num >= 17) return 'score-a';
+  if (num >= 10) return 'score-b';
+  return 'score-c';
+}
+
+function rankBadgeClass(rank) {
+  if (rank === 1) return 'gold';
+  if (rank === 2) return 'silver';
+  if (rank === 3) return 'bronze';
+  return '';
+}
+
+function classifBadge(val) {
+  if (!val || val === 'Indisponível' || val === 'N/D') return `<span class="cell-na">${val||'N/D'}</span>`;
+  const map = {
+    'Barato': 'classif-barato', 'Pechincha': 'classif-barato',
+    'Justo': 'classif-justo',
+    'Caro': 'classif-caro'
+  };
+  const cls = map[val] || '';
+  return `<span class="classif ${cls}">${val}</span>`;
+}
+
+function verdictBadge(veredicto) {
+  if (veredicto.includes('COMPRA FORTE')) return 'signal-buy-strong';
+  if (veredicto.includes('COMPRA')) return 'signal-buy';
+  if (veredicto.includes('EVITAR') || veredicto.includes('VENDER')) return 'signal-avoid';
+  if (veredicto.includes('ESPECULATIVO')) return 'signal-avoid';
+  return 'signal-hold';
+}
+
+// ══════════════════════════════════════════════
+// BUILD TABLES
+// ══════════════════════════════════════════════
+
+function buildRanking() {
+  const tbody = document.getElementById('ranking-tbody');
+  tbody.innerHTML = COMPANIES.map(c => `
+    <tr>
+      <td><span class="rank-badge ${rankBadgeClass(c.rank)}">${c.rank}</span></td>
+      <td><span class="ticker-cell">${c.ticker}</span></td>
+      <td><span class="segment-cell">${c.segment}</span></td>
+      <td class="price-cell" data-ticker-price="${c.ticker}"><span class="spinner"></span></td>
+      <td style="font-family:'DM Mono',monospace">${c.pjStr}</td>
+      <td data-ticker-upside="${c.ticker}" data-pj="${c.pj}">—</td>
+      <td>${classifBadge(c.classifFV)}</td>
+      <td class="${roicHm(c.roic)}">${c.roic}</td>
+      <td class="${roaHm(c.roa)}">${c.roa}</td>
+      <td class="${roeHm(c.roe)}">${c.roe}</td>
+      <td class="${plHm(c.pl)}">${c.pl}</td>
+      <td class="${evEbitHm(c.evEbit)}">${c.evEbit}</td>
+      <td class="${dyHm(c.dy)}">${c.dy}</td>
+      <td class="${pfcoHm(c.pfco)}">${c.pfco}</td>
+      <td class="${pbookHm(c.pbook)}">${c.pbook}</td>
+      <td class="${divAtivoHm(c.divAtivo)}">${c.divAtivo}</td>
+      <td>${classifBadge(c.classifAnal)}</td>
+      <td><span class="score-badge ${scoreClass(c.scoreNum)}">${c.score}</span></td>
+    </tr>
+  `).join('');
+}
+
+// Individual metric coloring
+function roicHm(v) { if(v==='NM'||v==='N/D') return 'cell-red'; const n=parseFloat(v); return n>=20?'cell-green':n>=10?'cell-yellow':'cell-red'; }
+function roaHm(v) { if(v==='NM'||v==='N/D') return 'cell-red'; const n=parseFloat(v); return n>=10?'cell-green':n>=5?'cell-yellow':'cell-red'; }
+function roeHm(v) { if(v==='NM'||v==='N/D') return 'cell-red'; const n=parseFloat(v); return n>=25?'cell-green':n>=12?'cell-yellow':'cell-red'; }
+function plHm(v) { if(v==='NM'||v==='N/D') return 'cell-red'; const n=parseFloat(v); return n<10?'cell-green':n<18?'cell-yellow':'cell-red'; }
+function evEbitHm(v) { if(v==='NM'||v==='N/D') return 'cell-na'; const n=parseFloat(v); return n<8?'cell-green':n<13?'cell-yellow':'cell-red'; }
+function dyHm(v) { if(v==='—'||!v) return 'cell-red'; const n=parseFloat(v); return n>=8?'cell-green':n>=4?'cell-yellow':'cell-red'; }
+function pfcoHm(v) { if(!v||v.includes('⚠')||v==='N/D'||v==='NM') return 'cell-red'; const n=parseFloat(v); if(n<0) return 'cell-red'; return n<=8?'cell-green':n<=18?'cell-yellow':'cell-red'; }
+function pbookHm(v) { if(v==='NM'||v==='N/D') return 'cell-na'; const n=parseFloat(v); return n<1?'cell-green':n<2.5?'cell-yellow':'cell-red'; }
+function divAtivoHm(v) { if(v==='N/D') return 'cell-na'; const n=parseFloat(v); return n<0.3?'cell-green':n<0.7?'cell-yellow':'cell-red'; }
+
+function buildHeatmap() {
+  const tickers = COMPANIES.map(c => c.ticker);
+  const headerRow = `<thead><tr>
+    <th style="text-align:left; min-width:200px;">INDICADOR / FATOR</th>
+    ${COMPANIES.map((c,i) => `<th>#${i+1}<br><span style="font-family:'DM Mono',monospace;font-size:11px">${c.ticker}</span></th>`).join('')}
+  </tr></thead>`;
+
+  const groups = [
+    {
+      label: 'RENTABILIDADE',
+      rows: [
+        { label:'ROIC', key:'roic', fn:roicHm },
+        { label:'ROA', key:'roa', fn:roaHm },
+        { label:'ROE', key:'roe', fn:roeHm },
+      ]
+    },
+    {
+      label: 'VALUATION',
+      rows: [
+        { label:'P/L', key:'pl', fn:plHm },
+        { label:'EV/EBIT', key:'evEbit', fn:evEbitHm },
+        { label:'P/Book', key:'pbook', fn:pbookHm },
+        { label:'Upside vs PJ', key:null, special:'upside' },
+        { label:'Classif. Preço Justo', key:'classifFV', special:'classif' },
+        { label:'Classif. Analistas', key:'classifAnal', special:'classif' },
+      ]
+    },
+    {
+      label: 'DIVIDENDOS',
+      rows: [
+        { label:'Dividend Yield', key:'dy', fn:dyHm },
+      ]
+    },
+    {
+      label: 'DÍVIDA & ESTRUTURA',
+      rows: [
+        { label:'Dívida / Ativo', key:'divAtivo', fn:divAtivoHm },
+      ]
+    },
+    {
+      label: 'FLUXO DE CAIXA',
+      rows: [
+        { label:'P/FCO', key:'pfco', fn:pfcoHm },
+      ]
+    }
+  ];
+
+  let html = headerRow + '<tbody>';
+
+  groups.forEach(g => {
+    html += `<tr class="hm-group-header"><td colspan="${COMPANIES.length+1}">${g.label}</td></tr>`;
+    g.rows.forEach(row => {
+      if (row.special === 'upside') {
+        html += `<tr class="hm-row"><td>${row.label}</td>`;
+        COMPANIES.forEach(c => {
+          const uStr = getUpsideStr(c);
+          const n = parseFloat(uStr);
+          let cls = '';
+          if(!isNaN(n)) cls = n>20?'cell-green':n>5?'cell-yellow':n>-5?'cell-yellow':'cell-red';
+          html += `<td class="${cls}" data-ticker-upside="${c.ticker}" data-pj="${c.pj}">${uStr}</td>`;
+        });
+        html += '</tr>';
+      } else if (row.special === 'classif') {
+        html += `<tr class="hm-row"><td>${row.label}</td>`;
+        COMPANIES.forEach(c => {
+          html += `<td>${classifBadge(c[row.key])}</td>`;
+        });
+        html += '</tr>';
+      } else {
+        html += `<tr class="hm-row"><td>${row.label}</td>`;
+        COMPANIES.forEach(c => {
+          const val = c[row.key];
+          const cls = row.fn ? row.fn(val) : '';
+          html += `<td class="${cls}">${val}</td>`;
+        });
+        html += '</tr>';
+      }
+    });
+  });
+
+  // Score row
+  html += `<tr class="hm-score-row"><td>PONTUAÇÃO (13 fat. / máx 26)</td>`;
+  COMPANIES.forEach(c => { html += `<td>${c.score}</td>`; });
+  html += '</tr>';
+
+  html += '</tbody>';
+  document.getElementById('heatmap-table').innerHTML = html;
+}
+
+function getUpsideStr(c) {
+  if (prices[c.ticker] && c.pj) {
+    const u = calcUpside(c.ticker, c.pj);
+    if (u !== null) return (u>=0?'+':'')+u.toFixed(1)+'%';
+  }
+  // Fallback from data
+  const map = {
+    'EALT3':'+38.4%','SHUL4':'+26.8%','KEPL3':'+23.0%','INTB3':'+39.3%','MILS3':'+34.0%',
+    'ROMI3':'+22.3%','WEGE3':'+2.9%','FRAS3':'+29.6%','MTSA3':'-2.5%','FRIO3':'-17.8%',
+    'BDLL3':'+11.1%','AERI3':'+10.2%','INEP3':'-20.6%'
+  };
+  return map[c.ticker] || 'N/D';
+}
+
+function buildQuadro() {
+  const tbody = document.getElementById('quadro-tbody');
+  tbody.innerHTML = COMPANIES.map(c => {
+    const sigCls = verdictBadge(c.veredicto);
+    return `<tr>
+      <td><span class="rank-badge ${rankBadgeClass(c.rank)}">${c.rank}</span></td>
+      <td><span class="ticker-cell">${c.ticker}</span></td>
+      <td><span class="segment-cell">${c.segment}</span></td>
+      <td><span class="score-badge ${scoreClass(c.scoreNum)}">${c.score}</span></td>
+      <td><span class="signal ${sigCls}" style="font-size:10.5px">${c.veredicto}</span></td>
+      <td style="font-size:11px; max-width:160px; text-align:left;">${c.momento}</td>
+      <td>${classifBadge(c.classifFV)}</td>
+      <td class="price-cell" data-ticker-price="${c.ticker}"><span class="spinner"></span></td>
+      <td style="font-family:'DM Mono',monospace">${c.pjStr}</td>
+      <td data-ticker-upside="${c.ticker}" data-pj="${c.pj}">—</td>
+      <td data-ticker-signal="${c.ticker}" data-pj="${c.pj}">—</td>
+      <td class="strat-cell">${c.estrategia}</td>
+    </tr>`;
+  }).join('');
+}
+
+function buildProjecoes() {
+  const grid = document.getElementById('proj-grid');
+  grid.innerHTML = COMPANIES.map(c => `
+    <div class="proj-card">
+      <div class="proj-card-header">
+        <div>
+          <div class="proj-ticker">${c.ticker}</div>
+          <div class="proj-company">${c.name}</div>
+        </div>
+        <span class="score-badge ${scoreClass(c.scoreNum)}">${c.score}</span>
+      </div>
+      <div class="proj-prices">
+        <div class="proj-price-item">
+          <div class="pl">Cotação</div>
+          <div class="pv" data-ticker-price="${c.ticker}"><span class="spinner"></span></div>
+        </div>
+        <div class="proj-divider">→</div>
+        <div class="proj-price-item">
+          <div class="pl">Preço Justo</div>
+          <div class="pv">${c.pjStr}</div>
+        </div>
+        <div class="proj-divider">·</div>
+        <div class="proj-price-item">
+          <div class="pl">Upside</div>
+          <div class="pv" data-ticker-upside="${c.ticker}" data-pj="${c.pj}">—</div>
+        </div>
+      </div>
+      <div class="proj-scenarios">
+        <div class="scenario pess">
+          <div class="s-label">Pessimista</div>
+          <div class="s-value">${c.pess}</div>
+          <div class="s-ret">${c.retPess}</div>
+        </div>
+        <div class="scenario real">
+          <div class="s-label">Realista</div>
+          <div class="s-value">${c.real}</div>
+          <div class="s-ret">${c.retReal}</div>
+        </div>
+        <div class="scenario otim">
+          <div class="s-label">Otimista</div>
+          <div class="s-value">${c.otim}</div>
+          <div class="s-ret">${c.retOtim}</div>
+        </div>
+      </div>
+      <div class="proj-tip">💡 ${c.tip}</div>
+    </div>
+  `).join('');
+
+  // WACC table
+  document.getElementById('wacc-tbody').innerHTML = COMPANIES.map(c => `
+    <tr>
+      <td style="text-align:left; font-weight:500">${c.rank}. ${c.ticker} — ${c.name}</td>
+      <td class="${roicHm(c.roicVal)}">${c.roicVal}</td>
+      <td>${c.waccVal}</td>
+      <td style="font-family:'DM Mono',monospace; font-weight:600; color:${c.spread?.startsWith('+') ? 'var(--green-strong)' : c.spread==='N/D'?'var(--text-muted)':'var(--red-strong)'}">${c.spread}</td>
+      <td>${c.criaValor}</td>
+      <td>${c.crescRev}</td>
+      <td>${c.margemEbit}</td>
+    </tr>
+  `).join('');
+}
+
+function buildTabelaMestra() {
+  const tickers = COMPANIES.map(c => `<th>${c.ticker}</th>`).join('');
+  const avg_header = `<th>MÉDIA SETOR</th>`;
+
+  // Preço table
+  document.getElementById('tabela-preco').innerHTML = `<thead><tr>
+    <th style="text-align:left">INDICADOR</th>${tickers}${avg_header}
+  </tr></thead><tbody>
+    <tr><td>Preço Atual (R$)</td>${COMPANIES.map(c=>`<td class="price-cell" data-ticker-price="${c.ticker}"><span class="spinner"></span></td>`).join('')}<td style="color:var(--text-muted)">—</td></tr>
+    <tr><td>Preço Justo / Fair Value</td>${COMPANIES.map(c=>`<td style="font-family:'DM Mono',monospace">${c.pjStr}</td>`).join('')}<td>R$29,46</td></tr>
+    <tr><td>Upside vs Preço Justo</td>${COMPANIES.map(c=>`<td data-ticker-upside="${c.ticker}" data-pj="${c.pj}">—</td>`).join('')}<td>+15.1%</td></tr>
+    <tr><td>Classif. Preço Justo</td>${COMPANIES.map(c=>`<td>${classifBadge(c.classifFV)}</td>`).join('')}<td>—</td></tr>
+    <tr><td>Classif. Analistas</td>${COMPANIES.map(c=>`<td>${classifBadge(c.classifAnal)}</td>`).join('')}<td>—</td></tr>
+  </tbody>`;
+
+  document.getElementById('tabela-retorno').innerHTML = `<thead><tr>
+    <th style="text-align:left">INDICADOR</th>${tickers}${avg_header}
+  </tr></thead><tbody>
+    <tr><td>ROIC</td>${COMPANIES.map(c=>`<td class="${roicHm(c.roic)}">${c.roic}</td>`).join('')}<td>11.9%</td></tr>
+    <tr><td>ROA</td>${COMPANIES.map(c=>`<td class="${roaHm(c.roa)}">${c.roa}</td>`).join('')}<td>8.6%</td></tr>
+    <tr><td>ROE</td>${COMPANIES.map(c=>`<td class="${roeHm(c.roe)}">${c.roe}</td>`).join('')}<td>17.5%</td></tr>
+  </tbody>`;
+
+  document.getElementById('tabela-valuation').innerHTML = `<thead><tr>
+    <th style="text-align:left">INDICADOR</th>${tickers}${avg_header}
+  </tr></thead><tbody>
+    <tr><td>P/L</td>${COMPANIES.map(c=>`<td class="${plHm(c.pl)}">${c.pl}</td>`).join('')}<td>14.35x</td></tr>
+    <tr><td>EV/EBIT</td>${COMPANIES.map(c=>`<td class="${evEbitHm(c.evEbit)}">${c.evEbit}</td>`).join('')}<td>10.80x</td></tr>
+    <tr><td>P/Book</td>${COMPANIES.map(c=>`<td class="${pbookHm(c.pbook)}">${c.pbook}</td>`).join('')}<td>2.58x</td></tr>
+  </tbody>`;
+
+  document.getElementById('tabela-div').innerHTML = `<thead><tr>
+    <th style="text-align:left">INDICADOR</th>${tickers}${avg_header}
+  </tr></thead><tbody>
+    <tr><td>Dividend Yield</td>${COMPANIES.map(c=>`<td class="${dyHm(c.dy)}">${c.dy}</td>`).join('')}<td>7.9%</td></tr>
+    <tr><td>DPA (R$)</td>${['R$1,06','R$0,58','R$0,84','R$1,40','R$1,07','R$0,61','R$2,10','R$0,60','R$4,20','—','—','—','—'].map(v=>`<td>${v}</td>`).join('')}<td>—</td></tr>
+    <tr><td>Anos Div. Crescente</td>${['2','9','—','1','5','—','8','5','1','—','—','—','—'].map(v=>`<td>${v}</td>`).join('')}<td>—</td></tr>
+  </tbody>`;
+
+  const divCap = ['25.0%','34.9%','19.0%','16.2%','38.2%','60.8%','2.6%','21.1%','12.5%','42.2%','96.6%','91.9%','93.6%'];
+  const crescDiv = ['-13.1%','+35.0%','+1.2%','-5.6%','-1.3%','+19.4%','+23.1%','+174.9%','+81.3%','-6.0%','+0.1%','+20.3%','-18.9%'];
+  document.getElementById('tabela-divida').innerHTML = `<thead><tr>
+    <th style="text-align:left">INDICADOR</th>${tickers}${avg_header}
+  </tr></thead><tbody>
+    <tr><td>Dívida Total / Cap. Total</td>${divCap.map(v=>`<td>${v}</td>`).join('')}<td>—</td></tr>
+    <tr><td>Dívida / Ativo</td>${COMPANIES.map(c=>`<td class="${divAtivoHm(c.divAtivo)}">${c.divAtivo}</td>`).join('')}<td>—</td></tr>
+    <tr><td>Cresc. Dívida YoY</td>${crescDiv.map((v,i)=>{
+      const n=parseFloat(v); const cls=isNaN(n)?'':(n<10?'cell-green':n<40?'cell-yellow':'cell-red');
+      return `<td class="${cls}">${v}</td>`;
+    }).join('')}<td>—</td></tr>
+  </tbody>`;
+
+  document.getElementById('tabela-fco').innerHTML = `<thead><tr>
+    <th style="text-align:left">INDICADOR</th>${tickers}${avg_header}
+  </tr></thead><tbody>
+    <tr><td>P/FCO</td>${COMPANIES.map(c=>`<td class="${pfcoHm(c.pfco)}">${c.pfco}</td>`).join('')}<td>—</td></tr>
+  </tbody>`;
+}
+
+function buildEmpresa() {
+  const container = document.getElementById('empresa-container');
+  container.innerHTML = COMPANIES.map(c => {
+    const sigCls = verdictBadge(c.veredicto);
+    return `
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:24px; margin-bottom:20px;">
+      <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:16px; flex-wrap:wrap;">
+        <div>
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:4px;">
+            <span class="rank-badge ${rankBadgeClass(c.rank)}" style="width:28px;height:28px;font-size:13px">${c.rank}</span>
+            <span style="font-family:'DM Mono',monospace; font-size:18px; font-weight:600">${c.ticker}</span>
+            <span style="color:var(--text-muted); font-size:13px">— ${c.name}</span>
+          </div>
+          <div style="font-size:11.5px; color:var(--text-secondary)">${c.segment}</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+          <span class="signal ${sigCls}">${c.veredicto}</span>
+          <span class="score-badge ${scoreClass(c.scoreNum)}" style="font-size:14px; padding:4px 14px">${c.score}</span>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px; margin-bottom:18px; padding:14px; background:var(--surface2); border-radius:8px; border:1px solid var(--border);">
+        <div><div style="font-size:10px;color:var(--text-muted);font-weight:600">COTAÇÃO</div><div class="price-live" data-ticker-price="${c.ticker}"><span class="spinner"></span></div></div>
+        <div><div style="font-size:10px;color:var(--text-muted);font-weight:600">PREÇO JUSTO</div><div style="font-family:'DM Mono',monospace;font-size:14px;font-weight:500">${c.pjStr}</div></div>
+        <div><div style="font-size:10px;color:var(--text-muted);font-weight:600">UPSIDE</div><div data-ticker-upside="${c.ticker}" data-pj="${c.pj}" style="font-size:14px">—</div></div>
+        <div><div style="font-size:10px;color:var(--text-muted);font-weight:600">ROIC</div><div class="${roicHm(c.roic)}" style="font-size:13px; padding:2px 6px; border-radius:4px; display:inline-block">${c.roic}</div></div>
+        <div><div style="font-size:10px;color:var(--text-muted);font-weight:600">ROE</div><div class="${roeHm(c.roe)}" style="font-size:13px; padding:2px 6px; border-radius:4px; display:inline-block">${c.roe}</div></div>
+        <div><div style="font-size:10px;color:var(--text-muted);font-weight:600">P/L</div><div class="${plHm(c.pl)}" style="font-size:13px; padding:2px 6px; border-radius:4px; display:inline-block">${c.pl}</div></div>
+        <div><div style="font-size:10px;color:var(--text-muted);font-weight:600">DY</div><div class="${dyHm(c.dy)}" style="font-size:13px; padding:2px 6px; border-radius:4px; display:inline-block">${c.dy}</div></div>
+        <div><div style="font-size:10px;color:var(--text-muted);font-weight:600">EV/EBIT</div><div class="${evEbitHm(c.evEbit)}" style="font-size:13px; padding:2px 6px; border-radius:4px; display:inline-block">${c.evEbit}</div></div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px;">
+        <div>
+          <div style="font-size:10px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:var(--green-strong); margin-bottom:8px">✅ Pontos Positivos</div>
+          <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.7; white-space:pre-line">${c.pontos_pos}</div>
+        </div>
+        <div>
+          <div style="font-size:10px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:var(--red-strong); margin-bottom:8px">⚠️ Pontos Negativos</div>
+          <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.7; white-space:pre-line">${c.pontos_neg}</div>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px;">
+        <div style="background:var(--surface2); border-radius:8px; padding:12px; border:1px solid var(--border);">
+          <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:var(--text-muted); margin-bottom:6px">📊 Fluxo de Caixa</div>
+          <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.6">${c.fco}</div>
+        </div>
+        <div style="background:var(--surface2); border-radius:8px; padding:12px; border:1px solid var(--border);">
+          <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:var(--text-muted); margin-bottom:6px">💰 Valuation / DCF</div>
+          <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.6">${c.dcf}</div>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:10px; padding:10px 14px; background:#1a1814; border-radius:8px; color:#fff;">
+        <span style="font-size:11px; font-weight:700; letter-spacing:0.5px; flex-shrink:0">🎯 ESTRATÉGIA:</span>
+        <span style="font-size:11.5px; opacity:0.85">${c.estrategiaDetalhe}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════
+// TAB NAVIGATION
+// ══════════════════════════════════════════════
+function switchTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  buildRanking();
+  buildHeatmap();
+  buildQuadro();
+  buildProjecoes();
+  buildTabelaMestra();
+  buildEmpresa();
+  
+  updateLastTime();
+  fetchAllPrices();
+  
+  // Auto-refresh every 5 minutes
+  setInterval(fetchAllPrices, 5 * 60 * 1000);
+});
+</script>
+</body>
+</html>

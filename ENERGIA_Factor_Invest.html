@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Factor Invest — Setor Energia Elétrica B3</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --surface: #f8f9fb;
+  --surface2: #f0f2f6;
+  --border: #e2e5ec;
+  --border-light: #eef0f5;
+  --text-primary: #0d1117;
+  --text-secondary: #4a5568;
+  --text-muted: #8a94a6;
+  --accent: #1a56db;
+  --accent-light: #ebf0ff;
+  --green-strong: #0d6b3a;
+  --green-strong-bg: #d1fae5;
+  --green: #15803d;
+  --green-bg: #dcfce7;
+  --yellow: #92400e;
+  --yellow-bg: #fef3c7;
+  --red: #991b1b;
+  --red-bg: #fee2e2;
+  --header-bg: #0d1117;
+  --header-text: #ffffff;
+  --tab-active: #1a56db;
+  --badge-transmissao: #ede9fe;
+  --badge-transmissao-text: #6d28d9;
+  --badge-distribuicao: #dbeafe;
+  --badge-distribuicao-text: #1d4ed8;
+  --badge-geracao: #fef3c7;
+  --badge-geracao-text: #92400e;
+  --badge-integrada: #f0fdf4;
+  --badge-integrada-text: #15803d;
+  --factor-2: #16a34a;
+  --factor-2-bg: #dcfce7;
+  --factor-1: #ca8a04;
+  --factor-1-bg: #fef9c3;
+  --factor-0: #dc2626;
+  --factor-0-bg: #fee2e2;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.08);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --transition: .18s ease;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-size: 13.5px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── HEADER ── */
+.page-header {
+  background: var(--header-bg);
+  color: var(--header-text);
+  padding: 22px 32px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+}
+.header-left { display: flex; flex-direction: column; gap: 4px; }
+.header-brand {
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.45);
+}
+.header-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -.01em;
+}
+.header-sub { font-size: 12px; color: rgba(255,255,255,.45); margin-top: 2px; }
+.header-right { display: flex; align-items: center; gap: 16px; }
+.market-badge {
+  display: flex; align-items: center; gap: 7px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: rgba(255,255,255,.75);
+  cursor: pointer;
+  transition: var(--transition);
+}
+.market-badge:hover { background: rgba(255,255,255,.12); }
+.market-dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; flex-shrink: 0; }
+.market-dot.closed { background: #ef4444; }
+.market-dot.open { animation: pulse-dot 1.4s infinite; }
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34,197,94,.6); }
+  50% { opacity: .85; box-shadow: 0 0 0 5px rgba(34,197,94,0); }
+}
+.refresh-time { font-size: 11px; color: rgba(255,255,255,.35); font-family: 'IBM Plex Mono', monospace; }
+
+/* ── TABS ── */
+.tabs-bar {
+  background: var(--bg);
+  border-bottom: 1.5px solid var(--border);
+  padding: 0 32px;
+  display: flex;
+  gap: 0;
+  position: sticky;
+  top: 74px;
+  z-index: 90;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tabs-bar::-webkit-scrollbar { display: none; }
+.tab-btn {
+  padding: 13px 20px 11px;
+  background: none;
+  border: none;
+  border-bottom: 2.5px solid transparent;
+  font-family: 'Inter', sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--transition);
+  margin-bottom: -1.5px;
+}
+.tab-btn:hover { color: var(--text-primary); }
+.tab-btn.active { color: var(--tab-active); border-bottom-color: var(--tab-active); font-weight: 600; }
+
+/* ── CONTENT ── */
+.content { padding: 28px 32px; max-width: 1600px; margin: 0 auto; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── SECTION TITLE ── */
+.section-header {
+  margin-bottom: 20px;
+}
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -.01em;
+}
+.section-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ── TABLES ── */
+.table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1.5px solid var(--border); box-shadow: var(--shadow-sm); }
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1.5px solid var(--border);
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+}
+thead th.num { text-align: right; }
+tbody tr { transition: background var(--transition); }
+tbody tr:hover { background: var(--surface); }
+tbody tr:not(:last-child) td { border-bottom: 1px solid var(--border-light); }
+td {
+  padding: 10px 14px;
+  font-size: 12.5px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+td.num { text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
+td.rank { font-family: 'IBM Plex Mono', monospace; font-weight: 600; color: var(--text-muted); font-size: 11px; width: 36px; }
+.ticker-chip {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 3px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.subsector-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 9px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.sub-trans { background: var(--badge-transmissao); color: var(--badge-transmissao-text); }
+.sub-dist { background: var(--badge-distribuicao); color: var(--badge-distribuicao-text); }
+.sub-ger { background: var(--badge-geracao); color: var(--badge-geracao-text); }
+.sub-int { background: var(--badge-integrada); color: var(--badge-integrada-text); }
+.verdict-chip {
+  display: inline-flex; align-items: center;
+  font-size: 11px; font-weight: 600;
+  padding: 3px 9px; border-radius: 20px;
+  white-space: nowrap;
+}
+.v-compra-forte { background: var(--green-strong-bg); color: var(--green-strong); }
+.v-compra       { background: var(--green-bg); color: var(--green); }
+.v-neutro       { background: var(--yellow-bg); color: var(--yellow); }
+.v-venda        { background: var(--red-bg); color: var(--red); }
+.score-chip {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 6px;
+}
+.score-a { background: var(--green-strong-bg); color: var(--green-strong); }
+.score-b { background: var(--green-bg); color: var(--green); }
+.score-c { background: var(--yellow-bg); color: var(--yellow); }
+.score-d { background: var(--red-bg); color: var(--red); }
+.upside-pos { color: #16a34a; font-weight: 600; }
+.upside-neg { color: #dc2626; font-weight: 600; }
+.upside-neu { color: var(--text-secondary); font-weight: 500; }
+
+/* live price */
+.live-price {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  font-size: 12.5px;
+  color: var(--text-primary);
+  display: flex; align-items: center; gap: 5px;
+}
+.live-price .loading { color: var(--text-muted); font-style: italic; font-size: 11px; }
+.price-up { color: #16a34a; }
+.price-down { color: #dc2626; }
+
+/* dynamic signal */
+.signal-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 600;
+  padding: 3px 9px; border-radius: 20px;
+}
+.sig-compra-forte { background: #d1fae5; color: #065f46; }
+.sig-compra       { background: #dcfce7; color: #15803d; }
+.sig-justo        { background: #fef3c7; color: #92400e; }
+.sig-atencao      { background: #ffedd5; color: #9a3412; }
+.sig-caro         { background: #fee2e2; color: #991b1b; }
+
+/* ── HEATMAP ── */
+.heatmap-section { margin-bottom: 36px; }
+.subsector-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  padding: 10px 16px;
+  background: var(--surface);
+  border-radius: var(--radius) var(--radius) 0 0;
+  border: 1.5px solid var(--border);
+  border-bottom: none;
+  letter-spacing: .01em;
+}
+.heatmap-wrap { overflow-x: auto; border: 1.5px solid var(--border); border-radius: 0 0 var(--radius) var(--radius); box-shadow: var(--shadow-sm); }
+.heatmap-wrap table { }
+.heatmap-wrap th.indicator-col { min-width: 260px; background: var(--surface); position: sticky; left: 0; z-index: 5; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+.heatmap-wrap th.ticker-head {
+  min-width: 100px; text-align: center;
+  background: var(--surface);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; line-height: 1.4;
+}
+.heatmap-wrap td.indicator-name {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  background: var(--surface);
+  position: sticky; left: 0; z-index: 4;
+  padding: 8px 14px;
+  border-right: 1px solid var(--border);
+}
+.heatmap-wrap td.total-row {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 700;
+  font-size: 12px;
+  background: var(--surface2);
+  text-align: center;
+}
+.factor-cell {
+  text-align: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 700;
+  font-size: 12px;
+  min-width: 72px;
+  padding: 8px 10px;
+}
+.f2 { background: var(--factor-2-bg); color: var(--factor-2); }
+.f1 { background: var(--factor-1-bg); color: var(--factor-1); }
+.f0 { background: var(--factor-0-bg); color: var(--factor-0); }
+.factor-total {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 700; font-size: 13px; text-align: center;
+  padding: 8px 10px;
+}
+.ft-a { background: var(--green-strong-bg); color: var(--green-strong); }
+.ft-b { background: var(--green-bg); color: var(--green); }
+.ft-c { background: var(--yellow-bg); color: var(--yellow); }
+.ft-d { background: var(--red-bg); color: var(--red); }
+
+/* ── QUADRO DECISÓRIO ── */
+.quadro-section { margin-bottom: 36px; }
+.quadro-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 18px;
+  background: var(--header-bg);
+  border-radius: var(--radius) var(--radius) 0 0;
+  border: 1.5px solid #2d3748;
+}
+.quadro-header-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px; font-weight: 700;
+  color: #e2e8f0;
+}
+.quadro-table-wrap { overflow-x: auto; border: 1.5px solid var(--border); border-top: none; border-radius: 0 0 var(--radius) var(--radius); }
+
+/* ── PROJEÇÕES ── */
+.proj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.proj-card {
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+.proj-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.proj-card-header {
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--border-light);
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;
+}
+.proj-card-ticker { font-family: 'IBM Plex Mono', monospace; font-weight: 700; font-size: 14px; color: var(--accent); }
+.proj-card-name { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
+.proj-card-score { flex-shrink: 0; }
+.proj-card-body { padding: 14px 16px; }
+.proj-prices {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin-bottom: 12px;
+}
+.proj-price-item label {
+  font-size: 10px; font-weight: 600; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 3px;
+}
+.proj-price-item .val {
+  font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 14px;
+}
+.proj-scenarios { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
+.proj-scenario {
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  text-align: center;
+}
+.proj-scenario label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; display: block; margin-bottom: 4px; }
+.proj-scenario .target { font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 12px; }
+.proj-scenario .ret { font-size: 11px; font-weight: 600; margin-top: 2px; }
+.sc-pessimista { background: #fff7ed; }
+.sc-pessimista label { color: #9a3412; }
+.sc-realista { background: #f0fdf4; }
+.sc-realista label { color: #15803d; }
+.sc-otimista { background: #eff6ff; }
+.sc-otimista label { color: #1d4ed8; }
+.proj-note { font-size: 11px; color: var(--text-muted); margin-top: 10px; font-style: italic; line-height: 1.5; }
+
+/* ── ANÁLISE POR EMPRESA ── */
+.empresa-accordion { border: 1.5px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 10px; box-shadow: var(--shadow-sm); }
+.empresa-acc-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px;
+  background: var(--surface);
+  cursor: pointer;
+  transition: background var(--transition);
+  user-select: none;
+  gap: 12px;
+}
+.empresa-acc-header:hover { background: var(--surface2); }
+.empresa-acc-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+.empresa-acc-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.empresa-acc-title { font-family: 'IBM Plex Mono', monospace; font-weight: 700; font-size: 13.5px; }
+.empresa-acc-sub { font-size: 11.5px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.empresa-acc-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.acc-chevron { color: var(--text-muted); font-size: 16px; transition: transform .2s; }
+.empresa-accordion.open .acc-chevron { transform: rotate(180deg); }
+.empresa-acc-body { display: none; padding: 20px 18px; border-top: 1.5px solid var(--border); background: #fff; }
+.empresa-accordion.open .empresa-acc-body { display: block; }
+.empresa-kpis { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+.kpi-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 13px;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.kpi-label { font-size: 10px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--text-muted); }
+.kpi-value { font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 13.5px; }
+.empresa-sections { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 780px) { .empresa-sections { grid-template-columns: 1fr; } }
+.empresa-section { background: var(--surface); border-radius: var(--radius-sm); padding: 14px 16px; }
+.empresa-section h4 {
+  font-size: 11.5px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .07em;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 6px;
+}
+.empresa-section p { font-size: 12.5px; color: var(--text-secondary); line-height: 1.65; }
+.empresa-section ul { list-style: none; padding: 0; }
+.empresa-section ul li { font-size: 12.5px; color: var(--text-secondary); padding: 3px 0; line-height: 1.5; border-bottom: 1px solid var(--border-light); }
+.empresa-section ul li:last-child { border-bottom: none; }
+.empresa-estrategia {
+  background: var(--accent-light);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 12px 16px; margin-top: 16px;
+  font-size: 12.5px; color: var(--text-primary); font-weight: 500;
+}
+
+/* ── TABELA MESTRA ── */
+.tabela-note { font-size: 11.5px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.6; }
+
+/* ── LEGEND ── */
+.legend-bar {
+  display: flex; flex-wrap: wrap; gap: 12px;
+  padding: 14px 18px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+}
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 500; }
+.legend-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: #c5cbd6; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #8a94a6; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 700px) {
+  .page-header { padding: 14px 16px; }
+  .tabs-bar { padding: 0 12px; }
+  .content { padding: 18px 12px; }
+  .proj-grid { grid-template-columns: 1fr; }
+}
+.info-footnote {
+  font-size: 11px; color: var(--text-muted);
+  border-top: 1px solid var(--border-light);
+  padding-top: 14px; margin-top: 8px;
+  line-height: 1.7;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="page-header">
+  <div class="header-left">
+    <span class="header-brand">Factor Invest · B3</span>
+    <h1 class="header-title">⚡ Setor Energia Elétrica</h1>
+    <div class="header-sub">27 empresas analisadas · Market View 28/03/2026</div>
+  </div>
+  <div class="header-right">
+    <div class="market-badge" onclick="refreshAllPrices()">
+      <span class="market-dot" id="market-dot"></span>
+      <span id="market-status-label">Verificando...</span>
+    </div>
+    <div class="refresh-time" id="refresh-time">—</div>
+  </div>
+</header>
+
+<!-- TABS -->
+<nav class="tabs-bar">
+  <button class="tab-btn active" onclick="switchTab('ranking',this)">🏆 Ranking</button>
+  <button class="tab-btn" onclick="switchTab('heatmap',this)">🔍 Factor Invest</button>
+  <button class="tab-btn" onclick="switchTab('quadro',this)">🎯 Quadro Decisório</button>
+  <button class="tab-btn" onclick="switchTab('projecoes',this)">💰 Projeções</button>
+  <button class="tab-btn" onclick="switchTab('tabela',this)">📊 Tabela Mestra</button>
+  <button class="tab-btn" onclick="switchTab('analise',this)">📋 Análise por Empresa</button>
+</nav>
+
+<main class="content">
+
+<!-- ═══════════════ TAB 1: RANKING ═══════════════ -->
+<section class="tab-panel active" id="tab-ranking">
+  <div class="section-header">
+    <div class="section-title">Ranking Factor Invest — Setor Energia Elétrica B3</div>
+    <div class="section-sub">Ordenado por Pontuação Factor Invest Total (maior = melhor oportunidade de compra) · Todos os 27 ativos do setor</div>
+  </div>
+  <div class="legend-bar">
+    <div class="legend-item"><span class="legend-dot" style="background:#d1fae5;border:1.5px solid #16a34a"></span> Compra Forte ≥20</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#dcfce7;border:1.5px solid #22c55e"></span> Compra 16–19</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#fef3c7;border:1.5px solid #ca8a04"></span> Neutro 12–15</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#fee2e2;border:1.5px solid #dc2626"></span> Venda/Evitar &lt;12</div>
+  </div>
+  <div class="table-wrap">
+    <table id="ranking-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Ticker</th>
+          <th>Nome</th>
+          <th>Sub-Setor</th>
+          <th class="num">Preço Atual</th>
+          <th class="num">P. Justo</th>
+          <th>Classif. FV</th>
+          <th class="num">Upside FV</th>
+          <th class="num">ROIC</th>
+          <th class="num">ROA</th>
+          <th class="num">ROE</th>
+          <th class="num">P/L</th>
+          <th class="num">EV/EBIT</th>
+          <th class="num">Div.Yield</th>
+          <th class="num">Dív/Ativo</th>
+          <th class="num">Retorno 1A</th>
+          <th>Veredicto</th>
+          <th>Pontuação</th>
+        </tr>
+      </thead>
+      <tbody id="ranking-tbody"></tbody>
+    </table>
+  </div>
+  <div class="info-footnote">⚡ Preços atualizados via Brapi.dev (B3 tempo real). Demais indicadores: Market View 28/03/2026. Upside recalculado automaticamente conforme cotação atual.</div>
+</section>
+
+<!-- ═══════════════ TAB 2: HEATMAP ═══════════════ -->
+<section class="tab-panel" id="tab-heatmap">
+  <div class="section-header">
+    <div class="section-title">Factor Invest Detalhado — Heatmap por Indicador</div>
+    <div class="section-sub">Empresas ordenadas por ranking dentro do sub-setor · 13 fatores avaliados (2 pts cada = 26 pts máx)</div>
+  </div>
+  <div class="legend-bar">
+    <div class="legend-item"><span class="legend-dot" style="background:var(--factor-2-bg);border:1.5px solid var(--factor-2)"></span> 2 pts — Forte (acima da média)</div>
+    <div class="legend-item"><span class="legend-dot" style="background:var(--factor-1-bg);border:1.5px solid var(--factor-1)"></span> 1 pt — Neutro (na média)</div>
+    <div class="legend-item"><span class="legend-dot" style="background:var(--factor-0-bg);border:1.5px solid var(--factor-0)"></span> 0 pt — Fraco (abaixo da média)</div>
+  </div>
+  <div id="heatmap-container"></div>
+</section>
+
+<!-- ═══════════════ TAB 3: QUADRO DECISÓRIO ═══════════════ -->
+<section class="tab-panel" id="tab-quadro">
+  <div class="section-header">
+    <div class="section-title">Quadro Decisório Final — Setor Energia Elétrica B3</div>
+    <div class="section-sub">Ranking integrado: Factor Invest + Saúde Financeira + DCF + Valuation + Momento · Separado por Sub-Setor · Upside calculado em tempo real</div>
+  </div>
+  <div id="quadro-container"></div>
+  <div class="info-footnote">📡 Cotações via Brapi.dev · Atualização automática · Preço Justo = Valor Intrínseco calculado pelo Factor Invest · Sinal Dinâmico: &gt;20% COMPRA FORTE | 5–20% COMPRA | ±5% JUSTO | -5% a -15% ATENÇÃO | &lt;-15% CARO</div>
+</section>
+
+<!-- ═══════════════ TAB 4: PROJEÇÕES ═══════════════ -->
+<section class="tab-panel" id="tab-projecoes">
+  <div class="section-header">
+    <div class="section-title">Projeções Fundamentalistas — DCF & Cenários</div>
+    <div class="section-sub">WACC setorial: 9.0% (Dist./Transm.) / 9.5% (Geração/Integ.) · Beta médio: 0.31 · Cenários vs Preço Justo do modelo</div>
+  </div>
+  <div class="proj-grid" id="proj-grid"></div>
+  <div class="info-footnote">Estimativas baseadas nos dados Market View 28/03/2026 + análise fundamentalista. Cenários: Pessimista = PJ – 20% · Realista = PJ do modelo · Otimista = PJ + 20%</div>
+</section>
+
+<!-- ═══════════════ TAB 5: TABELA MESTRA ═══════════════ -->
+<section class="tab-panel" id="tab-tabela">
+  <div class="section-header">
+    <div class="section-title">Tabela Mestra — Comparativo Completo</div>
+    <div class="section-sub">Energia Elétrica B3 · 28/03/2026 + Investing.com</div>
+  </div>
+  <div id="tabela-container"></div>
+</section>
+
+<!-- ═══════════════ TAB 6: ANÁLISE POR EMPRESA ═══════════════ -->
+<section class="tab-panel" id="tab-analise">
+  <div class="section-header">
+    <div class="section-title">Análise Fundamentalista Individual</div>
+    <div class="section-sub">Saúde Financeira, Valuation & Veredicto por empresa</div>
+  </div>
+  <div id="analise-container"></div>
+</section>
+
+</main>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════════════════════
+
+const TICKERS_MAP = {
+  TAEE3:{name:'TAESA',sub:'trans'},EQPA3:{name:'Equatorial Pará',sub:'dist'},CMIG4:{name:'Cemig PN',sub:'int'},
+  GEPA3:{name:'Paranapanema Energia',sub:'ger'},CEEB3:{name:'Coelba',sub:'dist'},CPFE3:{name:'CPFL Energia',sub:'dist'},
+  CLSC3:{name:'Celesc',sub:'int'},ALUP11:{name:'Alupar Investimento',sub:'trans'},NEOE3:{name:'Neoenergia',sub:'dist'},
+  EGIE3:{name:'Engie Brasil Energia',sub:'ger'},AFLT3:{name:'Afluente Transmissão',sub:'trans'},REDE3:{name:'Rede Energia',sub:'dist'},
+  ENMT3:{name:'Energisa MT',sub:'dist'},ENGI11:{name:'Energisa',sub:'dist'},CBEE3:{name:'Ampla Energia',sub:'dist'},
+  ENEV3:{name:'Eneva',sub:'ger'},ISAE3:{name:'ISA Energia Brasil',sub:'trans'},CPLE3:{name:'Copel',sub:'dist'},
+  COCE3:{name:'Coelce',sub:'dist'},AXIA3:{name:'Eletrobras',sub:'int'},ENGI3:{name:'Energisa ON',sub:'int'},
+  EQTL3:{name:'Equatorial Energia',sub:'dist'},LIGT3:{name:'Light',sub:'dist'},EMAE3:{name:'EMAE',sub:'ger'},
+  AURE3:{name:'Auren Energia',sub:'ger'},RNEW3:{name:'Renova Energia',sub:'ger'},RIOS3:{name:'Rio Alto Energias',sub:'ger'}
+};
+
+const RANKING_DATA = [
+  {rank:1,ticker:'TAEE3',pj:16.65,classifFV:'Barato',upsideFV:'21.8%',roic:'10.4%',roa:'7.4%',roe:'21.7%',pl:'9.0x',evEbit:'9.2x',dy:'4.8%',divAtivo:'44.0%',ret1a:'33.6%',veredicto:'COMPRA FORTE',score:'20/26'},
+  {rank:2,ticker:'EQPA3',pj:9.21,classifFV:'Barato',upsideFV:'31.9%',roic:'15.8%',roa:'8.4%',roe:'33.2%',pl:'9.4x',evEbit:'8.3x',dy:'9.4%',divAtivo:'39.6%',ret1a:'20.0%',veredicto:'COMPRA FORTE',score:'20/26'},
+  {rank:3,ticker:'CMIG4',pj:13.41,classifFV:'Justo',upsideFV:'8.8%',roic:'12.2%',roa:'7.7%',roe:'17.5%',pl:'8.0x',evEbit:'8.4x',dy:'13.7%',divAtivo:'33.6%',ret1a:'25.0%',veredicto:'COMPRA FORTE',score:'20/26'},
+  {rank:4,ticker:'GEPA3',pj:38.73,classifFV:'Justo',upsideFV:'17.4%',roic:'12.9%',roa:'6.7%',roe:'17.7%',pl:'13.2x',evEbit:'11.1x',dy:'29.5%',divAtivo:'28.8%',ret1a:'15.0%',veredicto:'COMPRA',score:'19/26'},
+  {rank:5,ticker:'CEEB3',pj:56.22,classifFV:'Justo',upsideFV:'17.3%',roic:'13.8%',roa:'5.8%',roe:'25.6%',pl:'6.3x',evEbit:'7.2x',dy:'13.6%',divAtivo:'62.7%',ret1a:'25.0%',veredicto:'COMPRA',score:'19/26'},
+  {rank:6,ticker:'CPFE3',pj:45.70,classifFV:'Justo',upsideFV:'-2.5%',roic:'14.2%',roa:'7.3%',roe:'25.4%',pl:'9.8x',evEbit:'7.7x',dy:'2.3%',divAtivo:'38.3%',ret1a:'35.3%',veredicto:'COMPRA',score:'18/26'},
+  {rank:7,ticker:'CLSC3',pj:140.82,classifFV:'Justo',upsideFV:'9.9%',roic:'11.8%',roa:'5.2%',roe:'19.1%',pl:'7.6x',evEbit:'7.2x',dy:'7.2%',divAtivo:'46.3%',ret1a:'20.0%',veredicto:'COMPRA',score:'17/26'},
+  {rank:8,ticker:'ALUP11',pj:33.85,classifFV:'Justo',upsideFV:'-2.4%',roic:'9.4%',roa:'5.5%',roe:'14.3%',pl:'9.4x',evEbit:'8.5x',dy:'3.1%',divAtivo:'46.0%',ret1a:'26.6%',veredicto:'COMPRA',score:'16/26'},
+  {rank:9,ticker:'NEOE3',pj:27.87,classifFV:'Justo',upsideFV:'-16.3%',roic:'10.3%',roa:'4.4%',roe:'14.6%',pl:'8.0x',evEbit:'7.9x',dy:'7.1%',divAtivo:'59.3%',ret1a:'76.1%',veredicto:'COMPRA',score:'16/26'},
+  {rank:10,ticker:'EGIE3',pj:33.62,classifFV:'Justo',upsideFV:'6.6%',roic:'10.9%',roa:'5.4%',roe:'21.8%',pl:'13.9x',evEbit:'11.3x',dy:'2.3%',divAtivo:'44.6%',ret1a:'22.1%',veredicto:'NEUTRO',score:'15/26'},
+  {rank:11,ticker:'AFLT3',pj:6.35,classifFV:'Justo',upsideFV:'-13.0%',roic:'10.0%',roa:'6.9%',roe:'9.5%',pl:'19.3x',evEbit:'14.2x',dy:'5.2%',divAtivo:'11.1%',ret1a:'5.0%',veredicto:'NEUTRO',score:'15/26'},
+  {rank:12,ticker:'REDE3',pj:5.81,classifFV:'Justo',upsideFV:'-7.8%',roic:'13.6%',roa:'6.1%',roe:'30.8%',pl:'11.4x',evEbit:'8.7x',dy:'7.4%',divAtivo:'50.4%',ret1a:'15.0%',veredicto:'NEUTRO',score:'15/26'},
+  {rank:13,ticker:'ENMT3',pj:46.92,classifFV:'Justo',upsideFV:'1.7%',roic:'12.4%',roa:'5.9%',roe:'21.3%',pl:'12.6x',evEbit:'10.9x',dy:'8.4%',divAtivo:'44.2%',ret1a:'20.0%',veredicto:'NEUTRO',score:'15/26'},
+  {rank:14,ticker:'ENGI11',pj:44.62,classifFV:'Justo',upsideFV:'-10.4%',roic:'8.3%',roa:'3.9%',roe:'14.5%',pl:'7.8x',evEbit:'8.3x',dy:'6.6%',divAtivo:'70.4%',ret1a:'25.9%',veredicto:'NEUTRO',score:'14/26'},
+  {rank:15,ticker:'CBEE3',pj:12.14,classifFV:'Barato',upsideFV:'21.6%',roic:'7.0%',roa:'-0.0%',roe:'-0.1%',pl:'NM',evEbit:'7.5x',dy:'4.2%',divAtivo:'50.1%',ret1a:'10.0%',veredicto:'NEUTRO',score:'14/26'},
+  {rank:16,ticker:'ENEV3',pj:29.77,classifFV:'Barato',upsideFV:'24.5%',roic:'6.3%',roa:'3.1%',roe:'8.1%',pl:'39.5x',evEbit:'18.8x',dy:'0.0%',divAtivo:'33.4%',ret1a:'20.0%',veredicto:'NEUTRO',score:'13/26'},
+  {rank:17,ticker:'ISAE3',pj:38.58,classifFV:'Justo',upsideFV:'12.8%',roic:'8.9%',roa:'5.5%',roe:'12.1%',pl:'8.2x',evEbit:'8.3x',dy:'4.4%',divAtivo:'44.1%',ret1a:'20.0%',veredicto:'NEUTRO',score:'13/26'},
+  {rank:18,ticker:'CPLE3',pj:14.36,classifFV:'Justo',upsideFV:'-4.1%',roic:'9.0%',roa:'4.6%',roe:'11.0%',pl:'16.6x',evEbit:'12.0x',dy:'3.7%',divAtivo:'31.5%',ret1a:'84.0%',veredicto:'NEUTRO',score:'13/26'},
+  {rank:19,ticker:'COCE3',pj:38.24,classifFV:'Justo',upsideFV:'0.6%',roic:'10.6%',roa:'2.6%',roe:'7.6%',pl:'7.7x',evEbit:'6.4x',dy:'3.6%',divAtivo:'66.3%',ret1a:'15.0%',veredicto:'NEUTRO',score:'13/26'},
+  {rank:20,ticker:'AXIA3',pj:59.01,classifFV:'Justo',upsideFV:'5.4%',roic:'2.4%',roa:'2.3%',roe:'5.5%',pl:'24.3x',evEbit:'30.5x',dy:'8.1%',divAtivo:'33.2%',ret1a:'80.9%',veredicto:'NEUTRO',score:'13/26'},
+  {rank:21,ticker:'ENGI3',pj:11.64,classifFV:'Justo',upsideFV:'-5.1%',roic:'8.3%',roa:'3.9%',roe:'14.5%',pl:'7.8x',evEbit:'8.3x',dy:'5.3%',divAtivo:'70.4%',ret1a:'25.0%',veredicto:'NEUTRO',score:'13/26'},
+  {rank:22,ticker:'EQTL3',pj:63.89,classifFV:'Pechincha',upsideFV:'63.5%',roic:'8.0%',roa:'2.1%',roe:'8.0%',pl:'40.7x',evEbit:'12.0x',dy:'1.3%',divAtivo:'0.0%',ret1a:'35.2%',veredicto:'NEUTRO',score:'12/26'},
+  {rank:23,ticker:'LIGT3',pj:6.45,classifFV:'Barato',upsideFV:'39.9%',roic:'6.1%',roa:'0.8%',roe:'4.0%',pl:'8.1x',evEbit:'8.5x',dy:'0.0%',divAtivo:'85.4%',ret1a:'10.0%',veredicto:'NEUTRO',score:'12/26'},
+  {rank:24,ticker:'EMAE3',pj:107.30,classifFV:'Caro',upsideFV:'-28.5%',roic:'-2.7%',roa:'13.8%',roe:'23.4%',pl:'9.8x',evEbit:'-56.9x',dy:'0.0%',divAtivo:'0.1%',ret1a:'5.0%',veredicto:'VENDA',score:'11/26'},
+  {rank:25,ticker:'AURE3',pj:12.74,classifFV:'Justo',upsideFV:'11.1%',roic:'3.3%',roa:'-1.1%',roe:'-3.9%',pl:'-18.2x',evEbit:'15.1x',dy:'0.5%',divAtivo:'64.9%',ret1a:'15.0%',veredicto:'VENDA',score:'10/26'},
+  {rank:26,ticker:'RNEW3',pj:1.25,classifFV:'Justo',upsideFV:'14.7%',roic:'-5.5%',roa:'-5.6%',roe:'-15.9%',pl:'-2.4x',evEbit:'-7.8x',dy:'0.0%',divAtivo:'64.6%',ret1a:'-20.0%',veredicto:'VENDA',score:'8/26'},
+  {rank:27,ticker:'RIOS3',pj:20.52,classifFV:'Caro',upsideFV:'-32.7%',roic:'0.0%',roa:'-22.7%',roe:'0.0%',pl:'-4.6x',evEbit:'-59.9x',dy:'0.0%',divAtivo:'45.1%',ret1a:'-10.0%',veredicto:'VENDA',score:'5/26'},
+];
+
+const HEATMAP_DATA = {
+  geracao: {
+    label: '⚡ GERAÇÃO',
+    headers: [{rank:4,ticker:'GEPA3',score:'19/26'},{rank:10,ticker:'EGIE3',score:'15/26'},{rank:16,ticker:'ENEV3',score:'13/26'},{rank:24,ticker:'EMAE3',score:'11/26'},{rank:25,ticker:'AURE3',score:'10/26'},{rank:26,ticker:'RNEW3',score:'8/26'},{rank:27,ticker:'RIOS3',score:'5/26'}],
+    factors:[
+      {name:'ROIC (>10%=2 | 6-10%=1 | <6%=0)',vals:[2,2,1,0,0,0,0]},
+      {name:'ROA (>6%=2 | 3-6%=1 | <3%=0)',vals:[2,1,1,2,0,0,0]},
+      {name:'ROE (>15%=2 | 8-15%=1 | <8%=0)',vals:[2,2,1,2,0,0,0]},
+      {name:'P/L (<10x=2 | 10-20x=1 | >20x=0)',vals:[1,1,0,2,0,0,0]},
+      {name:'EV/EBIT (<8x=2 | 8-15x=1 | >15x=0)',vals:[1,1,0,0,0,0,0]},
+      {name:'Dividend Yield (>6%=2 | 3-6%=1 | <3%=0)',vals:[2,0,0,0,0,0,0]},
+      {name:'Preço/FCO (<10x=2 | 10-20x=1 | >20x=0)',vals:[2,1,2,0,2,1,0]},
+      {name:'Preço/Book (<1.5x=2 | 1.5-3x=1 | >3x=0)',vals:[1,1,1,1,2,2,2]},
+      {name:'Dívida/Ativo (<40%=2 | 40-65%=1 | >65%=0)',vals:[2,1,2,2,1,1,1]},
+      {name:'Cresc. Dívida (<5%=2 | 5-20%=1 | >20%=0)',vals:[0,2,0,2,2,2,2]},
+      {name:'Upside Preço Justo (>15%=2 | 5-15%=1 | <5%=0)',vals:[2,1,2,0,1,1,0]},
+      {name:'Classificação FV (Pechincha/Barato=2 | Justo=1 | Caro=0)',vals:[1,1,2,0,1,1,0]},
+      {name:'Momentum 1 Ano (>30%=2 | 10-30%=1 | <10%=0)',vals:[1,1,1,0,1,0,0]},
+    ],
+    totals:['19/26','15/26','13/26','11/26','10/26','8/26','5/26']
+  },
+  transmissao: {
+    label: '🔗 TRANSMISSÃO',
+    headers: [{rank:1,ticker:'TAEE3',score:'20/26'},{rank:8,ticker:'ALUP11',score:'16/26'},{rank:11,ticker:'AFLT3',score:'15/26'},{rank:17,ticker:'ISAE3',score:'13/26'}],
+    factors:[
+      {name:'ROIC (>10%=2 | 6-10%=1 | <6%=0)',vals:[2,1,1,1]},
+      {name:'ROA (>6%=2 | 3-6%=1 | <3%=0)',vals:[2,1,2,1]},
+      {name:'ROE (>15%=2 | 8-15%=1 | <8%=0)',vals:[2,1,1,1]},
+      {name:'P/L (<10x=2 | 10-20x=1 | >20x=0)',vals:[2,2,1,2]},
+      {name:'EV/EBIT (<8x=2 | 8-15x=1 | >15x=0)',vals:[1,1,1,1]},
+      {name:'Dividend Yield (>6%=2 | 3-6%=1 | <3%=0)',vals:[1,1,1,1]},
+      {name:'Preço/FCO (<10x=2 | 10-20x=1 | >20x=0)',vals:[2,2,2,0]},
+      {name:'Preço/Book (<1.5x=2 | 1.5-3x=1 | >3x=0)',vals:[1,2,1,2]},
+      {name:'Dívida/Ativo (<40%=2 | 40-65%=1 | >65%=0)',vals:[1,1,2,1]},
+      {name:'Cresc. Dívida (<5%=2 | 5-20%=1 | >20%=0)',vals:[0,2,2,0]},
+      {name:'Upside Preço Justo (>15%=2 | 5-15%=1 | <5%=0)',vals:[2,0,0,1]},
+      {name:'Classificação FV (Pechincha/Barato=2 | Justo=1 | Caro=0)',vals:[2,1,1,1]},
+      {name:'Momentum 1 Ano (>30%=2 | 10-30%=1 | <10%=0)',vals:[2,1,0,1]},
+    ],
+    totals:['20/26','16/26','15/26','13/26']
+  },
+  distribuicao: {
+    label: '🏘️ DISTRIBUIÇÃO',
+    headers: [{rank:2,ticker:'EQPA3',score:'20/26'},{rank:5,ticker:'CEEB3',score:'19/26'},{rank:6,ticker:'CPFE3',score:'18/26'},{rank:9,ticker:'NEOE3',score:'16/26'},{rank:12,ticker:'REDE3',score:'15/26'},{rank:13,ticker:'ENMT3',score:'15/26'},{rank:14,ticker:'ENGI11',score:'14/26'},{rank:15,ticker:'CBEE3',score:'14/26'},{rank:18,ticker:'CPLE3',score:'13/26'},{rank:19,ticker:'COCE3',score:'13/26'},{rank:22,ticker:'EQTL3',score:'12/26'},{rank:23,ticker:'LIGT3',score:'12/26'}],
+    factors:[
+      {name:'ROIC',vals:[2,2,2,2,2,2,1,1,1,2,1,1]},
+      {name:'ROA',vals:[2,1,2,1,2,1,1,0,1,0,0,0]},
+      {name:'ROE',vals:[2,2,2,1,2,2,1,0,1,0,0,0]},
+      {name:'P/L',vals:[2,2,2,2,1,1,2,0,1,2,0,2]},
+      {name:'EV/EBIT',vals:[1,2,2,2,1,1,1,2,1,2,1,1]},
+      {name:'Dividend Yield',vals:[2,2,0,2,2,2,2,1,1,1,0,0]},
+      {name:'Preço/FCO',vals:[2,2,2,0,2,2,2,2,1,2,1,2]},
+      {name:'Preço/Book',vals:[0,1,1,2,0,1,2,2,1,2,1,2]},
+      {name:'Dívida/Ativo',vals:[2,1,2,1,1,1,0,1,2,0,2,0]},
+      {name:'Cresc. Dívida',vals:[0,0,0,0,0,0,0,1,0,0,0,0]},
+      {name:'Upside PJ',vals:[2,2,0,0,0,0,0,2,0,0,2,2]},
+      {name:'Classificação FV',vals:[2,1,1,1,1,1,1,2,1,1,2,2]},
+      {name:'Momentum 1A',vals:[1,1,2,2,1,1,1,0,2,1,2,0]},
+    ],
+    totals:['20/26','19/26','18/26','16/26','15/26','15/26','14/26','14/26','13/26','13/26','12/26','12/26']
+  },
+  integradas: {
+    label: '🏭 INTEGRADAS',
+    headers: [{rank:3,ticker:'CMIG4',score:'20/26'},{rank:7,ticker:'CLSC3',score:'17/26'},{rank:20,ticker:'AXIA3',score:'13/26'},{rank:21,ticker:'ENGI3',score:'13/26'}],
+    factors:[
+      {name:'ROIC',vals:[2,2,0,1]},
+      {name:'ROA',vals:[2,1,0,1]},
+      {name:'ROE',vals:[2,2,0,1]},
+      {name:'P/L',vals:[2,2,0,2]},
+      {name:'EV/EBIT',vals:[1,2,0,1]},
+      {name:'Dividend Yield',vals:[2,2,2,1]},
+      {name:'Preço/FCO',vals:[2,0,1,2]},
+      {name:'Preço/Book',vals:[2,2,2,2]},
+      {name:'Dívida/Ativo',vals:[2,1,2,0]},
+      {name:'Cresc. Dívida',vals:[0,0,2,0]},
+      {name:'Upside PJ',vals:[1,1,1,0]},
+      {name:'Classificação FV',vals:[1,1,1,1]},
+      {name:'Momentum 1A',vals:[1,1,2,1]},
+    ],
+    totals:['20/26','17/26','13/26','13/26']
+  }
+};
+
+const QUADRO_DATA = {
+  geracao: {
+    label:'⚡ GERAÇÃO',
+    rows:[
+      {rank:1,ticker:'GEPA3',nome:'Paranapanema Energia',score:'19/26',veredicto:'COMPRA',momento:'MOMENTO: MONITORAR',precoFV:'Justo +17.4%',estrategia:'Compra gradual · Stop R$28.71 · Alvo R$38.73 (PJ)',precoBase:33,pj:38.73},
+      {rank:2,ticker:'EGIE3',nome:'Engie Brasil Energia',score:'15/26',veredicto:'NEUTRO',momento:'MOMENTO: NÃO RECOMENDADO',precoFV:'Justo +6.6%',estrategia:'Monitorar — entrada somente em correção >10%',precoBase:33.28,pj:33.62},
+      {rank:3,ticker:'ENEV3',nome:'Eneva',score:'13/26',veredicto:'NEUTRO',momento:'MOMENTO: NÃO RECOMENDADO',precoFV:'Barato +24.5%',estrategia:'Monitorar — entrada somente em correção >10%',precoBase:24.88,pj:29.77},
+      {rank:4,ticker:'EMAE3',nome:'EMAE',score:'11/26',veredicto:'VENDA',momento:'MOMENTO: NÃO RECOMENDADO',precoFV:'Caro -28.5%',estrategia:'EVITAR ou zerar posição · Aguardar melhora de fundamentos',precoBase:150,pj:107.3},
+      {rank:5,ticker:'AURE3',nome:'Auren Energia',score:'10/26',veredicto:'VENDA',momento:'MOMENTO: NÃO RECOMENDADO',precoFV:'Justo +11.1%',estrategia:'EVITAR ou zerar posição · Aguardar melhora de fundamentos',precoBase:12.57,pj:12.74},
+      {rank:6,ticker:'RNEW3',nome:'Renova Energia',score:'8/26',veredicto:'VENDA',momento:'MOMENTO: NÃO RECOMENDADO',precoFV:'Justo +14.7%',estrategia:'EVITAR ou zerar posição · Aguardar melhora de fundamentos',precoBase:1.08,pj:1.25},
+      {rank:7,ticker:'RIOS3',nome:'Rio Alto Energias',score:'5/26',veredicto:'VENDA',momento:'MOMENTO: NÃO RECOMENDADO',precoFV:'Caro -32.7%',estrategia:'EVITAR ou zerar posição · Aguardar melhora de fundamentos',precoBase:30.5,pj:20.52},
+    ]
+  },
+  transmissao: {
+    label:'🔗 TRANSMISSÃO',
+    rows:[
+      {rank:1,ticker:'TAEE3',nome:'TAESA',score:'20/26',veredicto:'COMPRA FORTE',momento:'MOMENTO: OPORTUNIDADE DE COMPRA',precoFV:'Barato +21.8%',estrategia:'Posição core 5-8% carteira · Stop R$11.62 · Alvo R$15.50',precoBase:14.07,pj:16.65},
+      {rank:2,ticker:'ALUP11',nome:'Alupar Investimento',score:'16/26',veredicto:'COMPRA',momento:'MOMENTO: MONITORAR',precoFV:'Justo -2.4%',estrategia:'Compra gradual · Stop R$30.17 · Alvo R$33.85 (PJ)',precoBase:35.76,pj:33.85},
+      {rank:3,ticker:'AFLT3',nome:'Afluente Transmissão',score:'15/26',veredicto:'NEUTRO',momento:'MOMENTO: NÃO RECOMENDADO',precoFV:'Justo -13.0%',estrategia:'Monitorar — entrada somente em correção >10%',precoBase:7.34,pj:6.35},
+      {rank:4,ticker:'ISAE3',nome:'ISA Energia Brasil',score:'13/26',veredicto:'NEUTRO',momento:'MOMENTO: NÃO RECOMENDADO',precoFV:'Justo +12.8%',estrategia:'Monitorar — entrada somente em correção >10%',precoBase:34.3,pj:38.58},
+    ]
+  },
+  distribuicao: {
+    label:'🏘️ DISTRIBUIÇÃO',
+    rows:[
+      {rank:1,ticker:'EQPA3',nome:'Equatorial Pará',score:'20/26',veredicto:'COMPRA FORTE',momento:'MOMENTO: OPORTUNIDADE DE COMPRA',precoFV:'Barato +31.9%',estrategia:'Posição core 5-8% carteira · Stop R$5.93 · Alvo R$9.50',precoBase:6.79,pj:9.21},
+      {rank:2,ticker:'CEEB3',nome:'Coelba',score:'19/26',veredicto:'COMPRA',momento:'MOMENTO: MONITORAR',precoFV:'Justo +17.3%',estrategia:'Compra gradual · Stop R$41.71 · Alvo R$56.22 (PJ)',precoBase:48.07,pj:56.22},
+      {rank:3,ticker:'CPFE3',nome:'CPFL Energia',score:'18/26',veredicto:'COMPRA',momento:'MOMENTO: MONITORAR',precoFV:'Justo -2.5%',estrategia:'Compra gradual · Stop R$40.76 · Alvo R$45.70 (PJ)',precoBase:49.25,pj:45.7},
+      {rank:4,ticker:'NEOE3',nome:'Neoenergia',score:'16/26',veredicto:'COMPRA',momento:'MOMENTO: MONITORAR',precoFV:'Justo -16.3%',estrategia:'Compra gradual · Stop R$28.97 · Alvo R$27.87 (PJ)',precoBase:33.35,pj:27.87},
+      {rank:5,ticker:'REDE3',nome:'Rede Energia',score:'15/26',veredicto:'NEUTRO',momento:'MOMENTO: NÃO RECOMENDADO',precoFV:'Justo -7.8%',estrategia:'Monitorar — entrada somente em correção >10%',precoBase:6.23,pj:5.81},
+      {rank:6,ticker:'ENMT3',nome:'Energisa MT',score:'15/26',veredicto:'NEUTRO',momento:'MOMENTO: NÃO RECOMENDADO',precoFV:'Justo +1.7%',estrategia:'Monitorar — entrada somente em correção >10%',precoBase:50,pj:46.92},
+      {rank:7,ticker:'ENGI11',nome:'Energisa',score:'14/26',veredicto:'NEUTRO',momento:'MOMENTO: NÃO RECOMENDADO',precoFV:'Justo -10.4%',estrategia:'Monitorar — entrada somente em correção >10%',precoBase:53.22,pj:44.62},
+      {rank:8,ticker:'CBEE3',nome:'Ampla Energia',score:'14/26',veredicto:'NEUTRO',momento:'MOMENTO: NÃO RECOMENDADO',precoFV:'Barato +21.6%',estrategia:'Monitorar — entrada somente em correção >10%',precoBase:9.95,pj:12.14},
+      {rank:9,ticker:'CPLE3',nome:'Copel',score:'13/26',veredicto:'NEUTRO',momento:'MOMENTO: NÃO RECOMENDADO',precoFV:'Justo -4.1%',estrategia:'Monitorar — entrada somente em correção >10%',precoBase:15.92,pj:14.36},
+      {rank:10,ticker:'COCE3',nome:'Coelce',score:'13/26',veredicto:'NEUTRO',momento:'MOMENTO: NÃO RECOMENDADO',precoFV:'Justo +0.6%',estrategia:'Monitorar — entrada somente em correção >10%',precoBase:38,pj:38.24},
+      {rank:11,ticker:'EQTL3',nome:'Equatorial Energia',score:'12/26',veredicto:'NEUTRO',momento:'MOMENTO: NÃO RECOMENDADO',precoFV:'Pechincha +63.5%',estrategia:'Monitorar — entrada somente em correção >10%',precoBase:40.5,pj:63.89},
+      {rank:12,ticker:'LIGT3',nome:'Light',score:'12/26',veredicto:'NEUTRO',momento:'MOMENTO: NÃO RECOMENDADO',precoFV:'Barato +39.9%',estrategia:'Monitorar — entrada somente em correção >10%',precoBase:5.34,pj:6.45},
+    ]
+  },
+  integradas: {
+    label:'🏭 INTEGRADAS',
+    rows:[
+      {rank:1,ticker:'CMIG4',nome:'Cemig PN',score:'20/26',veredicto:'COMPRA FORTE',momento:'MOMENTO: OPORTUNIDADE DE COMPRA',precoFV:'Justo +8.8%',estrategia:'Posição core 5-8% carteira · Stop R$10.47 · Alvo R$14.00',precoBase:12.76,pj:13.41},
+      {rank:2,ticker:'CLSC3',nome:'Celesc',score:'17/26',veredicto:'COMPRA',momento:'MOMENTO: MONITORAR',precoFV:'Justo +9.9%',estrategia:'Compra gradual · Stop R$111.45 · Alvo R$140.82 (PJ)',precoBase:126,pj:140.82},
+      {rank:3,ticker:'AXIA3',nome:'Eletrobras',score:'13/26',veredicto:'NEUTRO',momento:'MOMENTO: NÃO RECOMENDADO',precoFV:'Justo +5.4%',estrategia:'Monitorar — entrada somente em correção >10%',precoBase:59.28,pj:59.01},
+      {rank:4,ticker:'ENGI3',nome:'Energisa ON',score:'13/26',veredicto:'NEUTRO',momento:'MOMENTO: NÃO RECOMENDADO',precoFV:'Justo -5.1%',estrategia:'Monitorar — entrada somente em correção >10%',precoBase:12.93,pj:11.64},
+    ]
+  }
+};
+
+const PROJECOES_DATA = [
+  {ticker:'TAEE3',nome:'TAESA',sub:'🔗 Transmissão',score:'20/26',precoBase:14.07,pj:'R$16.65',upside:'+21.8%',pessAlvo:'R$13.32',realAlvo:'R$16.65',otimAlvo:'R$19.98',pessRet:'-2.6%',realRet:'+21.8%',otimRet:'+46.2%',nota:"Transmissora 'Barata'; RAP regulado + IPCA. ROIC 10,4% e DY 4,8%. Desconto de 22% ao PJ."},
+  {ticker:'EQPA3',nome:'Equatorial Pará',sub:'🏘️ Distribuição',score:'20/26',precoBase:6.79,pj:'R$9.21',upside:'+31.9%',pessAlvo:'R$7.37',realAlvo:'R$9.21',otimAlvo:'R$11.05',pessRet:'+5.6%',realRet:'+31.9%',otimRet:'+58.3%',nota:'Equatorial Pará; upside 31,9% ao PJ. ROIC 15,8% — um dos mais altos do setor. Barato.'},
+  {ticker:'CMIG4',nome:'Cemig PN',sub:'🏭 Integrada',score:'20/26',precoBase:12.76,pj:'R$13.41',upside:'+8.8%',pessAlvo:'R$10.73',realAlvo:'R$13.41',otimAlvo:'R$16.09',pessRet:'-12.9%',realRet:'+8.8%',otimRet:'+30.6%',nota:'DY 13,7% — maior do setor. P/L 8x e ROIC 12%. Risco político em empresa de economia mista.'},
+  {ticker:'GEPA3',nome:'Paranapanema Energia',sub:'⚡ Geração',score:'19/26',precoBase:33,pj:'R$38.73',upside:'+17.4%',pessAlvo:'R$30.98',realAlvo:'R$38.73',otimAlvo:'R$46.48',pessRet:'-6.1%',realRet:'+17.4%',otimRet:'+40.8%',nota:'Paranapanema; DY 29,5% histórico e upside 17,4%. ROIC 12,9% interessante.'},
+  {ticker:'CEEB3',nome:'Coelba',sub:'🏘️ Distribuição',score:'19/26',precoBase:48.07,pj:'R$56.22',upside:'+17.3%',pessAlvo:'R$44.98',realAlvo:'R$56.22',otimAlvo:'R$67.46',pessRet:'-6.2%',realRet:'+17.3%',otimRet:'+40.7%',nota:'Coelba; upside 17,3% ao PJ. ROIC 13,8% e DY 13,6% — destacada entre distribuidoras da BA.'},
+  {ticker:'CPFE3',nome:'CPFL Energia',sub:'🏘️ Distribuição',score:'18/26',precoBase:49.25,pj:'R$45.70',upside:'-2.5%',pessAlvo:'R$36.56',realAlvo:'R$45.70',otimAlvo:'R$54.84',pessRet:'-22.0%',realRet:'-2.5%',otimRet:'+17.1%',nota:'Distribuidora de alta qualidade; ROIC 14% e EV/EBIT 7,7x. Empresa bem precificada — pouco upside.'},
+  {ticker:'CLSC3',nome:'Celesc',sub:'🏭 Integrada',score:'17/26',precoBase:126,pj:'R$140.82',upside:'+9.9%',pessAlvo:'R$112.66',realAlvo:'R$140.82',otimAlvo:'R$168.98',pessRet:'-12.1%',realRet:'+9.9%',otimRet:'+31.9%',nota:'Celesc integrada; upside 9,9% ao PJ. ROIC 11,8% e P/L 7,6x — múltiplo atrativo para SC.'},
+  {ticker:'ALUP11',nome:'Alupar Investimento',sub:'🔗 Transmissão',score:'16/26',precoBase:35.76,pj:'R$33.85',upside:'-2.4%',pessAlvo:'R$27.08',realAlvo:'R$33.85',otimAlvo:'R$40.62',pessRet:'-21.9%',realRet:'-2.4%',otimRet:'+17.1%',nota:"Transmissora com pipeline R$950M; FCF Yield 19,9%. Técnico 'Sell' — oportunidade de acumulação."},
+  {ticker:'NEOE3',nome:'Neoenergia',sub:'🏘️ Distribuição',score:'16/26',precoBase:33.35,pj:'R$34.41',upside:'+3.3%',pessAlvo:'R$27.53',realAlvo:'R$34.41',otimAlvo:'R$41.29',pessRet:'-17.3%',realRet:'+3.3%',otimRet:'+24.0%',nota:'Integrada sólida, DY 7,1%, 23 anos de dividendos. RSI sobrecomprado sugere entrada em correção.'},
+  {ticker:'EGIE3',nome:'Engie Brasil Energia',sub:'⚡ Geração',score:'15/26',precoBase:33.28,pj:'R$33.62',upside:'+6.6%',pessAlvo:'R$26.90',realAlvo:'R$33.62',otimAlvo:'R$40.34',pessRet:'-14.7%',realRet:'+6.6%',otimRet:'+27.9%',nota:'Geração 100% renovável; 25 anos de dividendos. EPS cresce 36% em FY26. Controlada Engie France.'},
+  {ticker:'AFLT3',nome:'Afluente Transmissão',sub:'🔗 Transmissão',score:'15/26',precoBase:7.34,pj:'R$6.35',upside:'-13.0%',pessAlvo:'R$5.08',realAlvo:'R$6.35',otimAlvo:'R$7.62',pessRet:'-30.4%',realRet:'-13.0%',otimRet:'+4.4%',nota:'Afluente; PJ abaixo do preço. ROIC 10% mas tamanho pequeno e liquidez limitada.'},
+  {ticker:'REDE3',nome:'Rede Energia',sub:'🏘️ Distribuição',score:'15/26',precoBase:6.23,pj:'R$5.81',upside:'-7.8%',pessAlvo:'R$4.65',realAlvo:'R$5.81',otimAlvo:'R$6.97',pessRet:'-26.2%',realRet:'-7.8%',otimRet:'+10.6%',nota:'Rede Energia; PJ abaixo do preço — não recomendado. Múltiplos elevados vs pares.'},
+  {ticker:'ENMT3',nome:'Energisa MT',sub:'🏘️ Distribuição',score:'15/26',precoBase:50,pj:'R$46.92',upside:'+1.6%',pessAlvo:'R$37.54',realAlvo:'R$46.92',otimAlvo:'R$56.30',pessRet:'-18.7%',realRet:'+1.6%',otimRet:'+22.0%',nota:'Energisa MT; PJ R$46,92 — marginalmente barato. ROIC 12,4% competitivo.'},
+  {ticker:'ENGI11',nome:'Energisa',sub:'🏘️ Distribuição',score:'14/26',precoBase:53.22,pj:'R$44.62',upside:'-10.4%',pessAlvo:'R$35.70',realAlvo:'R$44.62',otimAlvo:'R$53.54',pessRet:'-28.3%',realRet:'-10.4%',otimRet:'+7.5%',nota:'DY 6,6% atrativo mas dívida/ativo 70% é o principal risco. P/L 7,8x barato.'},
+  {ticker:'CBEE3',nome:'Ampla Energia',sub:'🏘️ Distribuição',score:'14/26',precoBase:9.95,pj:'R$12.14',upside:'+21.6%',pessAlvo:'R$9.71',realAlvo:'R$12.14',otimAlvo:'R$14.57',pessRet:'-2.7%',realRet:'+21.6%',otimRet:'+46.0%',nota:'Ampla Energia; classificada Barato; upside 21,6%. ROA negativo é o risco principal.'},
+  {ticker:'ENEV3',nome:'Eneva',sub:'⚡ Geração',score:'13/26',precoBase:24.88,pj:'R$29.77',upside:'+24.5%',pessAlvo:'R$23.82',realAlvo:'R$29.77',otimAlvo:'R$35.72',pessRet:'-0.4%',realRet:'+24.5%',otimRet:'+49.4%',nota:'Eneva; classificada Barato com upside 24,5%. Geração termelétrica; P/L 39x distorcido.'},
+  {ticker:'ISAE3',nome:'ISA Energia Brasil',sub:'🔗 Transmissão',score:'13/26',precoBase:34.3,pj:'R$38.58',upside:'+12.8%',pessAlvo:'R$30.86',realAlvo:'R$38.58',otimAlvo:'R$46.30',pessRet:'-9.8%',realRet:'+12.8%',otimRet:'+35.3%',nota:'ISA Energia; upside 12,8%. ROIC 8,9% e EV/EBIT 8,3x adequados para transmissora.'},
+  {ticker:'CPLE3',nome:'Copel',sub:'🏘️ Distribuição',score:'13/26',precoBase:15.92,pj:'R$15.02',upside:'+0.3%',pessAlvo:'R$12.02',realAlvo:'R$15.02',otimAlvo:'R$18.02',pessRet:'-19.8%',realRet:'+0.3%',otimRet:'+20.3%',nota:'Privatizada 2023; catalisador principal: Revisão Tarifária 2026 pode dobrar base regulatória → EBITDA CAGR >20%.'},
+  {ticker:'COCE3',nome:'Coelce',sub:'🏘️ Distribuição',score:'13/26',precoBase:38,pj:'R$38.24',upside:'+0.6%',pessAlvo:'R$30.59',realAlvo:'R$38.24',otimAlvo:'R$45.89',pessRet:'-19.5%',realRet:'+0.6%',otimRet:'+20.8%',nota:'Coelce; praticamente no preço justo. ROIC 10,6% sólido; DY 3,6% modesto.'},
+  {ticker:'AXIA3',nome:'Eletrobras',sub:'🏭 Integrada',score:'13/26',precoBase:59.28,pj:'R$59.01',upside:'+5.4%',pessAlvo:'R$47.21',realAlvo:'R$59.01',otimAlvo:'R$70.81',pessRet:'-15.7%',realRet:'+5.4%',otimRet:'+26.5%',nota:'Eletrobras em turnaround pós-privatização. DY 8,1% mas ROIC 2,4% ainda abaixo do WACC.'},
+  {ticker:'ENGI3',nome:'Energisa ON',sub:'🏭 Integrada',score:'13/26',precoBase:12.93,pj:'R$11.64',upside:'-5.1%',pessAlvo:'R$9.31',realAlvo:'R$11.64',otimAlvo:'R$13.97',pessRet:'-24.1%',realRet:'-5.1%',otimRet:'+13.9%',nota:'Energisa ON; PJ R$11,64 abaixo do preço. Dívida/Ativo 70,4% pede atenção.'},
+  {ticker:'EQTL3',nome:'Equatorial Energia',sub:'🏘️ Distribuição',score:'12/26',precoBase:40.5,pj:'R$63.89',upside:'+63.5%',pessAlvo:'R$51.11',realAlvo:'R$63.89',otimAlvo:'R$76.67',pessRet:'+30.8%',realRet:'+63.5%',otimRet:'+96.2%',nota:'Turnaround de distribuidoras + FCF Yield 7,3%. EV/EBIT 12x atraente. PJ Investing R$63,89.'},
+  {ticker:'LIGT3',nome:'Light',sub:'🏘️ Distribuição',score:'12/26',precoBase:5.34,pj:'R$6.45',upside:'+39.9%',pessAlvo:'R$5.16',realAlvo:'R$6.45',otimAlvo:'R$7.74',pessRet:'+11.9%',realRet:'+39.9%',otimRet:'+67.9%',nota:'Light; upside 39,9% mas turnaround de alto risco. Dívida/Ativo 85%. Especulativo.'},
+  {ticker:'EMAE3',nome:'EMAE',sub:'⚡ Geração',score:'11/26',precoBase:150,pj:'R$107.30',upside:'-28.5%',pessAlvo:'R$85.84',realAlvo:'R$107.30',otimAlvo:'R$128.76',pessRet:'-42.8%',realRet:'-28.5%',otimRet:'-14.2%',nota:'EMAE; classificada Caro — 28,5% acima do PJ. ROIC negativo. Evitar.'},
+  {ticker:'AURE3',nome:'Auren Energia',sub:'⚡ Geração',score:'10/26',precoBase:12.57,pj:'R$12.74',upside:'+11.2%',pessAlvo:'R$10.19',realAlvo:'R$12.74',otimAlvo:'R$15.29',pessRet:'-11.1%',realRet:'+11.2%',otimRet:'+33.4%',nota:'Auren; em maturação pós-aquisição. ROIC 3,3% ainda baixo. Monitorar.'},
+  {ticker:'RNEW3',nome:'Renova Energia',sub:'⚡ Geração',score:'8/26',precoBase:1.08,pj:'R$1.25',upside:'+14.7%',pessAlvo:'R$1.00',realAlvo:'R$1.25',otimAlvo:'R$1.50',pessRet:'-8.3%',realRet:'+14.7%',otimRet:'+37.6%',nota:'Renova; empresa em dificuldade financeira. ROA e ROIC negativos. Alto risco.'},
+  {ticker:'RIOS3',nome:'Rio Alto Energias',sub:'⚡ Geração',score:'5/26',precoBase:30.5,pj:'R$20.52',upside:'-32.7%',pessAlvo:'R$16.42',realAlvo:'R$20.52',otimAlvo:'R$24.62',pessRet:'-46.2%',realRet:'-32.7%',otimRet:'-19.3%',nota:'Rio Alto; 33% acima do PJ. ROA -22,7%. Sem geração de caixa. Evitar.'},
+];
+
+const ANALISE_DATA = [
+  {ticker:'TAEE3',nome:'TAESA',sub:'🔗 Transmissão',veredicto:'COMPRA FORTE',momento:'OPORTUNIDADE DE COMPRA',classe:'A (20/26 pts)',kpis:'Preço: R$13.67 | P.Justo: R$16.65 | Upside: +21.8% | ROIC: 10.4% | ROE: 21.7% | P/L: 9.0x | DY: 4.8% | EV/EBIT: 9.2x',positivos:"Classificação 'Barato' com upside +21,8% — uma das melhores relações preço/valor da transmissão. ROIC 10,4% e ROE 21,7% — transmissora com retorno sobre capital acima da média. DY 4,8% com política de distribuição de dividendos consistente. EV/EBIT 9,2x — múltiplo atraente. ROA 7,4% — excelente eficiência no uso dos ativos regulados.",negativos:'Crescimento de dívida +12,7% — endividamento crescendo acima do ideal. P/L 9,0x com perspectiva de crescimento limitada (modelo regulado estável).',caixa:'P/FCO 9,3x é atrativo. FCO estável e previsível. Modelo de transmissão possui baixo risco operacional e alta previsibilidade. TAESA distribui historicamente >90% do lucro como dividendos.',dcf:"ROIC 10,4% com P/L 9x e EV/EBIT 9,2x sugerem empresa claramente 'Barata'. DCF com WACC 8% aponta valor justo R$16-18. Preço atual = desconto de 22% vs PJ R$16,65.",estrategia:'Compra · Stop R$11,50 · Alvo 12m: R$15,50 (analistas) · Alvo PJ: R$16,65 · Posição 4-6% · Dividendo recorrente enquanto aguarda valorização'},
+  {ticker:'EQPA3',nome:'Equatorial Pará',sub:'🏘️ Distribuição',veredicto:'COMPRA FORTE',momento:'OPORTUNIDADE DE COMPRA',classe:'A (20/26 pts)',kpis:'Preço: R$6.98 | P.Justo: R$9.21 | Upside: +31.9% | ROIC: 15.8% | ROE: 33.2% | P/L: 9.4x | DY: 9.4% | EV/EBIT: 8.3x',positivos:'ROIC 15.8% acima de 10% — criação de valor sustentável. Dividend Yield 9.4% — renda expressiva. P/L 9.4x — múltiplo muito atraente. Upside 31.9% — margem de segurança relevante.',negativos:'Sem riscos estruturais graves — empresa com fundamentos dentro do esperado para o setor.',caixa:'P/FCO 8.0x. FCF Yield 0.0%. Dívida R$6.0B. Análise de caixa dentro dos parâmetros do sub-setor.',dcf:'Com ROIC 15.8% e P/L 9.4x, o DCF aponta preço justo em torno de R$9.21. Upside de 31.9% vs preço atual de R$6.98.',estrategia:'Compra forte gradual · Stop R$6.07 · Alvo 12m: R$9.50 · Posição 5-8% carteira'},
+  {ticker:'CMIG4',nome:'Cemig PN',sub:'🏭 Integrada',veredicto:'COMPRA FORTE',momento:'OPORTUNIDADE DE COMPRA',classe:'A (20/26 pts)',kpis:'Preço: R$12.32 | P.Justo: R$13.41 | Upside: +8.8% | ROIC: 12.2% | ROE: 17.5% | P/L: 8.0x | DY: 13.7% | EV/EBIT: 8.4x',positivos:'DY 13,7% — o maior do setor de energia entre integradas com histórico sólido. ROIC 12,2% e ROE 17,5% — rentabilidade acima do custo de capital. P/L 8,0x e EV/EBIT 8,4x — múltiplos muito atrativos.',negativos:'Crescimento de dívida +56,4% — o maior crescimento de endividamento entre as integradas. Histórico de interferência política como empresa de economia mista.',caixa:'P/FCO 9,65x — adequado. DY de 13,7% é o maior do setor — empresa distribui grande parte do caixa gerado.',dcf:'Com ROIC 12,2% e P/L 8x, o DCF aponta valor intrínseco R$13-16. DY de 13,7% sozinho justifica a posição como renda.',estrategia:'Compra para renda · Stop R$10,00 · Alvo 12m: R$13,41 (PJ) · Posição 3-5% · Dividendo de 13,7% · Monitorar crescimento de dívida'},
+  {ticker:'GEPA3',nome:'Paranapanema Energia',sub:'⚡ Geração',veredicto:'COMPRA',momento:'MONITORAR',classe:'A (19/26 pts)',kpis:'Preço: R$33.00 | P.Justo: R$38.73 | Upside: +17.4% | ROIC: 12.9% | ROE: 17.7% | P/L: 13.2x | DY: 29.5% | EV/EBIT: 11.1x',positivos:'ROIC 12.9% acima de 10% — criação de valor sustentável. Dividend Yield 29.5% — renda expressiva. Upside 17.4% — margem de segurança relevante.',negativos:'Sem riscos estruturais graves — empresa com fundamentos dentro do esperado para o setor.',caixa:'P/FCO 6.0x. Dívida R$2.0B. Análise de caixa dentro dos parâmetros do sub-setor.',dcf:'Com ROIC 12.9% e P/L 13.2x, o DCF aponta preço justo em torno de R$38.73. Upside de 17.4% vs preço atual de R$33.00.',estrategia:'Compra gradual · Stop R$28.71 · Alvo 12m: R$38.00 · Posição 3-5% carteira'},
+  {ticker:'CEEB3',nome:'Coelba',sub:'🏘️ Distribuição',veredicto:'COMPRA',momento:'MONITORAR',classe:'A (19/26 pts)',kpis:'Preço: R$47.94 | P.Justo: R$56.22 | Upside: +17.3% | ROIC: 13.8% | ROE: 25.6% | P/L: 6.3x | DY: 13.6% | EV/EBIT: 7.2x',positivos:'ROIC 13.8% — criação de valor sustentável. DY 13.6% — renda expressiva. P/L 6.3x — múltiplo muito atraente. Upside 17.3% — margem de segurança relevante.',negativos:'Sem riscos estruturais graves — empresa com fundamentos dentro do esperado para o setor.',caixa:'P/FCO 7.0x. Dívida R$12.0B. Análise de caixa dentro dos parâmetros do sub-setor.',dcf:'Com ROIC 13.8% e P/L 6.3x, o DCF aponta preço justo em torno de R$56.22. Upside de 17.3% vs preço atual.',estrategia:'Compra gradual · Stop R$41.71 · Alvo 12m: R$55.00 · Posição 3-5% carteira'},
+  {ticker:'CPFE3',nome:'CPFL Energia',sub:'🏘️ Distribuição',veredicto:'COMPRA',momento:'MONITORAR',classe:'A (18/26 pts)',kpis:'Preço: R$46.85 | P.Justo: R$45.70 | Upside: -2.5% | ROIC: 14.2% | ROE: 25.4% | P/L: 9.8x | DY: 2.3% | EV/EBIT: 7.7x',positivos:'ROIC 14,2% e ROE 25,4% — melhor rentabilidade do sub-setor. EV/EBIT 7,7x — o mais atrativo entre distribuidoras. Controlada pela CPFL (China Three Gorges) — acesso a capital e tecnologia internacional.',negativos:'DY 2,3% — baixo para distribuidora. Upside modesto vs preço justo (-2,5%) — ação já bem precificada. Crescimento de dívida 7,3%.',caixa:'P/FCO 7,5x — excelente. FCO sustenta investimentos e dividendos. ROIC 14% e ROE 25% confirmados pela qualidade do FCO.',dcf:'Com ROIC 14% e P/L 9,75x, empresa no preço justo ou levemente acima (upside -2,5% vs PJ R$45,70). Empresa de qualidade mas precificada adequadamente.',estrategia:'Neutro/Manter · Stop R$38,00 · Alvo 12m: R$45,70 (PJ) · Nova entrada: aguardar correção para R$40-42'},
+  {ticker:'CLSC3',nome:'Celesc',sub:'🏭 Integrada',veredicto:'COMPRA',momento:'MONITORAR',classe:'B (17/26 pts)',kpis:'Preço: R$128.10 | P.Justo: R$140.82 | Upside: +9.9% | ROIC: 11.8% | ROE: 19.1% | P/L: 7.6x | DY: 7.2% | EV/EBIT: 7.2x',positivos:'ROIC 11.8% — criação de valor sustentável. DY 7.2% — renda expressiva. P/L 7.6x — múltiplo muito atraente.',negativos:'Sem riscos estruturais graves — empresa com fundamentos dentro do esperado para o setor.',caixa:'P/FCO 20.9x. Dívida R$6.0B. Análise de caixa dentro dos parâmetros do sub-setor.',dcf:'Com ROIC 11.8% e P/L 7.6x, o DCF aponta preço justo em torno de R$140.82. Upside de 9.9% vs preço atual.',estrategia:'Compra gradual · Stop R$111.45 · Alvo 12m: R$140.00 · Posição 3-5% carteira'},
+  {ticker:'ALUP11',nome:'Alupar Investimento',sub:'🔗 Transmissão',veredicto:'COMPRA',momento:'MONITORAR',classe:'B (16/26 pts)',kpis:'Preço: R$34.68 | P.Justo: R$33.85 | Upside: -2.4% | ROIC: 9.4% | ROE: 14.3% | P/L: 9.4x | DY: 3.1% | EV/EBIT: 8.5x',positivos:'Pipeline de investimentos R$950M até 2029. FCF Yield 19,9%. Diversificação LatAm (Brasil, Colômbia, Peru, Chile). 12 anos consecutivos de dividendos.',negativos:"Indicadores técnicos 'Sell' no curto prazo. Q3 2025 miss de EPS -26% vs esperado. Alavancagem aumentará durante fase de implantação dos novos projetos.",caixa:'P/FCO 5,7x — o MENOR do sub-setor de transmissão, indicando FCO excepcional vs preço. FCO LTM R$2,2B com FCF Yield 19,9%.',dcf:'Com ROIC 9,4% e P/L 8,9x, o DCF projeta valor intrínseco R$34-41. Preço atual próximo do Preço Justo. Alvo analistas R$38,22 (+10%). Citi alvo R$41,00 (+18%).',estrategia:'Compra gradual em quedas · Stop R$28,50 · Alvo 12m: R$38,22 · Alvo Citi: R$41,00 · Posição 3-5%'},
+  {ticker:'NEOE3',nome:'Neoenergia',sub:'🏘️ Distribuição',veredicto:'COMPRA',momento:'MONITORAR',classe:'B (16/26 pts)',kpis:'Preço: R$33.30 | P.Justo: R$27.87 | Upside: -16.3% | ROIC: 10.3% | ROE: 14.6% | P/L: 8.0x | DY: 7.1% | EV/EBIT: 7.9x',positivos:'DY 7,1% com 23 anos consecutivos de pagamento de dividendos. ROIC 10,3% acima do WACC setorial. 88% da capacidade instalada de fonte renovável.',negativos:'RSI em sobrecompra no curto prazo. EPS projetado cair 37% em FY26. FCO baixo vs dívida R$59B.',caixa:'P/FCO 21,0x reflete pressão de FCO em ano de investimento intenso. Capex alto (R$6,5B em 2025) consome o FCO.',dcf:'Com P/L 8x e EV/EBITDA 6,1x, o DCF normalizado aponta valor intrínseco entre R$28-40. Recomenda-se esperar correção pós-RSI para melhorar relação risco-retorno.',estrategia:'Neutro no curto prazo — RSI sobrecomprado · Compra em correção para R$28-30 · Stop R$26,00 · Alvo analistas R$34,41 · Posição 3-5%'},
+  {ticker:'EGIE3',nome:'Engie Brasil Energia',sub:'⚡ Geração',veredicto:'NEUTRO',momento:'NÃO RECOMENDADO',classe:'B (15/26 pts)',kpis:'Preço: R$31.54 | P.Justo: R$33.62 | Upside: +6.6% | ROIC: 10.9% | ROE: 21.8% | P/L: 13.9x | DY: 2.3% | EV/EBIT: 11.3x',positivos:'25 anos consecutivos de dividendos. ROIC 10,9% e ROE 21,8%. 100% portfólio renovável. EPS cresce 36% em FY26.',negativos:"DY colapsou de 8% (FY24) para 2,2% (FY25). Receita prevista cair em 2026. Indicadores técnicos 'Strong Sell'.",caixa:'P/FCO 10,8x com FCO anual R$3,3B. FCL pressionado por capex em expansão (R$3,7B em 2025).',dcf:'Com ROIC 10,9% e P/L 14x, o DCF aponta valor intrínseco R$30-39. Preço atual próximo do justo. Alvo analistas R$30,95.',estrategia:'Compra em correção · Stop R$26,00 · Alvo 12m: R$33,62 (PJ) · Alvo otimista: R$39,00 · Posição 3-5%'},
+];
+
+// ═══════════════════════════════════════════════════════════
+//  LIVE PRICE STATE
+// ═══════════════════════════════════════════════════════════
+
+const livePrice = {}; // ticker -> { price, loading, error }
+let marketOpen = false;
+
+function isMarketOpen() {
+  const now = new Date();
+  const brt = new Date(now.toLocaleString('en-US', {timeZone:'America/Sao_Paulo'}));
+  const day = brt.getDay();
+  const h = brt.getHours(), m = brt.getMinutes();
+  const mins = h * 60 + m;
+  return day >= 1 && day <= 5 && mins >= 600 && mins <= 1075; // 10:00–17:55
+}
+
+async function fetchPrices(tickers) {
+  const tickerStr = tickers.join(',');
+  const tryFetch = async (url, extract) => {
+    const r = await fetch(url, {signal: AbortSignal.timeout(8000)});
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const d = await r.json();
+    return extract(d);
+  };
+  try {
+    const url = `https://brapi.dev/api/quote/${tickerStr}?fundamental=false&dividends=false`;
+    const data = await tryFetch(url, d => {
+      const map = {};
+      if (d.results) d.results.forEach(s => {
+        const p = s.regularMarketPrice;
+        if (p) map[s.symbol] = p;
+      });
+      return map;
+    });
+    return data;
+  } catch(e1) {}
+  try {
+    const url = `https://corsproxy.io/?https://query1.finance.yahoo.com/v7/finance/quote?symbols=${tickers.map(t=>t+'SA').join(',')}&fields=regularMarketPrice`;
+    const data = await tryFetch(url, d => {
+      const map = {};
+      const results = d?.quoteResponse?.result || [];
+      results.forEach(s => {
+        const t = s.symbol?.replace('.SA','');
+        if (t && s.regularMarketPrice) map[t] = s.regularMarketPrice;
+      });
+      return map;
+    });
+    return data;
+  } catch(e2) {}
+  return {};
+}
+
+async function refreshAllPrices() {
+  marketOpen = isMarketOpen();
+  const dot = document.getElementById('market-dot');
+  const label = document.getElementById('market-status-label');
+  dot.className = 'market-dot ' + (marketOpen ? 'open' : 'closed');
+  label.textContent = marketOpen ? 'Mercado Aberto · B3' : 'Mercado Fechado · B3';
+  document.getElementById('refresh-time').textContent = 'Atualizando...';
+
+  const allTickers = Object.keys(TICKERS_MAP);
+  const batch1 = allTickers.slice(0,14), batch2 = allTickers.slice(14);
+  const [r1,r2] = await Promise.all([fetchPrices(batch1), fetchPrices(batch2)]);
+  Object.assign(livePrice, r1, r2);
+
+  const now = new Date().toLocaleTimeString('pt-BR', {timeZone:'America/Sao_Paulo', hour:'2-digit', minute:'2-digit'});
+  document.getElementById('refresh-time').textContent = 'Atualizado ' + now + ' BRT';
+  renderAll();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  HELPER FUNCTIONS
+// ═══════════════════════════════════════════════════════════
+
+function getPrice(ticker, fallback) {
+  return livePrice[ticker] != null ? livePrice[ticker] : fallback;
+}
+
+function fmtPrice(ticker, fallback) {
+  const p = getPrice(ticker, fallback);
+  return 'R$' + p.toFixed(2);
+}
+
+function calcUpside(ticker, pj, priceBase) {
+  const price = getPrice(ticker, priceBase);
+  return (pj - price) / price;
+}
+
+function signalClass(upside) {
+  if (upside > 0.20) return 'sig-compra-forte';
+  if (upside > 0.05) return 'sig-compra';
+  if (upside >= -0.05) return 'sig-justo';
+  if (upside >= -0.15) return 'sig-atencao';
+  return 'sig-caro';
+}
+function signalLabel(upside) {
+  if (upside > 0.20) return '✅ COMPRA FORTE';
+  if (upside > 0.05) return '✅ COMPRA';
+  if (upside >= -0.05) return '🟡 PREÇO JUSTO';
+  if (upside >= -0.15) return '⚠️ ATENÇÃO — CARO';
+  return '🔴 CARO — EVITAR';
+}
+
+function verdictClass(v) {
+  if (v.includes('FORTE')) return 'v-compra-forte';
+  if (v.includes('COMPRA')) return 'v-compra';
+  if (v.includes('NEUTRO')) return 'v-neutro';
+  return 'v-venda';
+}
+
+function scoreClass(s) {
+  const n = parseInt(s);
+  if (n >= 20) return 'score-a';
+  if (n >= 16) return 'score-b';
+  if (n >= 12) return 'score-c';
+  return 'score-d';
+}
+
+function subBadge(ticker) {
+  const sub = TICKERS_MAP[ticker]?.sub;
+  const map = {trans:['sub-trans','🔗 Trans.'],dist:['sub-dist','🏘️ Dist.'],ger:['sub-ger','⚡ Ger.'],int:['sub-int','🏭 Int.']};
+  const [cls,lbl] = map[sub] || ['',''];
+  return `<span class="subsector-badge ${cls}">${lbl}</span>`;
+}
+
+function upsideFmt(n) {
+  const pct = (n * 100).toFixed(1);
+  if (n > 0) return `<span class="upside-pos">+${pct}%</span>`;
+  if (n < 0) return `<span class="upside-neg">${pct}%</span>`;
+  return `<span class="upside-neu">${pct}%</span>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  RENDER FUNCTIONS
+// ═══════════════════════════════════════════════════════════
+
+function renderAll() {
+  renderRanking();
+  renderHeatmap();
+  renderQuadro();
+  renderProjecoes();
+  renderTabela();
+  renderAnalise();
+}
+
+function renderRanking() {
+  const tbody = document.getElementById('ranking-tbody');
+  tbody.innerHTML = RANKING_DATA.map(r => {
+    const price = getPrice(r.ticker, r.precoAtual || r.pj);
+    const upNum = calcUpside(r.ticker, r.pj, price);
+    const priceDisplay = 'R$' + price.toFixed(2);
+    const upDisplay = upsideFmt(upNum);
+    const vc = verdictClass(r.veredicto);
+    const sc = scoreClass(r.score);
+    return `<tr>
+      <td class="rank">${r.rank}</td>
+      <td><span class="ticker-chip" onclick="jumpToAnalise('${r.ticker}')">${r.ticker}</span></td>
+      <td style="font-size:12px">${r.name || TICKERS_MAP[r.ticker]?.name || ''}</td>
+      <td>${subBadge(r.ticker)}</td>
+      <td class="num"><span class="live-price" id="rp-${r.ticker}">${priceDisplay}</span></td>
+      <td class="num" style="color:var(--text-secondary)">R$${r.pj.toFixed(2)}</td>
+      <td><span style="font-size:11.5px;font-weight:500;color:var(--text-secondary)">${r.classifFV}</span></td>
+      <td class="num">${upDisplay}</td>
+      <td class="num" style="color:var(--text-secondary)">${r.roic}</td>
+      <td class="num" style="color:var(--text-secondary)">${r.roa}</td>
+      <td class="num" style="color:var(--text-secondary)">${r.roe}</td>
+      <td class="num" style="color:var(--text-secondary)">${r.pl}</td>
+      <td class="num" style="color:var(--text-secondary)">${r.evEbit}</td>
+      <td class="num" style="color:var(--text-secondary)">${r.dy}</td>
+      <td class="num" style="color:var(--text-secondary)">${r.divAtivo}</td>
+      <td class="num" style="color:var(--text-secondary)">${r.ret1a}</td>
+      <td><span class="verdict-chip ${vc}">${r.veredicto}</span></td>
+      <td><span class="score-chip ${sc}">${r.score}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderHeatmap() {
+  const container = document.getElementById('heatmap-container');
+  const sections = ['geracao','transmissao','distribuicao','integradas'];
+  container.innerHTML = sections.map(sec => {
+    const d = HEATMAP_DATA[sec];
+    const colCount = d.headers.length;
+    const factorRows = d.factors.map((f,fi) => {
+      const cells = d.headers.map((_,ci) => {
+        const v = f.vals[ci];
+        return `<td class="factor-cell f${v}">${v}</td>`;
+      }).join('');
+      return `<tr><td class="indicator-name">${f.name}</td>${cells}</tr>`;
+    }).join('');
+    const totals = d.totals.map(t => {
+      const n = parseInt(t);
+      const cls = n>=20?'ft-a':n>=16?'ft-b':n>=12?'ft-c':'ft-d';
+      return `<td class="factor-total ${cls}">${t}</td>`;
+    }).join('');
+    return `
+    <div class="heatmap-section">
+      <div class="subsector-label">${d.label}</div>
+      <div class="heatmap-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="indicator-col">Indicador / Fator</th>
+              ${d.headers.map(h=>`<th class="ticker-head">#${h.rank}<br><b>${h.ticker}</b><br>${h.score}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            ${factorRows}
+            <tr>
+              <td class="indicator-name" style="font-weight:700;color:var(--text-primary)">▶ PONTUAÇÃO TOTAL (0–26)</td>
+              ${totals}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderQuadro() {
+  const container = document.getElementById('quadro-container');
+  const sections = ['geracao','transmissao','distribuicao','integradas'];
+  container.innerHTML = sections.map(sec => {
+    const d = QUADRO_DATA[sec];
+    const rows = d.rows.map(r => {
+      const price = getPrice(r.ticker, r.precoBase);
+      const upNum = calcUpside(r.ticker, r.pj, r.precoBase);
+      const vc = verdictClass(r.veredicto);
+      const sc = scoreClass(r.score);
+      const sigCls = signalClass(upNum);
+      const sigLbl = signalLabel(upNum);
+      return `<tr>
+        <td class="rank">${r.rank}</td>
+        <td><span class="ticker-chip" onclick="jumpToAnalise('${r.ticker}')">${r.ticker}</span></td>
+        <td style="font-size:12px;max-width:150px">${r.nome}</td>
+        <td><span class="score-chip ${sc}">${r.score}</span></td>
+        <td><span class="verdict-chip ${vc}">${r.veredicto}</span></td>
+        <td style="font-size:11.5px;color:var(--text-secondary);max-width:180px">${r.momento}</td>
+        <td style="font-size:11.5px;color:var(--text-secondary)">${r.precoFV}</td>
+        <td style="font-size:11px;color:var(--text-muted);max-width:260px;white-space:normal;line-height:1.4">${r.estrategia}</td>
+        <td class="num"><span class="live-price">R$${price.toFixed(2)}</span></td>
+        <td class="num" style="color:var(--text-secondary)">R$${r.pj.toFixed(2)}</td>
+        <td class="num">${upsideFmt(upNum)}</td>
+        <td><span class="signal-chip ${sigCls}">${sigLbl}</span></td>
+      </tr>`;
+    }).join('');
+    return `
+    <div class="quadro-section">
+      <div class="quadro-header">
+        <div class="quadro-header-title">${d.label}</div>
+      </div>
+      <div class="quadro-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Rank</th><th>Ticker</th><th>Nome</th>
+              <th>Pontuação</th><th>Veredicto</th><th>Momento</th>
+              <th>Preço × FV</th><th style="min-width:200px">Estratégia Sugerida</th>
+              <th class="num">📡 Cotação Atual</th>
+              <th class="num">🎯 Preço Justo</th>
+              <th class="num">📊 Upside Atual</th>
+              <th>🚦 Sinal Dinâmico</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderProjecoes() {
+  const grid = document.getElementById('proj-grid');
+  grid.innerHTML = PROJECOES_DATA.map(p => {
+    const price = getPrice(p.ticker, p.precoBase);
+    const sc = scoreClass(p.score);
+    const upNum = calcUpside(p.ticker, parseFloat(p.pj.replace('R$','')), p.precoBase);
+    const vc = verdictClass(p.score >= '20' ? 'COMPRA FORTE' : p.score >= '16' ? 'COMPRA' : p.score >= '12' ? 'NEUTRO' : 'VENDA');
+    return `
+    <div class="proj-card">
+      <div class="proj-card-header">
+        <div>
+          <div class="proj-card-ticker">${p.ticker}</div>
+          <div class="proj-card-name">${p.nome} · ${p.sub}</div>
+        </div>
+        <div class="proj-card-score">
+          <span class="score-chip ${sc}">${p.score}</span>
+        </div>
+      </div>
+      <div class="proj-card-body">
+        <div class="proj-prices">
+          <div class="proj-price-item">
+            <label>Cotação Atual</label>
+            <div class="val" id="pp-${p.ticker}">R$${price.toFixed(2)}</div>
+          </div>
+          <div class="proj-price-item">
+            <label>Preço Justo</label>
+            <div class="val" style="color:var(--accent)">${p.pj}</div>
+          </div>
+          <div class="proj-price-item">
+            <label>Upside vs PJ</label>
+            <div class="val">${upsideFmt(upNum)}</div>
+          </div>
+          <div class="proj-price-item">
+            <label>Original Upside</label>
+            <div class="val" style="color:var(--text-muted);font-size:12px">${p.upside}</div>
+          </div>
+        </div>
+        <div class="proj-scenarios">
+          <div class="proj-scenario sc-pessimista">
+            <label>Pessimista</label>
+            <div class="target">${p.pessAlvo}</div>
+            <div class="ret" style="color:${p.pessRet.startsWith('+')&&!p.pessRet.startsWith('+0')&&!p.pessRet.startsWith('-')?'#16a34a':'#dc2626'}">${p.pessRet}</div>
+          </div>
+          <div class="proj-scenario sc-realista">
+            <label>Realista</label>
+            <div class="target">${p.realAlvo}</div>
+            <div class="ret" style="color:${p.realRet.startsWith('+')?'#16a34a':'#dc2626'}">${p.realRet}</div>
+          </div>
+          <div class="proj-scenario sc-otimista">
+            <label>Otimista</label>
+            <div class="target">${p.otimAlvo}</div>
+            <div class="ret" style="color:${p.otimRet.startsWith('+')?'#16a34a':'#dc2626'}">${p.otimRet}</div>
+          </div>
+        </div>
+        <div class="proj-note">⚡ ${p.nota}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderTabela() {
+  const container = document.getElementById('tabela-container');
+  const allTickers = RANKING_DATA.map(r => r.ticker);
+  const cols = allTickers;
+  const rows = [
+    {label:'Preço Atual (R$)', key:'price', fmt: t => { const p = getPrice(t, RANKING_DATA.find(r=>r.ticker===t)?.pj||0); return 'R$'+p.toFixed(2); }},
+    {label:'Preço Justo (R$)', key:'pj', fmt: t => { const r=RANKING_DATA.find(x=>x.ticker===t); return r?'R$'+r.pj.toFixed(2):'-'; }},
+    {label:'Classif. FV', key:'cfv', fmt: t => { const r=RANKING_DATA.find(x=>x.ticker===t); return r?.classifFV||'-'; }},
+    {label:'Upside FV (%)', key:'up', fmt: t => { const r=RANKING_DATA.find(x=>x.ticker===t); if(!r)return '-'; const u=calcUpside(t,r.pj,r.precoBase||r.pj); return (u>=0?'+':'')+(u*100).toFixed(1)+'%'; }},
+    {label:'ROIC', key:'roic', fmt: t => RANKING_DATA.find(x=>x.ticker===t)?.roic||'-'},
+    {label:'ROA', key:'roa', fmt: t => RANKING_DATA.find(x=>x.ticker===t)?.roa||'-'},
+    {label:'ROE', key:'roe', fmt: t => RANKING_DATA.find(x=>x.ticker===t)?.roe||'-'},
+    {label:'P/L', key:'pl', fmt: t => RANKING_DATA.find(x=>x.ticker===t)?.pl||'-'},
+    {label:'EV/EBIT', key:'ev', fmt: t => RANKING_DATA.find(x=>x.ticker===t)?.evEbit||'-'},
+    {label:'Div. Yield', key:'dy', fmt: t => RANKING_DATA.find(x=>x.ticker===t)?.dy||'-'},
+    {label:'Dív/Ativo', key:'da', fmt: t => RANKING_DATA.find(x=>x.ticker===t)?.divAtivo||'-'},
+    {label:'Retorno 1A', key:'r1', fmt: t => RANKING_DATA.find(x=>x.ticker===t)?.ret1a||'-'},
+    {label:'Veredicto', key:'v', fmt: t => { const r=RANKING_DATA.find(x=>x.ticker===t); if(!r)return '-'; const vc=verdictClass(r.veredicto); return `<span class="verdict-chip ${vc}" style="font-size:10px;padding:2px 7px">${r.veredicto}</span>`; }},
+    {label:'Pontuação', key:'s', fmt: t => { const r=RANKING_DATA.find(x=>x.ticker===t); if(!r)return '-'; const sc=scoreClass(r.score); return `<span class="score-chip ${sc}" style="font-size:11px">${r.score}</span>`; }},
+  ];
+
+  container.innerHTML = `
+  <p class="tabela-note">Dados diretos da planilha ENERGIA Market View 28/03/2026. Preço Atual integrado em tempo real via Brapi.dev. Upside recalculado automaticamente conforme cotação.</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="position:sticky;left:0;z-index:6;background:var(--surface);min-width:180px">Indicador</th>
+          ${cols.map((t,i) => `<th class="num" style="min-width:75px;font-family:'IBM Plex Mono',monospace">${RANKING_DATA[i]?.rank||''}<br>${t}</th>`).join('')}
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map(row => `<tr>
+          <td style="position:sticky;left:0;background:var(--surface);font-weight:600;font-size:11.5px;z-index:3;border-right:1px solid var(--border)">${row.label}</td>
+          ${cols.map(t => `<td class="num" style="font-size:11.5px">${row.fmt(t)}</td>`).join('')}
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+function renderAnalise() {
+  const container = document.getElementById('analise-container');
+  const all = [...ANALISE_DATA];
+  // add remaining companies as simple cards
+  const covered = new Set(ANALISE_DATA.map(a=>a.ticker));
+  RANKING_DATA.forEach(r => {
+    if (!covered.has(r.ticker)) {
+      all.push({
+        ticker:r.ticker, nome:TICKERS_MAP[r.ticker]?.name||r.ticker,
+        sub: ({trans:'🔗 Transmissão',dist:'🏘️ Distribuição',ger:'⚡ Geração',int:'🏭 Integrada'})[TICKERS_MAP[r.ticker]?.sub]||'',
+        veredicto:r.veredicto, momento:'Ver Ranking', classe:`(${r.score} pts)`,
+        kpis:`ROIC: ${r.roic} | ROE: ${r.roe} | P/L: ${r.pl} | DY: ${r.dy} | EV/EBIT: ${r.evEbit} | Dív/Ativo: ${r.divAtivo}`,
+        positivos:'—', negativos:'—', caixa:'—', dcf:'—',
+        estrategia: (PROJECOES_DATA.find(p=>p.ticker===r.ticker)||{}).nota || 'Ver projeções'
+      });
+    }
+  });
+
+  container.innerHTML = all.map(a => {
+    const vc = verdictClass(a.veredicto);
+    const rank = RANKING_DATA.find(r=>r.ticker===a.ticker)?.rank;
+    const score = RANKING_DATA.find(r=>r.ticker===a.ticker)?.score||'';
+    const sc = scoreClass(score);
+    const kpis = a.kpis.split('|').map(k=>k.trim()).filter(Boolean);
+    return `
+    <div class="empresa-accordion" id="acc-${a.ticker}">
+      <div class="empresa-acc-header" onclick="toggleAcc('${a.ticker}')">
+        <div class="empresa-acc-left">
+          <span class="ticker-chip">${a.ticker}</span>
+          <div class="empresa-acc-meta">
+            <div class="empresa-acc-title">${a.nome}</div>
+            <div class="empresa-acc-sub">${a.sub} · ${a.classe}</div>
+          </div>
+        </div>
+        <div class="empresa-acc-right">
+          <span class="verdict-chip ${vc}" style="font-size:11px">${a.veredicto}</span>
+          <span class="score-chip ${sc}">${score}</span>
+          <span class="acc-chevron">▾</span>
+        </div>
+      </div>
+      <div class="empresa-acc-body">
+        <div class="empresa-kpis">
+          ${kpis.map(k => {
+            const [lbl,val]= k.split(':').map(s=>s.trim());
+            return `<div class="kpi-item"><span class="kpi-label">${lbl}</span><span class="kpi-value">${val||''}</span></div>`;
+          }).join('')}
+        </div>
+        <div class="empresa-sections">
+          <div class="empresa-section">
+            <h4>✅ Pontos Positivos</h4>
+            <ul>${a.positivos.split('•').filter(Boolean).map(s=>`<li>• ${s.trim()}</li>`).join('')}</ul>
+          </div>
+          <div class="empresa-section">
+            <h4>⚠️ Pontos Negativos</h4>
+            <ul>${a.negativos.split('•').filter(Boolean).map(s=>`<li>• ${s.trim()}</li>`).join('')}</ul>
+          </div>
+          <div class="empresa-section">
+            <h4>💰 Fluxo de Caixa</h4>
+            <p>${a.caixa}</p>
+          </div>
+          <div class="empresa-section">
+            <h4>📊 Valuation / DCF</h4>
+            <p>${a.dcf}</p>
+          </div>
+        </div>
+        <div class="empresa-estrategia">🎯 <b>Estratégia:</b> ${a.estrategia}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  UI INTERACTIONS
+// ═══════════════════════════════════════════════════════════
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function toggleAcc(ticker) {
+  const el = document.getElementById('acc-' + ticker);
+  el.classList.toggle('open');
+}
+
+function jumpToAnalise(ticker) {
+  document.querySelectorAll('.tab-btn').forEach((b,i) => {
+    if (b.textContent.includes('Análise')) { b.click(); }
+  });
+  setTimeout(() => {
+    const el = document.getElementById('acc-' + ticker);
+    if (el) {
+      el.scrollIntoView({behavior:'smooth', block:'center'});
+      if (!el.classList.contains('open')) el.classList.add('open');
+    }
+  }, 120);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════════
+
+// Initial render with base prices
+renderAll();
+// Fetch live prices
+refreshAllPrices();
+
+// Auto-refresh
+setInterval(() => {
+  if (isMarketOpen()) refreshAllPrices();
+}, 90000);
+setInterval(() => {
+  if (!isMarketOpen()) refreshAllPrices();
+}, 300000);
+
+</script>
+</body>
+</html>
