@@ -1,0 +1,3374 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Easy Social Invest — Rede Social de Investidores</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+/* ─── CSS VARIABLES ─── */
+:root {
+  --green-950: #052e16;
+  --green-900: #14532d;
+  --green-800: #166534;
+  --green-700: #15803d;
+  --green-600: #16a34a;
+  --green-500: #22c55e;
+  --green-400: #4ade80;
+  --green-300: #86efac;
+  --green-200: #bbf7d0;
+  --green-100: #dcfce7;
+  --green-50:  #f0fdf4;
+  --red-600: #dc2626;
+  --red-100: #fee2e2;
+  --amber-600: #d97706;
+  --amber-100: #fef3c7;
+  --blue-600: #2563eb;
+  --blue-100: #dbeafe;
+  --slate-900: #0f172a;
+  --slate-700: #334155;
+  --slate-500: #64748b;
+  --slate-400: #94a3b8;
+  --slate-200: #e2e8f0;
+  --slate-100: #f1f5f9;
+  --slate-50:  #f8fafc;
+  --white: #ffffff;
+  --sidebar-w: 240px;
+  --topbar-h: 60px;
+  --bottomnav-h: 64px;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.08);
+  --shadow: 0 4px 16px rgba(0,0,0,.10);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,.14);
+  --transition: 0.2s cubic-bezier(.4,0,.2,1);
+}
+
+/* ─── RESET ─── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--slate-50);
+  color:var(--slate-900);
+  font-size:14px;
+  line-height:1.6;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+input,textarea{font-family:inherit;outline:none}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--slate-200);border-radius:4px}
+.mono{font-family:'JetBrains Mono',monospace}
+.sora{font-family:'Sora',sans-serif}
+
+/* ─── LOGIN SCREEN ─── */
+#login-screen{
+  position:fixed;inset:0;
+  background:linear-gradient(135deg,var(--green-950) 0%,var(--green-800) 60%,var(--green-600) 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:9999;
+  gap:32px;
+  padding:32px;
+}
+.login-logo{
+  display:flex;align-items:center;gap:14px;
+}
+.login-logo-icon{
+  width:64px;height:64px;
+  background:rgba(255,255,255,0.15);
+  border:2px solid rgba(255,255,255,0.3);
+  border-radius:18px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Sora',sans-serif;font-size:28px;font-weight:800;color:#fff;
+  letter-spacing:-2px;
+}
+.login-logo-text{
+  font-family:'Sora',sans-serif;
+  font-size:30px;font-weight:700;color:#fff;letter-spacing:-0.5px;
+  line-height:1.1;
+}
+.login-logo-text span{color:var(--green-400);}
+.login-tagline{
+  color:rgba(255,255,255,0.7);
+  font-size:15px;text-align:center;max-width:320px;
+}
+.login-card{
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.15);
+  border-radius:20px;
+  padding:32px;
+  width:100%;max-width:380px;
+  backdrop-filter:blur(20px);
+}
+.login-card h2{
+  font-family:'Sora',sans-serif;
+  font-size:20px;font-weight:700;color:#fff;
+  margin-bottom:20px;text-align:center;
+}
+.login-field{
+  margin-bottom:14px;
+}
+.login-field label{
+  display:block;font-size:12px;font-weight:600;
+  color:rgba(255,255,255,0.7);margin-bottom:6px;letter-spacing:0.3px;
+}
+.login-field input{
+  width:100%;
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:10px;
+  padding:12px 16px;
+  color:#fff;
+  font-size:14px;
+  transition:var(--transition);
+}
+.login-field input::placeholder{color:rgba(255,255,255,0.4)}
+.login-field input:focus{
+  border-color:var(--green-400);
+  background:rgba(255,255,255,0.15);
+}
+.btn-login{
+  width:100%;
+  background:var(--green-500);
+  color:#fff;
+  font-family:'Sora',sans-serif;
+  font-weight:700;font-size:15px;
+  padding:14px;
+  border-radius:10px;
+  margin-top:8px;
+  transition:var(--transition);
+  letter-spacing:0.2px;
+}
+.btn-login:hover{background:var(--green-400);transform:translateY(-1px)}
+.login-divider{
+  text-align:center;color:rgba(255,255,255,0.4);font-size:12px;margin:14px 0;
+}
+.btn-demo{
+  width:100%;
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.2);
+  color:rgba(255,255,255,0.85);
+  font-size:14px;font-weight:500;
+  padding:12px;border-radius:10px;
+  transition:var(--transition);
+}
+.btn-demo:hover{background:rgba(255,255,255,0.18)}
+.login-stats{
+  display:flex;gap:32px;justify-content:center;
+}
+.login-stat{text-align:center;}
+.login-stat-value{
+  font-family:'Sora',sans-serif;
+  font-size:24px;font-weight:800;color:var(--green-400);
+}
+.login-stat-label{font-size:12px;color:rgba(255,255,255,0.5);}
+
+/* ─── APP LAYOUT ─── */
+#app{display:none;height:100vh;overflow:hidden;position:relative;}
+
+/* SIDEBAR (desktop) */
+.sidebar{
+  position:fixed;top:0;left:0;bottom:0;
+  width:var(--sidebar-w);
+  background:var(--green-950);
+  display:flex;flex-direction:column;
+  z-index:200;
+  transition:transform var(--transition);
+}
+.sidebar-logo{
+  padding:16px 20px;
+  display:flex;align-items:center;justify-content:center;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.sidebar-logo-img{
+  width:100%;max-width:180px;height:auto;
+  border-radius:10px;
+  display:block;
+}
+.sidebar-nav{
+  flex:1;padding:12px 0;overflow-y:auto;
+}
+.nav-section-label{
+  font-size:10px;font-weight:700;letter-spacing:1px;
+  color:rgba(255,255,255,0.3);text-transform:uppercase;
+  padding:12px 20px 4px;
+}
+.nav-item{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 20px;
+  color:rgba(255,255,255,0.6);
+  font-size:14px;font-weight:500;
+  transition:var(--transition);
+  border-radius:0;
+  cursor:pointer;
+  border-left:3px solid transparent;
+  position:relative;
+}
+.nav-item:hover{
+  background:rgba(255,255,255,0.06);
+  color:rgba(255,255,255,0.9);
+}
+.nav-item.active{
+  background:rgba(74,222,128,0.12);
+  color:var(--green-400);
+  border-left-color:var(--green-400);
+  font-weight:600;
+}
+.nav-item .nav-icon{
+  width:20px;height:20px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.nav-badge{
+  margin-left:auto;
+  background:var(--green-600);
+  color:#fff;
+  font-size:10px;font-weight:700;
+  padding:1px 7px;border-radius:20px;
+}
+.sidebar-user{
+  padding:16px 20px;
+  border-top:1px solid rgba(255,255,255,0.08);
+  display:flex;align-items:center;gap:10px;
+  cursor:pointer;
+}
+.sidebar-user:hover{background:rgba(255,255,255,0.04)}
+.sidebar-avatar{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;
+  flex-shrink:0;
+}
+.sidebar-user-info{flex:1;overflow:hidden;}
+.sidebar-user-name{font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sidebar-user-handle{font-size:11px;color:rgba(255,255,255,0.4);}
+
+/* MAIN CONTENT */
+.main-content{
+  margin-left:var(--sidebar-w);
+  height:100vh;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+}
+
+/* TOP BAR */
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(248,250,252,0.95);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--slate-200);
+  height:var(--topbar-h);
+  display:flex;align-items:center;
+  padding:0 24px;
+  gap:16px;
+}
+.topbar-title{
+  font-family:'Sora',sans-serif;
+  font-size:18px;font-weight:700;color:var(--slate-900);
+  flex:1;
+}
+.topbar-search{
+  display:flex;align-items:center;gap:8px;
+  background:var(--white);
+  border:1px solid var(--slate-200);
+  border-radius:24px;
+  padding:8px 16px;
+  width:240px;
+  transition:var(--transition);
+}
+.topbar-search:focus-within{border-color:var(--green-500);box-shadow:0 0 0 3px rgba(34,197,94,0.1)}
+.topbar-search input{
+  border:none;background:none;
+  font-size:13px;color:var(--slate-900);width:100%;
+}
+.topbar-search input::placeholder{color:var(--slate-400)}
+.topbar-actions{display:flex;align-items:center;gap:8px;}
+.topbar-btn{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--slate-500);
+  background:var(--white);
+  border:1px solid var(--slate-200);
+  transition:var(--transition);
+  position:relative;
+}
+.topbar-btn:hover{background:var(--green-50);color:var(--green-600);border-color:var(--green-200)}
+.notif-dot{
+  position:absolute;top:4px;right:4px;
+  width:8px;height:8px;border-radius:50%;
+  background:var(--green-500);
+  border:2px solid var(--slate-50);
+}
+.topbar-avatar{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;
+  cursor:pointer;border:2px solid var(--green-400);
+  transition:var(--transition);
+}
+.topbar-avatar:hover{transform:scale(1.05)}
+
+/* PAGE WRAPPER */
+.page{display:none;flex:1;padding:24px;}
+.page.active{display:block;}
+
+/* ─── FEED PAGE ─── */
+.feed-layout{
+  display:grid;
+  grid-template-columns:1fr 300px;
+  gap:24px;
+  max-width:1000px;
+  margin:0 auto;
+}
+/* Post Composer */
+.composer{
+  background:var(--white);
+  border:1px solid var(--slate-200);
+  border-radius:var(--radius);
+  padding:16px;
+  margin-bottom:16px;
+  box-shadow:var(--shadow-sm);
+}
+.composer-top{
+  display:flex;gap:12px;align-items:flex-start;
+}
+.composer-textarea{
+  flex:1;
+  border:none;resize:none;
+  font-size:15px;color:var(--slate-700);
+  background:none;
+  min-height:56px;
+  line-height:1.6;
+}
+.composer-textarea::placeholder{color:var(--slate-400)}
+.composer-divider{height:1px;background:var(--slate-100);margin:12px 0;}
+.composer-actions{
+  display:flex;align-items:center;gap:4px;
+}
+.composer-action-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:7px 12px;border-radius:8px;
+  color:var(--slate-500);font-size:13px;font-weight:500;
+  transition:var(--transition);
+}
+.composer-action-btn:hover{background:var(--slate-50);color:var(--green-600)}
+.composer-publish{
+  margin-left:auto;
+  background:var(--green-600);
+  color:#fff;
+  font-family:'Sora',sans-serif;
+  font-size:13px;font-weight:600;
+  padding:8px 20px;border-radius:24px;
+  transition:var(--transition);
+}
+.composer-publish:hover{background:var(--green-700);transform:translateY(-1px)}
+
+/* Post Card */
+.post-card{
+  background:var(--white);
+  border:1px solid var(--slate-200);
+  border-radius:var(--radius);
+  padding:16px;
+  margin-bottom:12px;
+  box-shadow:var(--shadow-sm);
+  transition:var(--transition);
+  animation:fadeSlide 0.3s ease forwards;
+}
+.post-card:hover{box-shadow:var(--shadow);border-color:var(--slate-300)}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.post-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.post-avatar{
+  width:40px;height:40px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:#fff;
+  flex-shrink:0;cursor:pointer;transition:var(--transition);
+}
+.post-avatar:hover{transform:scale(1.05)}
+.post-user-info{flex:1;}
+.post-user-name{
+  font-size:14px;font-weight:600;color:var(--slate-900);cursor:pointer;
+}
+.post-user-name:hover{color:var(--green-700)}
+.post-user-handle{font-size:12px;color:var(--slate-400);}
+.post-time{font-size:12px;color:var(--slate-400);}
+.post-more-btn{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--slate-400);transition:var(--transition);
+}
+.post-more-btn:hover{background:var(--slate-100);color:var(--slate-700)}
+.post-community-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--green-50);
+  color:var(--green-700);
+  font-size:11px;font-weight:600;
+  padding:2px 9px;border-radius:20px;
+  margin-bottom:8px;
+  border:1px solid var(--green-200);
+}
+.post-content{font-size:14px;color:var(--slate-700);line-height:1.7;margin-bottom:12px;}
+.post-content strong{color:var(--slate-900);font-weight:600;}
+.post-ticker-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+.ticker-tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;font-weight:600;
+  background:var(--slate-900);color:#fff;
+  padding:2px 8px;border-radius:5px;
+  cursor:pointer;transition:var(--transition);
+}
+.ticker-tag:hover{background:var(--green-700)}
+.post-analysis-card{
+  background:var(--slate-50);
+  border:1px solid var(--slate-200);
+  border-radius:10px;
+  padding:14px;
+  margin-bottom:12px;
+}
+.post-analysis-title{
+  font-family:'Sora',sans-serif;
+  font-size:13px;font-weight:700;color:var(--slate-900);margin-bottom:4px;
+}
+.post-analysis-meta{font-size:11px;color:var(--slate-400);margin-bottom:10px;}
+.post-analysis-metrics{display:flex;gap:16px;flex-wrap:wrap;}
+.analysis-metric{text-align:center;}
+.analysis-metric-value{
+  font-family:'JetBrains Mono',monospace;
+  font-size:15px;font-weight:700;
+}
+.analysis-metric-label{font-size:10px;color:var(--slate-400);font-weight:600;letter-spacing:0.3px;}
+.val-green{color:var(--green-600)}
+.val-red{color:var(--red-600)}
+.val-amber{color:var(--amber-600)}
+
+.post-image{
+  width:100%;border-radius:10px;margin-bottom:12px;
+  aspect-ratio:16/9;object-fit:cover;background:var(--slate-100);
+  overflow:hidden;
+}
+.post-actions{
+  display:flex;align-items:center;gap:2px;
+  border-top:1px solid var(--slate-100);
+  padding-top:10px;
+}
+.post-action-btn{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:8px 4px;border-radius:8px;
+  color:var(--slate-500);font-size:13px;
+  transition:var(--transition);
+}
+.post-action-btn:hover{background:var(--slate-50);}
+.post-action-btn.liked{color:var(--red-600);}
+.post-action-btn.liked svg{fill:var(--red-600);}
+.post-action-btn.saved{color:var(--amber-600);}
+.post-action-count{font-weight:600;font-size:12px;}
+
+/* Feed Sidebar */
+.feed-sidebar{}
+.widget{
+  background:var(--white);
+  border:1px solid var(--slate-200);
+  border-radius:var(--radius);
+  padding:16px;
+  margin-bottom:16px;
+  box-shadow:var(--shadow-sm);
+}
+.widget-title{
+  font-family:'Sora',sans-serif;
+  font-size:14px;font-weight:700;color:var(--slate-900);
+  margin-bottom:14px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.widget-link{font-size:12px;color:var(--green-600);font-weight:600;cursor:pointer;}
+.widget-link:hover{color:var(--green-700)}
+
+/* Market mini widget */
+.market-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 0;
+  border-bottom:1px solid var(--slate-100);
+}
+.market-item:last-child{border-bottom:none}
+.market-ticker{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--slate-900);}
+.market-name{font-size:11px;color:var(--slate-400);}
+.market-change{
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;font-weight:700;
+  padding:2px 8px;border-radius:6px;
+}
+.market-change.up{background:var(--green-100);color:var(--green-700);}
+.market-change.down{background:var(--red-100);color:var(--red-600);}
+
+/* Suggested users widget */
+.suggest-user{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 0;
+}
+.suggest-info{flex:1;}
+.suggest-name{font-size:13px;font-weight:600;color:var(--slate-900);}
+.suggest-handle{font-size:11px;color:var(--slate-400);}
+.suggest-return{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--green-600);}
+.btn-follow{
+  background:var(--green-600);color:#fff;
+  font-size:12px;font-weight:600;
+  padding:5px 14px;border-radius:20px;
+  transition:var(--transition);flex-shrink:0;
+}
+.btn-follow:hover{background:var(--green-700)}
+.btn-follow.following{
+  background:var(--white);color:var(--green-600);
+  border:1.5px solid var(--green-500);
+}
+
+/* ─── COMUNIDADES PAGE ─── */
+.section-tabs{
+  display:flex;gap:4px;
+  background:var(--white);
+  border:1px solid var(--slate-200);
+  border-radius:10px;
+  padding:4px;
+  margin-bottom:20px;
+  width:fit-content;
+}
+.stab{
+  padding:8px 18px;border-radius:7px;
+  font-size:13px;font-weight:500;color:var(--slate-500);
+  transition:var(--transition);
+}
+.stab.active{
+  background:var(--green-600);color:#fff;font-weight:600;
+}
+.stab:hover:not(.active){background:var(--slate-50);color:var(--slate-700)}
+
+.communities-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:16px;
+  margin-bottom:24px;
+}
+.community-card{
+  background:var(--white);
+  border:1px solid var(--slate-200);
+  border-radius:var(--radius);
+  overflow:hidden;
+  transition:var(--transition);
+  cursor:pointer;
+  box-shadow:var(--shadow-sm);
+}
+.community-card:hover{box-shadow:var(--shadow);transform:translateY(-2px);border-color:var(--green-300)}
+.community-banner{
+  height:80px;
+  display:flex;align-items:flex-end;padding:12px;
+  position:relative;
+  overflow:hidden;
+}
+.community-banner::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent,rgba(0,0,0,0.5));
+}
+.community-banner-emoji{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-size:36px;opacity:0.35;
+  z-index:0;
+}
+.community-body{padding:14px;}
+.community-name{
+  font-family:'Sora',sans-serif;
+  font-size:15px;font-weight:700;color:var(--slate-900);margin-bottom:4px;
+}
+.community-desc{font-size:12px;color:var(--slate-500);margin-bottom:12px;line-height:1.5;}
+.community-footer{
+  display:flex;align-items:center;justify-content:space-between;
+}
+.community-meta{font-size:11px;color:var(--slate-400);}
+.community-meta span{font-weight:600;color:var(--slate-600);}
+.btn-join{
+  background:var(--green-600);color:#fff;
+  font-size:12px;font-weight:600;
+  padding:5px 14px;border-radius:20px;
+  transition:var(--transition);
+}
+.btn-join:hover{background:var(--green-700)}
+.btn-join.joined{
+  background:var(--white);color:var(--green-600);
+  border:1.5px solid var(--green-500);
+}
+
+/* Community detail view */
+.community-detail-header{
+  background:var(--white);
+  border:1px solid var(--slate-200);
+  border-radius:var(--radius);
+  overflow:hidden;
+  margin-bottom:16px;
+}
+.community-detail-banner{
+  height:120px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:60px;
+  position:relative;
+}
+.community-detail-banner::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent,rgba(0,0,0,0.4));
+}
+.community-detail-info{padding:16px 20px;display:flex;align-items:center;gap:16px;}
+.community-detail-name{
+  font-family:'Sora',sans-serif;font-size:20px;font-weight:700;flex:1;
+}
+.community-stats{display:flex;gap:20px;}
+.community-stat{text-align:center;}
+.community-stat-value{font-family:'Sora',sans-serif;font-size:16px;font-weight:700;color:var(--green-700);}
+.community-stat-label{font-size:11px;color:var(--slate-400);}
+
+/* ─── RANKING PAGE ─── */
+.ranking-layout{max-width:900px;margin:0 auto;}
+.ranking-header-card{
+  background:linear-gradient(135deg,var(--green-900),var(--green-700));
+  border-radius:var(--radius);
+  padding:24px;
+  color:#fff;
+  margin-bottom:20px;
+  position:relative;
+  overflow:hidden;
+}
+.ranking-header-card::before{
+  content:'';
+  position:absolute;right:24px;top:50%;transform:translateY(-50%);
+  width:100px;height:100px;opacity:0.07;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='white' stroke-width='1.2' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'/%3E%3C/svg%3E") no-repeat center/contain;
+}
+.ranking-header-card h2{
+  font-family:'Sora',sans-serif;font-size:22px;font-weight:800;
+  margin-bottom:4px;
+  display:flex;align-items:center;gap:10px;
+}
+.ranking-header-card p{color:rgba(255,255,255,0.7);font-size:14px;}
+
+.ranking-table-wrap{
+  background:var(--white);
+  border:1px solid var(--slate-200);
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:var(--shadow-sm);
+}
+.ranking-table{width:100%;border-collapse:collapse;}
+.ranking-table thead th{
+  background:var(--slate-900);
+  color:rgba(255,255,255,0.8);
+  padding:12px 16px;
+  text-align:left;
+  font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;
+  white-space:nowrap;
+}
+.ranking-table tbody tr{
+  border-bottom:1px solid var(--slate-100);
+  transition:var(--transition);cursor:pointer;
+}
+.ranking-table tbody tr:last-child{border-bottom:none}
+.ranking-table tbody tr:hover{background:var(--green-50)}
+.ranking-table tbody td{padding:14px 16px;white-space:nowrap;}
+.rank-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;font-weight:700;
+  color:var(--slate-400);width:32px;text-align:center;
+}
+.rank-medal{font-size:20px;width:32px;text-align:center;}
+.rank-user{display:flex;align-items:center;gap:10px;}
+.rank-user-name{font-size:14px;font-weight:600;color:var(--slate-900);}
+.rank-user-handle{font-size:12px;color:var(--slate-400);}
+.rank-return{
+  font-family:'JetBrains Mono',monospace;
+  font-size:15px;font-weight:700;
+}
+.rank-return.positive{color:var(--green-600);}
+.rank-return.negative{color:var(--red-600);}
+.rank-portfolio-tags{display:flex;gap:4px;flex-wrap:wrap;}
+.rank-ticker{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;font-weight:600;
+  background:var(--slate-900);color:#fff;
+  padding:1px 6px;border-radius:4px;
+}
+
+/* ─── MERCADO PAGE ─── */
+.mercado-layout{max-width:1100px;margin:0 auto;}
+.market-hero{
+  background:linear-gradient(135deg,var(--slate-900) 0%,var(--green-900) 100%);
+  border-radius:var(--radius);
+  padding:24px;
+  margin-bottom:20px;
+  color:#fff;
+  display:flex;align-items:center;gap:24px;flex-wrap:wrap;
+}
+.ibov-main{flex:1;min-width:200px;}
+.ibov-label{font-size:12px;color:rgba(255,255,255,0.5);font-weight:600;letter-spacing:0.5px;text-transform:uppercase;}
+.ibov-value{
+  font-family:'Sora',sans-serif;
+  font-size:36px;font-weight:800;color:#fff;
+  letter-spacing:-1px;line-height:1;margin:4px 0;
+}
+.ibov-change{
+  font-family:'JetBrains Mono',monospace;
+  font-size:16px;font-weight:700;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.ibov-change.up{color:var(--green-400)}
+.ibov-change.down{color:#f87171}
+.ibov-sub{font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;}
+.market-metrics{
+  display:flex;gap:24px;flex-wrap:wrap;
+}
+.market-metric{border-left:1px solid rgba(255,255,255,0.1);padding-left:20px;}
+.market-metric:first-child{border-left:none;padding-left:0;}
+.market-metric-label{font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:0.3px;}
+.market-metric-value{
+  font-family:'JetBrains Mono',monospace;
+  font-size:16px;font-weight:700;margin-top:2px;
+}
+.market-status{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);
+  border-radius:20px;padding:4px 12px;
+  font-size:12px;font-weight:600;color:var(--green-400);
+  margin-top:8px;
+}
+.market-status-dot{width:6px;height:6px;border-radius:50%;background:var(--green-400);animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
+.movers-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;
+}
+.movers-card{
+  background:var(--white);
+  border:1px solid var(--slate-200);
+  border-radius:var(--radius);
+  overflow:hidden;box-shadow:var(--shadow-sm);
+}
+.movers-header{
+  padding:12px 16px;
+  font-family:'Sora',sans-serif;font-size:13px;font-weight:700;
+  display:flex;align-items:center;gap:8px;
+}
+.movers-header.up{background:var(--green-50);color:var(--green-800);border-bottom:1px solid var(--green-100);}
+.movers-header.down{background:var(--red-100);color:var(--red-600);border-bottom:1px solid #fecaca;}
+.mover-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px;border-bottom:1px solid var(--slate-100);
+}
+.mover-row:last-child{border-bottom:none}
+.mover-ticker{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--slate-900);}
+.mover-name{font-size:11px;color:var(--slate-400);}
+.mover-pct{
+  font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;
+  padding:3px 10px;border-radius:6px;
+}
+.mover-pct.up{background:var(--green-100);color:var(--green-700);}
+.mover-pct.down{background:var(--red-100);color:var(--red-600);}
+
+/* Thermometer grid responsive */
+@media(max-width:900px){
+  .thermo-grid{grid-template-columns:1fr !important;}
+}
+
+/* Factor Invest table */
+.factor-section{
+  background:var(--white);
+  border:1px solid var(--slate-200);
+  border-radius:var(--radius);
+  overflow:hidden;box-shadow:var(--shadow-sm);
+  margin-bottom:20px;
+}
+.factor-header{
+  background:var(--slate-900);color:#fff;
+  padding:14px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.factor-header h3{
+  font-family:'Sora',sans-serif;font-size:15px;font-weight:700;
+}
+.factor-header-meta{font-size:12px;color:rgba(255,255,255,0.5);}
+.factor-table{width:100%;border-collapse:collapse;font-size:12px;}
+.factor-table thead th{
+  background:var(--slate-700);color:#e2e8f0;
+  padding:10px 12px;text-align:left;font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;
+  white-space:nowrap;border-right:1px solid rgba(255,255,255,0.08);
+}
+.factor-table thead th:last-child{border-right:none;}
+.factor-table tbody tr{border-bottom:1px solid var(--slate-100);transition:var(--transition);}
+.factor-table tbody tr:hover{background:var(--slate-50)}
+.factor-table tbody tr:last-child{border-bottom:none}
+.factor-table td{padding:10px 12px;white-space:nowrap;}
+.fi-ticker{
+  font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;
+  background:var(--slate-900);color:#fff;
+  padding:2px 7px;border-radius:4px;
+}
+.fi-classif{
+  padding:2px 9px;border-radius:4px;
+  font-size:11px;font-weight:700;
+}
+.fi-classif.pechincha{background:#064e3b;color:#a7f3d0;}
+.fi-classif.barato{background:var(--green-100);color:var(--green-800);}
+.fi-classif.justo{background:var(--blue-100);color:#1d4ed8;}
+.fi-classif.caro{background:var(--red-100);color:var(--red-600);}
+.fi-rec{
+  padding:2px 9px;border-radius:20px;
+  font-size:11px;font-weight:600;
+  white-space:nowrap;
+}
+.fi-rec.compra-forte{background:#166534;color:#fff;}
+.fi-rec.compra{background:var(--green-600);color:#fff;}
+.fi-rec.neutro{background:var(--amber-600);color:#fff;}
+.fi-rec.venda{background:var(--red-600);color:#fff;}
+.fi-score{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;text-align:center;}
+.fi-score.s-high{color:var(--green-600);}
+.fi-score.s-mid{color:var(--amber-600);}
+.fi-score.s-low{color:var(--red-600);}
+.mono-val{font-family:'JetBrains Mono',monospace;font-size:12px;}
+
+/* ─── PORTFOLIO PAGE ─── */
+.portfolio-layout{
+  display:grid;grid-template-columns:1fr 320px;gap:20px;
+  max-width:1000px;margin:0 auto;
+}
+.portfolio-main{}
+.portfolio-sidebar{}
+.portfolio-header-card{
+  background:linear-gradient(135deg,var(--green-800),var(--green-600));
+  border-radius:var(--radius);
+  padding:20px;color:#fff;
+  margin-bottom:16px;
+}
+.portfolio-header-card h2{
+  font-family:'Sora',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px;
+}
+.portfolio-header-card p{font-size:13px;color:rgba(255,255,255,0.7);}
+.portfolio-perf-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+  margin-top:16px;
+}
+.portfolio-perf-item{
+  background:rgba(255,255,255,0.12);
+  border-radius:10px;padding:10px 12px;
+  border:1px solid rgba(255,255,255,0.1);
+}
+.portfolio-perf-period{font-size:10px;color:rgba(255,255,255,0.6);font-weight:600;letter-spacing:0.3px;text-transform:uppercase;}
+.portfolio-perf-value{
+  font-family:'JetBrains Mono',monospace;
+  font-size:18px;font-weight:700;color:#fff;margin-top:2px;
+}
+.portfolio-perf-value.pos{color:var(--green-300);}
+.portfolio-perf-value.neg{color:#f87171;}
+.portfolio-perf-sub{font-size:10px;color:rgba(255,255,255,0.5);margin-top:1px;}
+
+.card{
+  background:var(--white);
+  border:1px solid var(--slate-200);
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:var(--shadow-sm);
+  margin-bottom:16px;
+}
+.card-header{
+  padding:14px 16px;
+  border-bottom:1px solid var(--slate-100);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.card-title{
+  font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:var(--slate-900);
+  display:flex;align-items:center;gap:8px;
+}
+.card-body{padding:16px;}
+
+/* Positions table */
+.positions-table{width:100%;border-collapse:collapse;}
+.positions-table th{
+  padding:8px 12px;text-align:left;
+  font-size:10px;font-weight:700;color:var(--slate-400);
+  letter-spacing:0.5px;text-transform:uppercase;
+  border-bottom:1px solid var(--slate-100);
+}
+.positions-table td{padding:10px 12px;border-bottom:1px solid var(--slate-50);}
+.positions-table tr:last-child td{border-bottom:none}
+.positions-table tr:hover td{background:var(--green-50)}
+.pos-weight-bar{
+  height:4px;background:var(--slate-100);border-radius:2px;margin-top:4px;
+  overflow:hidden;
+}
+.pos-weight-fill{height:100%;background:var(--green-500);border-radius:2px;transition:width 0.6s ease;}
+
+/* Trades */
+.trade-row{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 0;border-bottom:1px solid var(--slate-100);
+}
+.trade-row:last-child{border-bottom:none}
+.trade-direction{
+  width:32px;height:32px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;flex-shrink:0;font-weight:700;
+}
+.trade-direction.buy{background:var(--green-100);color:var(--green-700);}
+.trade-direction.sell{background:var(--red-100);color:var(--red-600);}
+.trade-info{flex:1;}
+.trade-ticker{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--slate-900);}
+.trade-date{font-size:11px;color:var(--slate-400);}
+.trade-result{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;font-weight:700;text-align:right;
+}
+.trade-result.gain{color:var(--green-600);}
+.trade-result.loss{color:var(--red-600);}
+.trade-type{font-size:10px;color:var(--slate-400);text-align:right;}
+
+/* Chart canvas */
+.chart-wrap{position:relative;width:100%;aspect-ratio:1;max-width:220px;margin:0 auto;}
+.chart-legend{margin-top:12px;}
+.legend-item{
+  display:flex;align-items:center;gap:8px;
+  padding:4px 0;
+}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.legend-label{font-size:12px;color:var(--slate-700);flex:1;}
+.legend-pct{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--slate-900);}
+
+/* Perf line */
+.perf-toggle{
+  display:flex;gap:4px;
+  background:var(--slate-100);
+  border-radius:8px;padding:3px;
+  font-size:12px;
+}
+.perf-toggle-btn{
+  padding:4px 12px;border-radius:6px;
+  color:var(--slate-500);font-weight:500;
+  transition:var(--transition);
+}
+.perf-toggle-btn.active{background:var(--white);color:var(--slate-900);font-weight:600;box-shadow:var(--shadow-sm);}
+
+/* ─── PERFIL PAGE ─── */
+.profile-layout{max-width:900px;margin:0 auto;}
+.profile-cover{
+  height:160px;
+  border-radius:var(--radius) var(--radius) 0 0;
+  position:relative;overflow:hidden;
+}
+.profile-header-card{
+  background:var(--white);
+  border:1px solid var(--slate-200);
+  border-radius:var(--radius);
+  margin-bottom:16px;overflow:hidden;
+  box-shadow:var(--shadow-sm);
+}
+.profile-cover-img{
+  width:100%;height:100%;object-fit:cover;
+}
+.profile-info-row{
+  padding:0 24px 20px;
+  display:flex;align-items:flex-end;gap:16px;
+  margin-top:-36px;
+}
+.profile-avatar-wrap{
+  position:relative;z-index:2;
+  width:88px;height:88px;border-radius:50%;
+  border:4px solid var(--white);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Sora',sans-serif;font-size:28px;font-weight:700;color:#fff;
+  flex-shrink:0;
+  box-shadow:var(--shadow);
+}
+.profile-info{flex:1;padding-top:48px;}
+.profile-name{font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:var(--slate-900);}
+.profile-handle{font-size:14px;color:var(--slate-400);margin-bottom:4px;}
+.profile-bio{font-size:14px;color:var(--slate-600);max-width:500px;line-height:1.5;}
+.profile-stats{
+  display:flex;gap:24px;margin-top:12px;
+}
+.profile-stat{text-align:center;}
+.profile-stat-value{
+  font-family:'Sora',sans-serif;font-size:18px;font-weight:700;color:var(--slate-900);
+}
+.profile-stat-label{font-size:11px;color:var(--slate-400);}
+.profile-actions{
+  display:flex;gap:8px;align-items:flex-start;padding-top:48px;
+}
+.btn-primary{
+  background:var(--green-600);color:#fff;
+  font-family:'Sora',sans-serif;font-size:13px;font-weight:600;
+  padding:8px 20px;border-radius:24px;
+  transition:var(--transition);
+}
+.btn-primary:hover{background:var(--green-700)}
+.btn-secondary{
+  background:var(--white);color:var(--slate-700);
+  font-family:'Sora',sans-serif;font-size:13px;font-weight:600;
+  padding:8px 20px;border-radius:24px;
+  border:1.5px solid var(--slate-200);
+  transition:var(--transition);
+}
+.btn-secondary:hover{border-color:var(--green-400);color:var(--green-700)}
+
+.profile-grid{
+  display:grid;grid-template-columns:1fr 320px;gap:16px;
+}
+
+/* Perf summary in profile */
+.perf-bar-wrap{
+  display:flex;align-items:center;gap:12px;margin-bottom:8px;
+}
+.perf-bar-label{font-size:12px;color:var(--slate-500);width:60px;flex-shrink:0;}
+.perf-bar-track{flex:1;height:6px;background:var(--slate-100);border-radius:3px;overflow:hidden;}
+.perf-bar-fill{height:100%;border-radius:3px;transition:width 0.8s ease;}
+.perf-bar-fill.pos{background:var(--green-500);}
+.perf-bar-fill.neg{background:var(--red-600);}
+.perf-bar-value{
+  font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;
+  min-width:56px;text-align:right;
+}
+.perf-bar-value.pos{color:var(--green-600);}
+.perf-bar-value.neg{color:var(--red-600);}
+
+/* ─── BOTTOM NAV (mobile) ─── */
+.bottom-nav{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;
+  height:var(--bottomnav-h);
+  background:var(--white);
+  border-top:1px solid var(--slate-200);
+  z-index:300;
+  padding:0 4px 8px;
+  align-items:center;justify-content:space-around;
+}
+.bottom-nav-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;padding:6px 4px;
+  color:var(--slate-400);font-size:10px;font-weight:500;
+  border-radius:8px;transition:var(--transition);cursor:pointer;
+}
+.bottom-nav-item.active{color:var(--green-600);}
+.bottom-nav-item.active svg{stroke:var(--green-600);}
+.bottom-nav-item svg{transition:var(--transition);}
+
+/* ─── FLOATING ACTION BUTTON ─── */
+.fab{
+  position:fixed;right:24px;bottom:90px;
+  width:56px;height:56px;border-radius:50%;
+  background:var(--green-600);
+  color:#fff;box-shadow:var(--shadow-lg);
+  display:none;align-items:center;justify-content:center;
+  z-index:299;transition:var(--transition);font-size:24px;
+}
+.fab:hover{background:var(--green-700);transform:scale(1.05)}
+
+/* ─── MODAL ─── */
+.modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,0.5);
+  backdrop-filter:blur(4px);
+  z-index:500;
+  display:none;align-items:center;justify-content:center;
+  padding:20px;
+}
+.modal-overlay.open{display:flex;}
+.modal{
+  background:var(--white);
+  border-radius:var(--radius);
+  width:100%;max-width:560px;
+  overflow:hidden;
+  box-shadow:var(--shadow-lg);
+  animation:modalIn 0.25s ease;
+}
+@keyframes modalIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
+.modal-header{
+  padding:16px 20px;border-bottom:1px solid var(--slate-100);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.modal-title{font-family:'Sora',sans-serif;font-size:16px;font-weight:700;}
+.modal-close{
+  width:30px;height:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--slate-500);transition:var(--transition);
+}
+.modal-close:hover{background:var(--slate-100);color:var(--slate-900)}
+.modal-body{padding:20px;}
+.modal-footer{
+  padding:12px 20px;border-top:1px solid var(--slate-100);
+  display:flex;align-items:center;justify-content:flex-end;gap:8px;
+}
+
+/* ─── NOTIFICATIONS ─── */
+.toast{
+  position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--slate-900);color:#fff;
+  padding:10px 20px;border-radius:24px;
+  font-size:13px;font-weight:500;
+  opacity:0;transition:all 0.3s ease;
+  z-index:9998;white-space:nowrap;
+  box-shadow:var(--shadow-lg);
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ─── EMPTY STATE ─── */
+.empty-state{
+  text-align:center;padding:48px 24px;
+}
+.empty-state-icon{font-size:48px;margin-bottom:12px;}
+.empty-state-title{font-family:'Sora',sans-serif;font-size:16px;font-weight:700;color:var(--slate-700);margin-bottom:4px;}
+.empty-state-desc{font-size:13px;color:var(--slate-400);}
+
+/* ─── LOADING PULSE ─── */
+.skeleton{
+  background:linear-gradient(90deg,var(--slate-100) 25%,var(--slate-50) 50%,var(--slate-100) 75%);
+  background-size:200% 100%;
+  animation:shimmer 1.5s infinite;
+  border-radius:6px;
+}
+@keyframes shimmer{from{background-position:200% 0}to{background-position:-200% 0}}
+
+/* ─── SCROLL PROGRESS ─── */
+.scroll-progress{
+  position:fixed;top:0;left:0;height:2px;
+  background:linear-gradient(90deg,var(--green-500),var(--green-300));
+  z-index:9999;width:0%;transition:width 0.1s linear;
+}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%);}
+  .sidebar.open{transform:translateX(0);}
+  .main-content{margin-left:0;}
+  .bottom-nav{display:flex;}
+  .fab{display:flex;}
+  .feed-layout{grid-template-columns:1fr;}
+  .feed-sidebar{display:none;}
+  .portfolio-layout{grid-template-columns:1fr;}
+  .portfolio-sidebar{display:none;}
+  .movers-grid{grid-template-columns:1fr;}
+  .profile-grid{grid-template-columns:1fr;}
+  .portfolio-perf-grid{grid-template-columns:repeat(2,1fr);}
+  .topbar-search{display:none;}
+  .communities-grid{grid-template-columns:1fr;}
+  .profile-info-row{flex-wrap:wrap;}
+  .profile-actions{padding-top:8px;width:100%;}
+}
+@media(max-width:600px){
+  .topbar{padding:0 16px;}
+  .page{padding:16px;}
+  .ranking-table thead th:nth-child(4),
+  .ranking-table tbody td:nth-child(4){display:none;}
+}
+
+/* Utility */
+.flex{display:flex;}.flex-col{flex-direction:column;}
+.items-center{align-items:center;}.justify-between{justify-content:space-between;}
+.gap-8{gap:8px;}.gap-12{gap:12px;}.gap-16{gap:16px;}
+.mb-4{margin-bottom:4px;}.mb-8{margin-bottom:8px;}.mb-16{margin-bottom:16px;}.mb-24{margin-bottom:24px;}
+.mt-8{margin-top:8px;}.mt-16{margin-top:16px;}
+.text-sm{font-size:13px;}.text-xs{font-size:11px;}.text-lg{font-size:16px;}
+.font-bold{font-weight:700;}.font-semibold{font-weight:600;}
+.text-muted{color:var(--slate-400);}
+.text-green{color:var(--green-600);}.text-red{color:var(--red-600);}
+.w-full{width:100%;}
+.rounded{border-radius:var(--radius-sm);}
+.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+/* Add to positions table */
+.positions-table .pos-ticker-wrap {display:flex; flex-direction:column; gap:2px;}
+.positions-table .pos-company {font-size:11px; color:var(--slate-400);}
+</style>
+</head>
+<body>
+
+<!-- SCROLL PROGRESS -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ════════════════════════════════ LOGIN SCREEN ════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-logo">
+    <div class="login-logo-icon">ESI</div>
+    <div>
+      <div class="login-logo-text">Easy<span>Social</span>Invest</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:2px;">Rede Social de Investidores</div>
+    </div>
+  </div>
+
+  <div class="login-stats">
+    <div class="login-stat">
+      <div class="login-stat-value">12.847</div>
+      <div class="login-stat-label">Investidores</div>
+    </div>
+    <div class="login-stat">
+      <div class="login-stat-value">R$ 2,4B</div>
+      <div class="login-stat-label">Em carteiras</div>
+    </div>
+    <div class="login-stat">
+      <div class="login-stat-value">94</div>
+      <div class="login-stat-label">Tickers B3</div>
+    </div>
+  </div>
+
+  <div class="login-card">
+    <h2>Entrar na plataforma</h2>
+    <div class="login-field">
+      <label>E-mail ou @usuário</label>
+      <input type="text" id="loginEmail" placeholder="seu@email.com" value="demo@easysocialinvest.com.br">
+    </div>
+    <div class="login-field">
+      <label>Senha</label>
+      <input type="password" id="loginPass" placeholder="••••••••" value="demo123">
+    </div>
+    <button class="btn-login" onclick="doLogin()">Entrar →</button>
+    <div class="login-divider">— ou —</div>
+    <button class="btn-demo" onclick="doLogin()">🚀 Entrar como visitante (demo)</button>
+  </div>
+
+  <div class="login-tagline">
+    Democratizando o acesso a informações sobre investimentos no Brasil com transparência e comunidade.
+  </div>
+</div>
+
+<!-- ════════════════════════════════ APP ════════════════════════════════ -->
+<div id="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <img class="sidebar-logo-img" src="LOGO%20FINAL%20EASY%20FUNDO%20VERDE.jpg" alt="EA$Y Social Invest" />
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Principal</div>
+      <div class="nav-item active" onclick="navigate('feed')" id="nav-feed">
+        <span class="nav-icon">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+        </span>
+        Feed de Ideias
+        <span class="nav-badge">7</span>
+      </div>
+      <div class="nav-item" onclick="navigate('comunidades')" id="nav-comunidades">
+        <span class="nav-icon">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        </span>
+        Comunidades
+      </div>
+      <div class="nav-item" onclick="navigate('ranking')" id="nav-ranking">
+        <span class="nav-icon">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </span>
+        Ranking
+      </div>
+
+      <div class="nav-section-label" style="margin-top:4px;">Mercado</div>
+      <div class="nav-item" onclick="navigate('mercado')" id="nav-mercado">
+        <span class="nav-icon">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        </span>
+        Mercado
+      </div>
+      <div class="nav-item" onclick="navigate('factor')" id="nav-factor">
+        <span class="nav-icon">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/><circle cx="6" cy="12" r="0"/></svg>
+        </span>
+        Factor Invest
+      </div>
+
+      <div class="nav-section-label" style="margin-top:4px;">Educação</div>
+      <div class="nav-item" onclick="navigate('educacao')" id="nav-educacao">
+        <span class="nav-icon">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </span>
+        Cursos
+      </div>
+
+      <div class="nav-section-label" style="margin-top:4px;">Minha Conta</div>
+      <div class="nav-item" onclick="navigate('portfolio')" id="nav-portfolio">
+        <span class="nav-icon">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+        </span>
+        Portfólio
+      </div>
+      <div class="nav-item" onclick="navigate('perfil')" id="nav-perfil">
+        <span class="nav-icon">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </span>
+        Meu Perfil
+      </div>
+    </nav>
+
+    <div class="sidebar-user" onclick="navigate('perfil')">
+      <div class="sidebar-avatar" id="sidebarAvatar" style="background:#15803d">IP</div>
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name" id="sidebarName">Ian Peres</div>
+        <div class="sidebar-user-handle" id="sidebarHandle">@ianperes</div>
+      </div>
+      <svg width="16" height="16" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <button onclick="toggleSidebar()" style="display:none;margin-right:8px" id="menuBtn">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="topbar-title" id="topbarTitle">Feed de Ideias</div>
+      <div class="topbar-search">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Buscar investidores, tickers...">
+      </div>
+      <div class="topbar-actions">
+        <button class="topbar-btn" onclick="showToast('Notificações')">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+          <div class="notif-dot"></div>
+        </button>
+        <div class="topbar-avatar" id="topbarAvatar" style="background:#15803d" onclick="navigate('perfil')">IP</div>
+      </div>
+    </header>
+
+    <!-- ══════════ FEED PAGE ══════════ -->
+    <div class="page active" id="page-feed">
+      <div class="feed-layout">
+        <div class="feed-main">
+
+          <!-- Composer -->
+          <div class="composer">
+            <div class="composer-top">
+              <div class="topbar-avatar" style="background:#15803d;width:40px;height:40px;border:none;font-size:14px;" id="composerAvatar">IP</div>
+              <textarea class="composer-textarea" placeholder="Compartilhe uma análise, tese de investimento ou pensamento..."></textarea>
+            </div>
+            <div class="composer-divider"></div>
+            <div class="composer-actions">
+              <button class="composer-action-btn" onclick="showToast('Adicionar imagem')">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
+                Foto
+              </button>
+              <button class="composer-action-btn" onclick="showToast('Adicionar vídeo')">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="23,7 16,12 23,17"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                Vídeo
+              </button>
+              <button class="composer-action-btn" onclick="showToast('Análise estruturada')">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+                Análise
+              </button>
+              <button class="composer-publish" onclick="publishPost()">Publicar</button>
+            </div>
+          </div>
+
+          <!-- Feed posts rendered by JS -->
+          <div id="feedPosts"></div>
+
+        </div>
+
+        <!-- Feed Sidebar -->
+        <aside class="feed-sidebar">
+          <!-- Market widget -->
+          <div class="widget">
+            <div class="widget-title">
+              Mercado Hoje
+              <span class="widget-link" onclick="navigate('mercado')">Ver mais →</span>
+            </div>
+            <div id="marketMiniWidget"></div>
+          </div>
+          <!-- Suggested users -->
+          <div class="widget">
+            <div class="widget-title">
+              Quem Seguir
+              <span class="widget-link" onclick="navigate('ranking')">Ver ranking →</span>
+            </div>
+            <div id="suggestedUsers"></div>
+          </div>
+          <!-- Top communities -->
+          <div class="widget">
+            <div class="widget-title">
+              Comunidades
+              <span class="widget-link" onclick="navigate('comunidades')">Explorar →</span>
+            </div>
+            <div id="topCommunities"></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ══════════ COMUNIDADES PAGE ══════════ -->
+    <div class="page" id="page-comunidades">
+      <div style="max-width:1000px;margin:0 auto;">
+
+        <!-- Hero header -->
+        <div style="background:linear-gradient(135deg,var(--green-900) 0%,var(--green-700) 100%);border-radius:var(--radius);padding:28px 32px;margin-bottom:24px;color:#fff;position:relative;overflow:hidden;">
+          <div style="position:absolute;right:-12px;top:-16px;opacity:0.06;">
+            <svg width="180" height="180" fill="none" stroke="white" stroke-width="1" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><circle cx="19" cy="7" r="2"/><path d="M23 21v-1a3 3 0 00-3-3h-1"/></svg>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;">
+            <div>
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                <div style="width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;">
+                  <svg width="18" height="18" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><circle cx="19" cy="7" r="2"/><path d="M23 21v-1a3 3 0 00-3-3h-1"/></svg>
+                </div>
+                <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:800;">Comunidades</div>
+              </div>
+              <div style="color:rgba(255,255,255,0.75);font-size:14px;max-width:460px;">Conecte-se com investidores que compartilham sua tese. Troque ideias, análises e estratégias por setor.</div>
+            </div>
+            <button class="btn-primary" onclick="showToast('Criar comunidade em breve!')" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;backdrop-filter:blur(4px);white-space:nowrap;flex-shrink:0;">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="display:inline;vertical-align:middle;margin-right:6px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Nova Comunidade
+            </button>
+          </div>
+        </div>
+
+        <!-- Joined communities -->
+        <div style="margin-bottom:8px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+            <div style="width:3px;height:16px;background:var(--green-500);border-radius:2px;"></div>
+            <h3 class="sora" style="font-size:11px;font-weight:700;color:var(--slate-600);text-transform:uppercase;letter-spacing:0.8px;">Minhas Comunidades</h3>
+          </div>
+          <div class="communities-grid" id="myCommunities"></div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+          <div style="width:3px;height:16px;background:var(--slate-400);border-radius:2px;"></div>
+          <h3 class="sora" style="font-size:11px;font-weight:700;color:var(--slate-600);text-transform:uppercase;letter-spacing:0.8px;">Explorar Comunidades</h3>
+        </div>
+        <div class="communities-grid" id="allCommunities"></div>
+      </div>
+    </div>
+
+    <!-- ══════════ RANKING PAGE ══════════ -->
+    <div class="page" id="page-ranking">
+      <div class="ranking-layout">
+        <div class="ranking-header-card">
+          <h2>
+            <span style="width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,0.15);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="18" height="18" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </span>
+            Ranking de Rentabilidade
+          </h2>
+          <p>Investidores ordenados por performance. Apenas retornos percentuais — nenhum valor monetário exposto.</p>
+        </div>
+
+        <div class="section-tabs mb-16">
+          <button class="stab active" onclick="switchRankingTab('semanal',this)">Semanal</button>
+          <button class="stab" onclick="switchRankingTab('mensal',this)">Mensal</button>
+          <button class="stab" onclick="switchRankingTab('anual',this)">Anual</button>
+          <button class="stab" onclick="switchRankingTab('historico',this)">Histórico</button>
+        </div>
+
+        <div class="ranking-table-wrap">
+          <table class="ranking-table">
+            <thead>
+              <tr>
+                <th style="width:48px">#</th>
+                <th>Investidor</th>
+                <th>Retorno</th>
+                <th>Carteira</th>
+                <th>Seguidores</th>
+              </tr>
+            </thead>
+            <tbody id="rankingTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ MERCADO PAGE ══════════ -->
+    <div class="page" id="page-mercado">
+      <div class="mercado-layout">
+
+        <!-- Ibovespa Hero -->
+        <div class="market-hero">
+          <div class="ibov-main">
+            <div class="ibov-label">IBOVESPA</div>
+            <div class="ibov-value">197.323</div>
+            <div class="ibov-change up">▲ +1,12% (+2.184 pts)</div>
+            <div class="ibov-sub">Fechamento — 10 Abr 2026 | 18:00 BRT</div>
+            <div class="market-status"><div class="market-status-dot"></div>Mercado Fechado — Dados de Fechamento</div>
+          </div>
+          <div class="market-metrics">
+            <div class="market-metric">
+              <div class="market-metric-label">Volume</div>
+              <div class="market-metric-value" style="color:var(--green-300)">R$ 33,7B</div>
+            </div>
+            <div class="market-metric">
+              <div class="market-metric-label">Mínima</div>
+              <div class="market-metric-value" style="color:#f87171">195.129</div>
+            </div>
+            <div class="market-metric">
+              <div class="market-metric-label">Máxima</div>
+              <div class="market-metric-value" style="color:var(--green-300)">197.553</div>
+            </div>
+            <div class="market-metric">
+              <div class="market-metric-label">No ano</div>
+              <div class="market-metric-value" style="color:var(--green-300)">+22,47%</div>
+            </div>
+            <div class="market-metric">
+              <div class="market-metric-label">12 meses</div>
+              <div class="market-metric-value" style="color:var(--green-300)">+35,2%</div>
+            </div>
+            <div class="market-metric">
+              <div class="market-metric-label">Dólar</div>
+              <div class="market-metric-value" style="color:var(--green-300)">R$ 5,01</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Market Thermometer + Sentiment -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;" class="thermo-grid">
+
+          <!-- Thermometer -->
+          <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);">
+            <div style="background:var(--slate-900);color:#fff;padding:12px 16px;font-family:'Sora',sans-serif;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;">
+              🌡️ Termômetro do Mercado
+            </div>
+            <div style="padding:20px;text-align:center;">
+              <div style="position:relative;width:100px;height:200px;margin:0 auto 16px;">
+                <svg viewBox="0 0 100 200" style="width:100%;height:100%;">
+                  <!-- Track -->
+                  <rect x="42" y="10" width="16" height="140" rx="8" fill="#f1f5f9"/>
+                  <!-- Fill (72% bullish) -->
+                  <rect x="42" y="50" width="16" height="100" rx="0" fill="url(#thermoGrad)"/>
+                  <rect x="42" y="148" width="16" height="4" rx="0" fill="#22c55e"/>
+                  <!-- Bulb -->
+                  <circle cx="50" cy="170" r="22" fill="#22c55e" opacity="0.15"/>
+                  <circle cx="50" cy="170" r="16" fill="#22c55e"/>
+                  <!-- Mercury top -->
+                  <rect x="42" y="44" width="16" height="8" rx="0" fill="#22c55e"/>
+                  <!-- Tick marks -->
+                  <line x1="58" y1="20" x2="66" y2="20" stroke="#94a3b8" stroke-width="1.5"/>
+                  <line x1="58" y1="50" x2="70" y2="50" stroke="#94a3b8" stroke-width="1.5"/>
+                  <line x1="58" y1="80" x2="66" y2="80" stroke="#94a3b8" stroke-width="1.5"/>
+                  <line x1="58" y1="110" x2="70" y2="110" stroke="#94a3b8" stroke-width="1.5"/>
+                  <line x1="58" y1="140" x2="66" y2="140" stroke="#94a3b8" stroke-width="1.5"/>
+                  <!-- Labels -->
+                  <text x="72" y="23" font-size="9" fill="#dc2626" font-family="JetBrains Mono">Extremo+</text>
+                  <text x="72" y="53" font-size="9" fill="#16a34a" font-family="JetBrains Mono">Alta</text>
+                  <text x="72" y="83" font-size="9" fill="#d97706" font-family="JetBrains Mono">Neutro</text>
+                  <text x="72" y="113" font-size="9" fill="#dc2626" font-family="JetBrains Mono">Baixa</text>
+                  <text x="72" y="143" font-size="9" fill="#7f1d1d" font-family="JetBrains Mono">Extremo-</text>
+                  <!-- Pointer -->
+                  <polygon points="38,44 30,48 38,52" fill="#15803d"/>
+                  <!-- Temperature label -->
+                  <text x="50" y="175" font-size="10" fill="white" text-anchor="middle" font-weight="bold" font-family="Sora">72</text>
+                  <defs>
+                    <linearGradient id="thermoGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#22c55e"/>
+                      <stop offset="100%" stop-color="#16a34a"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+              <div style="font-family:'Sora',sans-serif;font-size:18px;font-weight:800;color:var(--green-700);">OTIMISTA</div>
+              <div style="font-size:12px;color:var(--slate-500);margin-top:4px;">Score: 72/100</div>
+              <div style="font-size:11px;color:var(--slate-400);margin-top:8px;line-height:1.5;">Mercado em tendência de alta com volume acima da média histórica</div>
+            </div>
+          </div>
+
+          <!-- Sentiment breakdown -->
+          <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);">
+            <div style="background:var(--slate-900);color:#fff;padding:12px 16px;font-family:'Sora',sans-serif;font-size:13px;font-weight:700;">
+              📊 Sentimento do Mercado
+            </div>
+            <div style="padding:16px;">
+              <div style="margin-bottom:14px;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                  <span style="font-size:12px;font-weight:600;color:var(--green-700);">🐂 Compra (Bulls)</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--green-600);">68%</span>
+                </div>
+                <div style="height:8px;background:var(--slate-100);border-radius:4px;overflow:hidden;">
+                  <div style="width:68%;height:100%;background:var(--green-500);border-radius:4px;"></div>
+                </div>
+              </div>
+              <div style="margin-bottom:14px;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                  <span style="font-size:12px;font-weight:600;color:var(--slate-500);">😐 Neutro</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--slate-500);">18%</span>
+                </div>
+                <div style="height:8px;background:var(--slate-100);border-radius:4px;overflow:hidden;">
+                  <div style="width:18%;height:100%;background:var(--slate-400);border-radius:4px;"></div>
+                </div>
+              </div>
+              <div style="margin-bottom:16px;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                  <span style="font-size:12px;font-weight:600;color:var(--red-600);">🐻 Venda (Bears)</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--red-600);">14%</span>
+                </div>
+                <div style="height:8px;background:var(--slate-100);border-radius:4px;overflow:hidden;">
+                  <div style="width:14%;height:100%;background:var(--red-600);border-radius:4px;"></div>
+                </div>
+              </div>
+              <div style="border-top:1px solid var(--slate-100);padding-top:14px;">
+                <div style="font-size:11px;font-weight:700;color:var(--slate-400);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">Indicadores Técnicos</div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:8px;align-items:center;">
+                  <span style="font-size:12px;color:var(--slate-600);">RSI (14)</span>
+                  <span style="font-size:12px;font-weight:600;color:var(--slate-500);">58,4</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:8px;align-items:center;">
+                  <span style="font-size:12px;color:var(--slate-600);">MACD</span>
+                  <span style="font-size:12px;font-weight:600;color:var(--green-600);">↑ Alta</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:8px;align-items:center;">
+                  <span style="font-size:12px;color:var(--slate-600);">Médias Móveis</span>
+                  <span style="font-size:12px;font-weight:600;color:var(--green-600);">Acima MA200</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:8px;align-items:center;">
+                  <span style="font-size:12px;color:var(--slate-600);">Volume</span>
+                  <span style="font-size:12px;font-weight:600;color:var(--green-600);">+22% vs média</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:8px;align-items:center;">
+                  <span style="font-size:12px;color:var(--slate-600);">Volatilidade (VIX)</span>
+                  <span style="font-size:12px;font-weight:600;color:var(--slate-500);">16,2</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:8px;align-items:center;">
+                  <span style="font-size:12px;color:var(--slate-600);">Tendência (14d)</span>
+                  <span style="font-size:12px;font-weight:600;color:var(--green-600);">Bullish</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Benchmarks -->
+          <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);">
+            <div style="background:var(--slate-900);color:#fff;padding:12px 16px;font-family:'Sora',sans-serif;font-size:13px;font-weight:700;">
+              📈 Benchmarks &amp; Juros
+            </div>
+            <div style="padding:8px 0;">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 16px;border-bottom:1px solid var(--slate-100);">
+                <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--slate-900);">IBOVESPA</div><div style="font-size:11px;color:var(--slate-400);">No ano</div></div>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;padding:2px 9px;border-radius:6px;background:var(--green-100);color:var(--green-700);">+22,47%</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 16px;border-bottom:1px solid var(--slate-100);">
+                <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--slate-900);">IBOVESPA</div><div style="font-size:11px;color:var(--slate-400);">12 meses</div></div>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;padding:2px 9px;border-radius:6px;background:var(--green-100);color:var(--green-700);">+35,2%</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 16px;border-bottom:1px solid var(--slate-100);">
+                <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--slate-900);">CDI</div><div style="font-size:11px;color:var(--slate-400);">No ano</div></div>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;padding:2px 9px;border-radius:6px;background:var(--green-100);color:var(--green-700);">+5,2%</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 16px;border-bottom:1px solid var(--slate-100);">
+                <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--slate-900);">CDI</div><div style="font-size:11px;color:var(--slate-400);">12 meses</div></div>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;padding:2px 9px;border-radius:6px;background:var(--green-100);color:var(--green-700);">+14,65%</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 16px;border-bottom:1px solid var(--slate-100);">
+                <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--slate-900);">IPCA</div><div style="font-size:11px;color:var(--slate-400);">12 meses</div></div>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;padding:2px 9px;border-radius:6px;background:var(--green-100);color:var(--green-700);">+5,1%</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 16px;border-bottom:1px solid var(--slate-100);">
+                <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--slate-900);">Selic</div><div style="font-size:11px;color:var(--slate-400);">Taxa atual</div></div>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;padding:2px 9px;border-radius:6px;background:var(--slate-100);color:var(--slate-600);">14,75% a.a.</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 16px;border-bottom:1px solid var(--slate-100);">
+                <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--slate-900);">S&amp;P 500</div><div style="font-size:11px;color:var(--slate-400);">No ano (USD)</div></div>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;padding:2px 9px;border-radius:6px;background:var(--green-100);color:var(--green-700);">+8,4%</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 16px;border-bottom:1px solid var(--slate-100);">
+                <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--slate-900);">Dólar/Real</div><div style="font-size:11px;color:var(--slate-400);">No ano</div></div>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;padding:2px 9px;border-radius:6px;background:var(--green-100);color:var(--green-700);">+3,1%</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 16px;">
+                <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--slate-900);">Ouro</div><div style="font-size:11px;color:var(--slate-400);">12 meses</div></div>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;padding:2px 9px;border-radius:6px;background:var(--green-100);color:var(--green-700);">+22,4%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Best / Worst movers -->
+        <div class="movers-grid">
+          <div class="movers-card">
+            <div class="movers-header up">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="18,15 12,9 6,15"/></svg>
+              Maiores Altas do Dia
+            </div>
+            <div id="bestMovers"></div>
+          </div>
+          <div class="movers-card">
+            <div class="movers-header down">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg>
+              Maiores Baixas do Dia
+            </div>
+            <div id="worstMovers"></div>
+          </div>
+        </div>
+
+        <!-- All tickers overview -->
+        <div style="background:var(--white);border:1px solid var(--slate-200);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);margin-bottom:20px;">
+          <div style="background:var(--slate-900);color:#fff;padding:12px 20px;font-family:'Sora',sans-serif;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:space-between;">
+            <span>📋 Principais Ações do Ibovespa</span>
+            <a href="https://www.google.com/finance/markets/indexes/americas/brazil" target="_blank" style="color:var(--green-400);font-size:12px;font-weight:600;">Google Finance →</a>
+          </div>
+          <div id="allTickersGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:0;"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══════════ FACTOR INVEST PAGE ══════════ -->
+    <div class="page" id="page-factor">
+      <div class="mercado-layout">
+        <div style="background:linear-gradient(135deg,var(--slate-900) 0%,var(--green-900) 100%);border-radius:var(--radius);padding:24px;margin-bottom:20px;color:#fff;position:relative;overflow:hidden;">
+          <div style="position:absolute;right:24px;top:50%;transform:translateY(-50%);font-size:80px;opacity:0.08;">📊</div>
+          <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:800;margin-bottom:6px;">Factor Invest — Análise Setorial B3</div>
+          <div style="color:rgba(255,255,255,0.7);font-size:14px;max-width:600px;">Análise multifatorial por setor: valuação, qualidade, momentum e dividendos. Cada empresa recebe um score de 0 a 10 com base em múltiplos fundamentalistas.</div>
+          <div style="display:flex;gap:16px;margin-top:16px;flex-wrap:wrap;">
+            <div style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;">EV/EBIT · P/L · P/VP</div>
+            <div style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;">DY · ROE · ROIC</div>
+            <div style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;">Score 0–10 · Classificação</div>
+          </div>
+        </div>
+
+        <div class="section-tabs mb-16">
+          <button class="stab active" onclick="switchSectorTab('energia',this)">⚡ Energia</button>
+          <button class="stab" onclick="switchSectorTab('saude',this)">🏥 Saúde</button>
+          <button class="stab" onclick="switchSectorTab('petroleo',this)">🛢️ Petróleo</button>
+          <button class="stab" onclick="switchSectorTab('equipamentos',this)">🔧 Equipamentos</button>
+          <button class="stab" onclick="switchSectorTab('bancos',this)">🏦 Bancos</button>
+        </div>
+
+        <div id="factorInvestTable"></div>
+      </div>
+    </div>
+
+    <!-- ══════════ EDUCAÇÃO PAGE ══════════ -->
+    <div class="page" id="page-educacao">
+      <div style="max-width:800px;margin:0 auto;">
+
+        <div style="background:linear-gradient(135deg,var(--green-900) 0%,var(--green-700) 100%);border-radius:var(--radius);padding:28px 32px;margin-bottom:20px;color:#fff;position:relative;overflow:hidden;">
+          <div style="position:absolute;right:-8px;top:-8px;opacity:0.07;">
+            <svg width="140" height="140" fill="none" stroke="white" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;position:relative;z-index:1;">
+            <div style="width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="18" height="18" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            </div>
+            <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:800;">Cursos</div>
+          </div>
+          <div style="color:rgba(255,255,255,0.8);font-size:14px;max-width:520px;position:relative;z-index:1;">Aprenda a investir com confiança. Cursos para todos os níveis — do iniciante ao investidor avançado.</div>
+        </div>
+
+        <!-- Courses grid -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;">
+
+          <!-- Course card: Educação Financeira para Jovens -->
+          <div class="card" style="cursor:pointer;transition:var(--transition);border:2px solid transparent;" onmouseenter="this.style.borderColor='var(--green-400)';this.style.transform='translateY(-2px)'" onmouseleave="this.style.borderColor='transparent';this.style.transform='translateY(0)'" onclick="openCurso('easy_site_curso_edfin_jovens.html','Educação Financeira para Jovens')">
+            <div style="background:linear-gradient(135deg,#0f4c25 0%,#166534 100%);border-radius:10px;padding:20px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;">
+              <div style="width:52px;height:52px;border-radius:12px;background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;">
+                <svg width="26" height="26" fill="none" stroke="white" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div style="background:rgba(255,255,255,0.15);color:#fff;font-size:11px;font-weight:700;border-radius:20px;padding:4px 10px;">GRATUITO</div>
+            </div>
+            <div class="card-body" style="padding-top:0;">
+              <div style="font-family:'Sora',sans-serif;font-size:16px;font-weight:700;color:var(--slate-800);margin-bottom:6px;">Educação Financeira para Jovens</div>
+              <div style="font-size:13px;color:var(--slate-500);margin-bottom:14px;line-height:1.5;">Aprenda os fundamentos do dinheiro, investimentos e planejamento financeiro de forma simples e prática.</div>
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+                <div style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--slate-500);">
+                  <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  4h de conteúdo
+                </div>
+                <div style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--slate-500);">
+                  <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/></svg>
+                  6 módulos
+                </div>
+                <div style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--slate-500);">
+                  <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                  Iniciante
+                </div>
+              </div>
+              <button style="width:100%;background:linear-gradient(90deg,var(--green-600),var(--green-500));color:#fff;border:none;border-radius:8px;padding:11px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Acessar Curso
+              </button>
+            </div>
+          </div>
+
+          <!-- Placeholder card: coming soon -->
+          <div class="card" style="opacity:0.6;">
+            <div style="background:linear-gradient(135deg,var(--slate-100) 0%,var(--slate-200) 100%);border-radius:10px;padding:20px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;">
+              <div style="width:52px;height:52px;border-radius:12px;background:var(--slate-200);border:1.5px solid var(--slate-300);display:flex;align-items:center;justify-content:center;">
+                <svg width="26" height="26" fill="none" stroke="var(--slate-500)" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+              </div>
+              <div style="background:var(--slate-300);color:var(--slate-600);font-size:11px;font-weight:700;border-radius:20px;padding:4px 10px;">EM BREVE</div>
+            </div>
+            <div class="card-body" style="padding-top:0;">
+              <div style="font-family:'Sora',sans-serif;font-size:16px;font-weight:700;color:var(--slate-800);margin-bottom:6px;">Análise Fundamentalista</div>
+              <div style="font-size:13px;color:var(--slate-500);margin-bottom:14px;line-height:1.5;">Aprenda a ler demonstrações financeiras, avaliar empresas e identificar oportunidades no mercado.</div>
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+                <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--slate-400);"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Em desenvolvimento</div>
+              </div>
+              <button disabled style="width:100%;background:var(--slate-200);color:var(--slate-400);border:none;border-radius:8px;padding:11px;font-size:14px;font-weight:600;cursor:not-allowed;font-family:'DM Sans',sans-serif;">
+                Em breve
+              </button>
+            </div>
+          </div>
+
+          <!-- Placeholder card: coming soon -->
+          <div class="card" style="opacity:0.6;">
+            <div style="background:linear-gradient(135deg,var(--slate-100) 0%,var(--slate-200) 100%);border-radius:10px;padding:20px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;">
+              <div style="width:52px;height:52px;border-radius:12px;background:var(--slate-200);border:1.5px solid var(--slate-300);display:flex;align-items:center;justify-content:center;">
+                <svg width="26" height="26" fill="none" stroke="var(--slate-500)" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41"/></svg>
+              </div>
+              <div style="background:var(--slate-300);color:var(--slate-600);font-size:11px;font-weight:700;border-radius:20px;padding:4px 10px;">EM BREVE</div>
+            </div>
+            <div class="card-body" style="padding-top:0;">
+              <div style="font-family:'Sora',sans-serif;font-size:16px;font-weight:700;color:var(--slate-800);margin-bottom:6px;">Factor Invest na Prática</div>
+              <div style="font-size:13px;color:var(--slate-500);margin-bottom:14px;line-height:1.5;">Dominando o método Factor Invest: como construir uma carteira de alta qualidade com base em dados.</div>
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+                <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--slate-400);"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Em desenvolvimento</div>
+              </div>
+              <button disabled style="width:100%;background:var(--slate-200);color:var(--slate-400);border:none;border-radius:8px;padding:11px;font-size:14px;font-weight:600;cursor:not-allowed;font-family:'DM Sans',sans-serif;">
+                Em breve
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ PORTFOLIO PAGE ══════════ -->
+    <div class="page" id="page-portfolio">
+      <div class="portfolio-layout">
+        <div class="portfolio-main">
+
+          <div class="portfolio-header-card">
+            <h2>Meu Portfólio — Ian Peres</h2>
+            <p>Composição e performance — valores em % apenas · 11 ativos</p>
+            <div class="portfolio-perf-grid" id="portfolioPerfGrid"></div>
+          </div>
+
+          <!-- PERFORMANCE CARD (enhanced with benchmarks + dividends) -->
+          <div class="card" style="margin-bottom:16px;">
+            <div class="card-header">
+              <div class="card-title">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+                Performance vs Benchmarks
+              </div>
+              <div class="perf-toggle" id="perfDivToggle">
+                <button class="perf-toggle-btn active" onclick="switchPerfMode(true,this)">Com dividendos</button>
+                <button class="perf-toggle-btn" onclick="switchPerfMode(false,this)">Sem dividendos</button>
+              </div>
+            </div>
+            <div class="card-body" id="benchmarkCard"></div>
+          </div>
+
+          <!-- PERFORMANCE POR ATIVO -->
+          <div class="card" style="margin-bottom:16px;">
+            <div class="card-header" style="flex-wrap:wrap;gap:10px;">
+              <div class="card-title">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+                Performance por Ativo vs Benchmarks
+              </div>
+              <div class="perf-toggle" id="assetPeriodToggle" style="flex-wrap:nowrap;">
+                <button class="perf-toggle-btn active" onclick="switchAssetPeriod('s',this)">Semana</button>
+                <button class="perf-toggle-btn" onclick="switchAssetPeriod('m',this)">Mês</button>
+                <button class="perf-toggle-btn" onclick="switchAssetPeriod('semi',this)">Semestre</button>
+                <button class="perf-toggle-btn" onclick="switchAssetPeriod('a',this)">Ano</button>
+                <button class="perf-toggle-btn" onclick="switchAssetPeriod('h',this)">Todo</button>
+              </div>
+            </div>
+            <div class="card-body" id="assetBenchmarkCard"></div>
+          </div>
+
+          <!-- Positions -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+                Posições Ativas
+              </div>
+              <button onclick="showToast('Adicionar ativo em breve!')" class="btn-primary" style="font-size:12px;padding:6px 14px;">+ Adicionar</button>
+            </div>
+            <div class="card-body" style="padding:0">
+              <table class="positions-table w-full" id="positionsTable"></table>
+            </div>
+          </div>
+
+          <!-- Trade history -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Histórico de Operações
+              </div>
+              <div class="perf-toggle" id="divToggle">
+                <button class="perf-toggle-btn active" onclick="toggleDividends(true,this)">Com dividendos</button>
+                <button class="perf-toggle-btn" onclick="toggleDividends(false,this)">Sem dividendos</button>
+              </div>
+            </div>
+            <div class="card-body" style="padding:0 16px;">
+              <div id="tradeHistory"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Portfolio Sidebar -->
+        <div class="portfolio-sidebar">
+          <!-- Pie chart -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Alocação da Carteira</div>
+            </div>
+            <div class="card-body">
+              <div class="chart-wrap">
+                <canvas id="allocationChart"></canvas>
+              </div>
+              <div class="chart-legend" id="chartLegend"></div>
+            </div>
+          </div>
+
+          <!-- Performance summary bars -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Retorno por Período</div>
+            </div>
+            <div class="card-body" id="perfSummary"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══════════ PERFIL PAGE ══════════ -->
+    <div class="page" id="page-perfil">
+      <div class="profile-layout" id="profileContent"></div>
+    </div>
+
+  </div><!-- /main-content -->
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav" id="bottomNav">
+    <div class="bottom-nav-item active" onclick="navigate('feed')" id="bnav-feed">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+      Feed
+    </div>
+    <div class="bottom-nav-item" onclick="navigate('comunidades')" id="bnav-comunidades">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      Grupos
+    </div>
+    <div class="bottom-nav-item" onclick="navigate('ranking')" id="bnav-ranking">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Ranking
+    </div>
+    <div class="bottom-nav-item" onclick="navigate('mercado')" id="bnav-mercado">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      Mercado
+    </div>
+    <div class="bottom-nav-item" onclick="navigate('factor')" id="bnav-factor">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Factor
+    </div>
+    <div class="bottom-nav-item" onclick="navigate('educacao')" id="bnav-educacao">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      Cursos
+    </div>
+    <div class="bottom-nav-item" onclick="navigate('perfil')" id="bnav-perfil">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Perfil
+    </div>
+  </nav>
+
+  <!-- FAB -->
+  <button class="fab" id="fab" onclick="openPostModal()">
+    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+  </button>
+
+</div><!-- /app -->
+
+<!-- POST MODAL -->
+<div class="modal-overlay" id="postModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Nova Publicação</div>
+      <button class="modal-close" onclick="closePostModal()">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <textarea id="modalPostText" style="width:100%;min-height:120px;border:1px solid var(--slate-200);border-radius:10px;padding:12px;font-size:14px;resize:none;color:var(--slate-700);" placeholder="Compartilhe sua análise ou pensamento..."></textarea>
+      <div class="flex gap-8 mt-8" style="flex-wrap:wrap;">
+        <button class="composer-action-btn" onclick="showToast('Foto adicionada!')">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>Foto
+        </button>
+        <button class="composer-action-btn" onclick="showToast('Ticker adicionado!')">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Ticker
+        </button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closePostModal()">Cancelar</button>
+      <button class="btn-primary" onclick="submitPost()">Publicar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   DATA — Random Brazilian Investors
+══════════════════════════════════════════════════════════ */
+
+const USER_COLORS = [
+  '#16a34a','#0284c7','#7c3aed','#dc2626','#ea580c',
+  '#0891b2','#4f46e5','#059669','#d97706','#db2777',
+  '#0d9488','#9333ea','#c2410c','#0369a1','#15803d',
+  '#be123c','#1d4ed8','#92400e','#065f46','#6d28d9'
+];
+
+const USERS = [
+  {id:1, name:"Ian Peres", username:"ianperes", initials:"IP", color:"#15803d",
+   bio:"Value investor | Small caps, energia & commodities | Carteira diversificada B3", followers:3241, following:287,
+   portfolio:[
+     {t:"PRIO3",w:21,co:"PetroRio",qty:600,pm:27.60},
+     {t:"VALE3",w:18,co:"Vale S.A.",qty:250,pm:57.20},
+     {t:"HASH11",w:12,co:"Hashdex",qty:250,pm:40.30},
+     {t:"WEGE3",w:10,co:"WEG",qty:250,pm:30.50},
+     {t:"RADL3",w:9,co:"Raia Drogasil",qty:600,pm:12.50},
+     {t:"SUZB3",w:8,co:"Suzano",qty:150,pm:43.50},
+     {t:"MILS3",w:6,co:"Mills Estruturas",qty:600,pm:8.50},
+     {t:"INTB3",w:4,co:"Infracommerce",qty:300,pm:10.25},
+     {t:"SIMH3",w:4,co:"Simpar",qty:500,pm:6.30},
+     {t:"JHSF3",w:5,co:"JHSF Participações",qty:1200,pm:3.20},
+     {t:"GMAT3",w:3,co:"Grupo Mateus",qty:600,pm:4.20},
+   ],
+   perf:{s:3.2, m:8.7, a:42.1, h:127.3}, joined:["commodities","crescimento","petroleo"], posts:142},
+  {id:2, name:"Ana Lima", username:"analima", initials:"AL", color:"#0284c7",
+   bio:"Dividendos first 🍀 | FIRE movement | FIIs especialista", followers:2187, following:412,
+   portfolio:[{t:"MXRF11",w:22,co:"Maxi Renda"},{t:"HGLG11",w:18,co:"CSHG Logística"},{t:"TAEE11",w:15,co:"Transmissão Paulista"},{t:"BBAS3",w:14,co:"BB"},{t:"ITUB4",w:12,co:"Itaú"},{t:"CPFE3",w:11,co:"CPFL"},{t:"PETR4",w:8,co:"Petrobras"}],
+   perf:{s:1.8, m:5.2, a:28.4, h:94.7}, joined:["dividendos","fiis"], posts:98},
+  {id:3, name:"Rafael Souza", username:"rafaels", initials:"RS", color:"#7c3aed",
+   bio:"Tech Growth | MELI34 bull | Startups e venture capital", followers:1893, following:334,
+   portfolio:[{t:"MELI34",w:28,co:"MercadoLibre"},{t:"INTB3",w:20,co:"Infracommerce"},{t:"POSI3",w:16,co:"Positivo"},{t:"CASH3",w:14,co:"Méliuz"},{t:"HASH11",w:12,co:"Hashdex"},{t:"SPXI11",w:10,co:"iShares S&P500"}],
+   perf:{s:5.7, m:14.2, a:67.3, h:189.4}, joined:["tecnologia","cripto"], posts:211},
+  {id:4, name:"Juliana Costa", username:"jucosta", initials:"JC", color:"#db2777",
+   bio:"Especialista em FIIs e renda passiva sustentável", followers:2456, following:198,
+   portfolio:[{t:"HGLG11",w:20,co:"CSHG Log."},{t:"BCFF11",w:18,co:"BTG Fundo"},{t:"XPLG11",w:16,co:"XP Log."},{t:"MXRF11",w:14,co:"Maxi Renda"},{t:"VILG11",w:12,co:"Vinci Log."},{t:"TAEE11",w:11,co:"Transmissão"},{t:"CPFE3",w:9,co:"CPFL"}],
+   perf:{s:2.1, m:6.4, a:32.8, h:108.2}, joined:["fiis","dividendos"], posts:176},
+  {id:5, name:"Pedro Alves", username:"pedroalves", initials:"PA", color:"#ea580c",
+   bio:"Cripto nativo + ações growth | Risk lover", followers:987, following:521,
+   portfolio:[{t:"HASH11",w:35,co:"Hashdex"},{t:"QBTC11",w:20,co:"QR Bitcoin"},{t:"VALE3",w:15,co:"Vale"},{t:"PETR4",w:12,co:"Petrobras"},{t:"PRIO3",w:10,co:"PetroRio"},{t:"IVVB11",w:8,co:"iShares"}],
+   perf:{s:8.3, m:21.4, a:89.2, h:234.7}, joined:["cripto","crescimento"], posts:334},
+  {id:6, name:"Mariana Ferreira", username:"mferreira", initials:"MF", color:"#0891b2",
+   bio:"Diversificação internacional | BDRs | Macro global", followers:1654, following:276,
+   portfolio:[{t:"IVVB11",w:25,co:"iShares S&P500"},{t:"SPXI11",w:20,co:"iShares S&P500"},{t:"MELI34",w:18,co:"MercadoLibre"},{t:"GOGL34",w:14,co:"Google"},{t:"ITUB4",w:12,co:"Itaú"},{t:"BBAS3",w:11,co:"BB"}],
+   perf:{s:2.9, m:7.3, a:36.1, h:112.8}, joined:["tecnologia"], posts:87},
+  {id:7, name:"João Santos", username:"joaosantos", initials:"JS", color:"#059669",
+   bio:"Fundamentalista convicto | Graham + Buffett | Longo prazo", followers:3987, following:156,
+   portfolio:[{t:"VALE3",w:22,co:"Vale"},{t:"ITUB4",w:18,co:"Itaú"},{t:"BBAS3",w:16,co:"BB"},{t:"WEGE3",w:14,co:"WEG"},{t:"SUZB3",w:12,co:"Suzano"},{t:"BRAV3",w:10,co:"Braskem"},{t:"RENT3",w:8,co:"Localiza"}],
+   perf:{s:1.4, m:4.8, a:24.7, h:87.3}, joined:["commodities","dividendos"], posts:289},
+  {id:8, name:"Beatriz Oliveira", username:"beoliveira", initials:"BO", color:"#9333ea",
+   bio:"Macro analyst | Câmbio & taxa de juros | Política monetária", followers:2134, following:398,
+   portfolio:[{t:"PETR4",w:20,co:"Petrobras"},{t:"PRIO3",w:18,co:"PetroRio"},{t:"VALE3",w:16,co:"Vale"},{t:"BBAS3",w:14,co:"BB"},{t:"BOVA11",w:12,co:"iShares IBOV"},{t:"IVVB11",w:12,co:"iShares S&P"},{t:"HASH11",w:8,co:"Hashdex"}],
+   perf:{s:2.6, m:7.1, a:34.2, h:98.6}, joined:["commodities","energia"], posts:143},
+  {id:9, name:"Thiago Rodrigues", username:"thiagord", initials:"TR", color:"#c2410c",
+   bio:"Ex-day trader virou buy-and-hold | Lição aprendida!", followers:1432, following:287,
+   portfolio:[{t:"PRIO3",w:30,co:"PetroRio"},{t:"RECV3",w:22,co:"PetroRecôncavo"},{t:"RRRP3",w:18,co:"3R Petroleum"},{t:"CSAN3",w:16,co:"Cosan"},{t:"VALE3",w:14,co:"Vale"}],
+   perf:{s:6.1, m:18.7, a:73.4, h:198.2}, joined:["petroleo","commodities"], posts:412},
+  {id:10, name:"Camila Torres", username:"camilat", initials:"CT", color:"#0369a1",
+   bio:"ESG Investor | Sustentabilidade e retorno | Longo prazo", followers:876, following:234,
+   portfolio:[{t:"SUZB3",w:24,co:"Suzano"},{t:"WEGE3",w:22,co:"WEG"},{t:"CPFE3",w:18,co:"CPFL"},{t:"TAEE11",w:16,co:"Transmissão"},{t:"ENEV3",w:12,co:"Eneva"},{t:"ELET3",w:8,co:"Eletrobras"}],
+   perf:{s:1.9, m:5.8, a:29.3, h:82.4}, joined:["energia","dividendos"], posts:64},
+  {id:11, name:"Lucas Martins", username:"lucasmart", initials:"LM", color:"#15803d",
+   bio:"Small caps hunter | Joias escondidas da B3", followers:1287, following:445,
+   portfolio:[{t:"JHSF3",w:20,co:"JHSF"},{t:"PARD3",w:18,co:"Pard Saúde"},{t:"RDNI3",w:16,co:"Rodobens"},{t:"SMLS3",w:14,co:"Smiles"},{t:"FRAS3",w:14,co:"Frasle"},{t:"TUPY3",w:10,co:"Tupy"},{t:"ROMI3",w:8,co:"Romi"}],
+   perf:{s:4.3, m:12.1, a:58.7, h:167.4}, joined:["crescimento","equipamentos"], posts:198},
+  {id:12, name:"Fernanda Gomes", username:"fegomes", initials:"FG", color:"#be123c",
+   bio:"Setor de petróleo e gás | Geologia + mercado financeiro", followers:1876, following:312,
+   portfolio:[{t:"PETR4",w:28,co:"Petrobras"},{t:"PRIO3",w:24,co:"PetroRio"},{t:"RECV3",w:18,co:"PetroRecôncavo"},{t:"RRRP3",w:16,co:"3R Petroleum"},{t:"CSAN3",w:14,co:"Cosan"}],
+   perf:{s:5.4, m:16.3, a:68.9, h:187.3}, joined:["petroleo","commodities"], posts:287},
+  {id:13, name:"Bruno Carvalho", username:"bcarvalho", initials:"BC", color:"#1d4ed8",
+   bio:"Bancos e financeiras | Análise de spread bancário", followers:2341, following:187,
+   portfolio:[{t:"ITUB4",w:28,co:"Itaú"},{t:"BBAS3",w:24,co:"BB"},{t:"BBDC4",w:18,co:"Bradesco"},{t:"SANB11",w:14,co:"Santander"},{t:"B3SA3",w:10,co:"B3"},{t:"IRBR3",w:6,co:"IRB"}],
+   perf:{s:1.7, m:4.9, a:26.1, h:79.8}, joined:["dividendos"], posts:156},
+  {id:14, name:"Amanda Silva", username:"amandas", initials:"AS", color:"#92400e",
+   bio:"ETF lover | Diversificação global | Buy-the-dip", followers:943, following:678,
+   portfolio:[{t:"BOVA11",w:30,co:"iShares IBOV"},{t:"IVVB11",w:25,co:"iShares S&P"},{t:"SPXI11",w:20,co:"iShares S&P"},{t:"HASH11",w:15,co:"Hashdex"},{t:"FIXA11",w:10,co:"iShares Fixed"}],
+   perf:{s:2.3, m:6.1, a:31.4, h:88.7}, joined:["crescimento"], posts:78},
+  {id:15, name:"Ricardo Pereira", username:"ricardop", initials:"RP", color:"#065f46",
+   bio:"Setor elétrico brasileiro | Análise de contratos de concessão", followers:1543, following:223,
+   portfolio:[{t:"CPFE3",w:26,co:"CPFL"},{t:"ELET3",w:20,co:"Eletrobras"},{t:"TAEE11",w:18,co:"Transmissão"},{t:"ENEV3",w:14,co:"Eneva"},{t:"CMIG4",w:12,co:"Cemig"},{t:"EGIE3",w:10,co:"Engie"}],
+   perf:{s:2.4, m:6.8, a:33.7, h:96.4}, joined:["energia","dividendos"], posts:167},
+  {id:16, name:"Isabela Nunes", username:"isabelan", initials:"IN", color:"#6d28d9",
+   bio:"Setor de saúde e farma | Análise fundamentalista setorial", followers:1234, following:341,
+   portfolio:[{t:"RDOR3",w:28,co:"Rede D'Or"},{t:"HAPV3",w:22,co:"Hapvida"},{t:"FLRY3",w:18,co:"Fleury"},{t:"PARD3",w:16,co:"Pard Saúde"},{t:"GNDI3",w:16,co:"Grupo Notredame"}],
+   perf:{s:3.1, m:9.2, a:44.8, h:123.6}, joined:["saude"], posts:134},
+  {id:17, name:"Gabriel Almeida", username:"gabriela", initials:"GA", color:"#d97706",
+   bio:"Agronegócio & commodities agrícolas | AGRO3 fanático", followers:1876, following:412,
+   portfolio:[{t:"AGRO3",w:30,co:"3Tentos"},{t:"SLCE3",w:22,co:"SLC Agrícola"},{t:"SMTO3",w:18,co:"São Martinho"},{t:"VALE3",w:16,co:"Vale"},{t:"SUZB3",w:14,co:"Suzano"}],
+   perf:{s:4.6, m:13.4, a:61.2, h:172.8}, joined:["commodities"], posts:221},
+  {id:18, name:"Natalia Rocha", username:"nataliar", initials:"NR", color:"#0891b2",
+   bio:"Blend renda fixa + ações | Proteção patrimonial", followers:678, following:198,
+   portfolio:[{t:"IMAB11",w:25,co:"iShares IMAB"},{t:"FIXA11",w:22,co:"iShares FIXA"},{t:"ITUB4",w:18,co:"Itaú"},{t:"VALE3",w:18,co:"Vale"},{t:"BOVA11",w:17,co:"iShares IBOV"}],
+   perf:{s:1.2, m:3.7, a:19.8, h:62.4}, joined:["dividendos"], posts:43},
+  {id:19, name:"Diego Lima", username:"diegolima", initials:"DL", color:"#4f46e5",
+   bio:"Value + Momentum | Quant analysis | Backtesting obsession", followers:2134, following:345,
+   portfolio:[{t:"VALE3",w:20,co:"Vale"},{t:"PRIO3",w:18,co:"PetroRio"},{t:"WEGE3",w:16,co:"WEG"},{t:"MELI34",w:14,co:"MercadoLibre"},{t:"HASH11",w:14,co:"Hashdex"},{t:"FLRY3",w:10,co:"Fleury"},{t:"SUZB3",w:8,co:"Suzano"}],
+   perf:{s:3.8, m:10.7, a:52.3, h:148.9}, joined:["crescimento","tecnologia"], posts:187},
+  {id:20, name:"Larissa Campos", username:"larissac", initials:"LC", color:"#be185d",
+   bio:"Consumo e varejo brasileiro | MGLU3 e recuperação setorial", followers:876, following:567,
+   portfolio:[{t:"RENT3",w:26,co:"Localiza"},{t:"MOVI3",w:20,co:"Movida"},{t:"VVAR3",w:18,co:"Via"},{t:"ALPA4",w:14,co:"Alpargatas"},{t:"ABEV3",w:14,co:"Ambev"},{t:"LREN3",w:8,co:"Lojas Renner"}],
+   perf:{s:2.7, m:7.6, a:37.4, h:103.7}, joined:["crescimento"], posts:112},
+];
+
+// Current logged-in user (index 0 = Carlos Mendonça)
+let ME = USERS[0];
+
+const COMMUNITIES = [
+  {id:"commodities", name:"Amo Commodities", emoji:"⛏️", color:"#92400e", bg:"#fef3c7",
+   desc:"Mineração, petróleo, agro — tudo sobre matérias-primas e ciclos de commodities", members:3241, posts:187, joined:true},
+  {id:"energia", name:"Energia Elétrica", emoji:"⚡", color:"#1d4ed8", bg:"#dbeafe",
+   desc:"Setor elétrico brasileiro: geradoras, distribuidoras, transmissoras e FIIs de energia", members:2187, posts:134, joined:true},
+  {id:"dividendos", name:"Ações de Dividendos", emoji:"💰", color:"#15803d", bg:"#dcfce7",
+   desc:"Renda passiva através de dividendos e JCP — estratégias e carteiras passivas", members:4521, posts:312, joined:false},
+  {id:"crescimento", name:"Ações de Crescimento", emoji:"🚀", color:"#7c3aed", bg:"#ede9fe",
+   desc:"Growth investing: empresas de alto crescimento de receita, small caps e disruptoras", members:2876, posts:234, joined:false},
+  {id:"cripto", name:"Criptoativos", emoji:"₿", color:"#d97706", bg:"#fef3c7",
+   desc:"Bitcoin, Ethereum e fundos de cripto listados na B3 — HASH11, QBTC11", members:1934, posts:289, joined:false},
+  {id:"fiis", name:"Fundos Imobiliários", emoji:"🏢", color:"#0891b2", bg:"#e0f2fe",
+   desc:"FIIs de logística, shopping, lajes corporativas e papel — dividendos mensais", members:5234, posts:421, joined:true},
+  {id:"tecnologia", name:"Empresas de Tecnologia", emoji:"💻", color:"#9333ea", bg:"#f3e8ff",
+   desc:"Tech Brasil e internacional via BDRs — MELI34, GOGL34, AMZO34", members:1678, posts:198, joined:false},
+  {id:"petroleo", name:"Petróleo & Gás", emoji:"🛢️", color:"#dc2626", bg:"#fee2e2",
+   desc:"PETR4, PRIO3, RECV3, RRRP3 — análise do setor de O&G brasileiro", members:2341, posts:167, joined:false},
+  {id:"saude", name:"Setor de Saúde", emoji:"🏥", color:"#6d28d9", bg:"#ede9fe",
+   desc:"Planos de saúde, hospitais, laboratórios e farma listados na B3", members:987, posts:98, joined:false},
+  {id:"equipamentos", name:"Equipamentos & Industria", emoji:"🔧", color:"#059669", bg:"#d1fae5",
+   desc:"WEG, Tupy, Frasle e o setor industrial brasileiro de bens de capital", members:876, posts:87, joined:false},
+];
+
+const POSTS_DATA = [
+  {id:1, userId:3, community:"crescimento", time:"há 12 min",
+   content:"🚀 <strong>MELI34</strong> reportou receita +47% YoY. O mercado livre está dominando a América Latina e ainda tem muito runway pela frente. Esse é meu maior conviction bet para os próximos 5 anos.",
+   tickers:["MELI34","AMZO34"], likes:87, comments:23, shares:12, saved:false, liked:false},
+  {id:2, userId:7, community:null, time:"há 34 min",
+   content:"Princípio que nunca me falhou: nunca compre um negócio que você não entende. Simples assim. Antes de qualquer ticker, entenda o modelo de negócio, quem são os clientes e qual o diferencial competitivo.",
+   tickers:[], likes:234, comments:41, shares:67, saved:false, liked:false, type:"quote"},
+  {id:3, userId:12, community:"petroleo", time:"há 1h",
+   content:"Análise PRIO3: A companhia voltou a operar o campo de Wahoo após manutenção. O guidance de produção de 100k boe/d permanece. Com petróleo acima de $80, o fluxo de caixa livre está brutal.",
+   tickers:["PRIO3","RECV3","PETR4"],
+   analysis:{title:"Tese PRIO3 — Petróleo Rodando Pleno", updated:"07 Abr 2026",
+     metrics:[{v:"+32%",l:"Produção YoY"},{v:"4.2x",l:"EV/EBITDA"},{v:"18%",l:"FCF Yield"},{v:"✅",l:"Compra Forte"}]},
+   likes:156, comments:34, shares:28, saved:false, liked:false},
+  {id:4, userId:1, community:"commodities", time:"há 2h",
+   content:"Vale (VALE3) com valuation cada vez mais interessante. O minério segurando acima de $100/t e a empresa pagando dividendos gordos. Momento de acumular posição aos poucos com foco em longo prazo.",
+   tickers:["VALE3"], likes:112, comments:19, shares:14, saved:false, liked:false},
+  {id:5, userId:16, community:"saude", time:"há 3h",
+   content:"<strong>RDOR3</strong> é a minha principal convicção no setor de saúde. Rede D'Or continua sua expansão de leitos e a margem EBITDA está melhorando trimestre a trimestre. Setor defensivo + crescimento = combo perfeito.",
+   tickers:["RDOR3","HAPV3","FLRY3"], likes:78, comments:15, shares:9, saved:false, liked:false},
+  {id:6, userId:4, community:"fiis", time:"há 4h",
+   content:"Atualização da minha carteira de FIIs para abril: adicionei HGLG11 aproveitando a queda da última semana. Galpões logísticos continuam com alta demanda e os contratos são atualizado por IGPM+spread. Renda passiva seguindo firme! 🏢",
+   tickers:["HGLG11","XPLG11","MXRF11"], likes:145, comments:31, shares:22, saved:false, liked:false},
+  {id:7, userId:11, community:"crescimento", time:"há 5h",
+   content:"Fala pessoal! Descobri uma small cap que poucos falam: <strong>JHSF3</strong>. Imóveis de luxo com recorrência crescente via JHSF Malls e JHSF Gastronomia. A ação está sendo completamente ignorada pelos analistas.",
+   tickers:["JHSF3"], likes:203, comments:47, shares:31, saved:false, liked:false},
+  {id:8, userId:15, community:"energia", time:"há 6h",
+   content:"Setor elétrico 2026: após a aprovação do novo marco regulatório da transmissão, a CPFE3 e TAEE11 ficaram mais atrativas. Contratos de longo prazo indexados a IPCA = hedge de inflação + renda estável.",
+   tickers:["CPFE3","TAEE11","ELET3","ENEV3"], likes:98, comments:22, shares:18, saved:false, liked:false},
+  {id:9, userId:5, community:"cripto", time:"há 7h",
+   content:"Bitcoin testando novamente os $90k. O HASH11 é a forma mais eficiente de ter exposição aqui na B3, com regulação e liquidez garantidos. Alocação de 10-15% faz sentido para perfis arrojados.",
+   tickers:["HASH11","QBTC11"], likes:267, comments:58, shares:43, saved:false, liked:false},
+  {id:10, userId:19, community:null, time:"há 9h",
+   content:"Backtestei uma estratégia value+momentum nos últimos 10 anos. Resultado: portfólio com empresas de P/L < 12 + momentum positivo de 6 meses bateu o Ibovespa em 8 dos 10 anos. Alguém mais usa esse approach?",
+   tickers:["VALE3","PRIO3","WEGE3"], likes:189, comments:67, shares:34, saved:false, liked:false},
+];
+
+const MARKET_DATA = {
+  today: [
+    {ticker:"IBOV",name:"Ibovespa",change:1.12,dir:"up"},
+    {ticker:"VALE3",name:"Vale",change:2.87,dir:"up"},
+    {ticker:"PETR4",name:"Petrobras",change:1.43,dir:"up"},
+    {ticker:"WEGE3",name:"WEG",change:0.92,dir:"up"},
+    {ticker:"PRIO3",name:"PetroRio",change:-1.21,dir:"down"},
+    {ticker:"BBAS3",name:"Banco do Brasil",change:0.67,dir:"up"},
+    {ticker:"ITUB4",name:"Itaú",change:0.54,dir:"up"},
+  ],
+  bestMovers:[
+    {ticker:"JSLG3",name:"JSL",pct:"+8.34%"},
+    {ticker:"RECV3",name:"PetroRecôncavo",pct:"+6.12%"},
+    {ticker:"MELI34",name:"MercadoLibre",pct:"+5.78%"},
+    {ticker:"RDOR3",name:"Rede D'Or",pct:"+4.91%"},
+    {ticker:"HASH11",name:"Hashdex",pct:"+4.32%"},
+  ],
+  worstMovers:[
+    {ticker:"YDUQ3",name:"Yduqs",pct:"-5.43%"},
+    {ticker:"COGN3",name:"Cogna",pct:"-4.87%"},
+    {ticker:"LWSA3",name:"Locaweb",pct:"-3.92%"},
+    {ticker:"VVAR3",name:"Via Varejo",pct:"-3.41%"},
+    {ticker:"HAPV3",name:"Hapvida",pct:"-2.98%"},
+  ]
+};
+
+const FACTOR_DATA = {
+  energia:[
+    {ticker:"CPFE3",company:"CPFL Energia",ev_ebit:"8.2",pl:"11.4",pvp:"2.1",dy:"7.8%",roe:"18.4%",roic:"12.1%",score:9,classif:"barato",rec:"compra-forte"},
+    {ticker:"ELET3",company:"Eletrobras",ev_ebit:"7.1",pl:"9.8",pvp:"1.4",dy:"4.2%",roe:"14.2%",roic:"9.8%",score:8,classif:"barato",rec:"compra"},
+    {ticker:"TAEE11",company:"Transmissão Paulista",ev_ebit:"9.4",pl:"13.2",pvp:"2.4",dy:"9.1%",roe:"17.8%",roic:"10.9%",score:8,classif:"barato",rec:"compra"},
+    {ticker:"ENEV3",company:"Eneva",ev_ebit:"12.1",pl:"18.4",pvp:"2.8",dy:"0.0%",roe:"15.1%",roic:"11.2%",score:6,classif:"justo",rec:"neutro"},
+    {ticker:"CMIG4",company:"Cemig",ev_ebit:"6.8",pl:"8.9",pvp:"1.2",dy:"11.2%",roe:"13.4%",roic:"8.7%",score:9,classif:"pechincha",rec:"compra-forte"},
+    {ticker:"EGIE3",company:"Engie Brasil",ev_ebit:"10.2",pl:"15.1",pvp:"3.1",dy:"6.8%",roe:"20.2%",roic:"14.1%",score:7,classif:"justo",rec:"compra"},
+    {ticker:"NEOE3",company:"Neoenergia",ev_ebit:"8.7",pl:"12.3",pvp:"1.8",dy:"5.4%",roe:"14.7%",roic:"9.4%",score:7,classif:"barato",rec:"compra"},
+    {ticker:"AURE3",company:"Auren Energia",ev_ebit:"11.4",pl:"17.2",pvp:"1.9",dy:"3.2%",roe:"11.2%",roic:"8.1%",score:5,classif:"justo",rec:"neutro"},
+  ],
+  saude:[
+    {ticker:"RDOR3",company:"Rede D'Or",ev_ebit:"14.2",pl:"22.1",pvp:"2.8",dy:"0.8%",roe:"12.7%",roic:"9.4%",score:7,classif:"justo",rec:"compra"},
+    {ticker:"FLRY3",company:"Fleury",ev_ebit:"9.8",pl:"16.4",pvp:"2.1",dy:"4.1%",roe:"13.2%",roic:"10.7%",score:8,classif:"barato",rec:"compra"},
+    {ticker:"HAPV3",company:"Hapvida",ev_ebit:"7.2",pl:"11.8",pvp:"1.4",dy:"0.4%",roe:"11.8%",roic:"8.2%",score:7,classif:"barato",rec:"compra"},
+    {ticker:"PARD3",company:"Pard Saúde",ev_ebit:"8.1",pl:"14.2",pvp:"1.8",dy:"2.1%",roe:"12.4%",roic:"9.1%",score:8,classif:"barato",rec:"compra"},
+    {ticker:"QUAL3",company:"Qualicorp",ev_ebit:"5.4",pl:"8.9",pvp:"1.1",dy:"12.4%",roe:"20.1%",roic:"14.8%",score:9,classif:"pechincha",rec:"compra-forte"},
+    {ticker:"HYPE3",company:"Hypera",ev_ebit:"11.2",pl:"17.8",pvp:"2.4",dy:"3.8%",roe:"13.7%",roic:"10.2%",score:6,classif:"justo",rec:"neutro"},
+  ],
+  petroleo:[
+    {ticker:"PETR4",company:"Petrobras",ev_ebit:"3.1",pl:"5.8",pvp:"1.2",dy:"18.4%",roe:"21.2%",roic:"14.8%",score:10,classif:"pechincha",rec:"compra-forte"},
+    {ticker:"PRIO3",company:"PetroRio",ev_ebit:"4.2",pl:"7.1",pvp:"1.8",dy:"0.0%",roe:"24.8%",roic:"18.4%",score:9,classif:"barato",rec:"compra-forte"},
+    {ticker:"RECV3",company:"PetroRecôncavo",ev_ebit:"3.8",pl:"6.4",pvp:"1.4",dy:"4.2%",roe:"22.1%",roic:"16.7%",score:10,classif:"pechincha",rec:"compra-forte"},
+    {ticker:"RRRP3",company:"3R Petroleum",ev_ebit:"5.1",pl:"9.2",pvp:"1.1",dy:"2.1%",roe:"11.4%",roic:"9.2%",score:7,classif:"barato",rec:"compra"},
+    {ticker:"CSAN3",company:"Cosan",ev_ebit:"7.8",pl:"14.2",pvp:"1.6",dy:"3.4%",roe:"11.8%",roic:"8.9%",score:6,classif:"justo",rec:"neutro"},
+    {ticker:"UGPA3",company:"Ultrapar",ev_ebit:"8.4",pl:"16.1",pvp:"2.1",dy:"4.8%",roe:"13.2%",roic:"10.1%",score:6,classif:"justo",rec:"neutro"},
+  ],
+  equipamentos:[
+    {ticker:"WEGE3",company:"WEG",ev_ebit:"22.4",pl:"34.1",pvp:"8.4",dy:"1.8%",roe:"24.7%",roic:"21.2%",score:7,classif:"justo",rec:"compra"},
+    {ticker:"TUPY3",company:"Tupy",ev_ebit:"6.4",pl:"9.8",pvp:"1.4",dy:"5.2%",roe:"14.8%",roic:"11.4%",score:9,classif:"barato",rec:"compra-forte"},
+    {ticker:"FRAS3",company:"Frasle Mobility",ev_ebit:"7.2",pl:"11.4",pvp:"1.8",dy:"4.8%",roe:"16.2%",roic:"12.8%",score:8,classif:"barato",rec:"compra"},
+    {ticker:"ROMI3",company:"Industrias Romi",ev_ebit:"5.8",pl:"9.2",pvp:"1.2",dy:"6.4%",roe:"13.4%",roic:"10.2%",score:9,classif:"pechincha",rec:"compra-forte"},
+    {ticker:"RAIZ4",company:"Raízen",ev_ebit:"9.4",pl:"16.2",pvp:"1.1",dy:"7.8%",roe:"6.8%",roic:"5.4%",score:5,classif:"justo",rec:"neutro"},
+    {ticker:"RAIL3",company:"Rumo",ev_ebit:"11.2",pl:"18.4",pvp:"2.4",dy:"0.8%",roe:"13.2%",roic:"10.8%",score:7,classif:"justo",rec:"compra"},
+  ],
+  bancos:[
+    {ticker:"ITUB4",company:"Itaú Unibanco",ev_ebit:"—",pl:"8.4",pvp:"1.8",dy:"6.2%",roe:"21.4%",roic:"—",score:9,classif:"barato",rec:"compra-forte"},
+    {ticker:"BBAS3",company:"Banco do Brasil",ev_ebit:"—",pl:"5.2",pvp:"1.1",dy:"9.8%",roe:"20.7%",roic:"—",score:10,classif:"pechincha",rec:"compra-forte"},
+    {ticker:"BBDC4",company:"Bradesco",ev_ebit:"—",pl:"7.8",pvp:"1.2",dy:"5.8%",roe:"14.2%",roic:"—",score:8,classif:"barato",rec:"compra"},
+    {ticker:"SANB11",company:"Santander Brasil",ev_ebit:"—",pl:"9.1",pvp:"1.4",dy:"7.4%",roe:"16.8%",roic:"—",score:7,classif:"barato",rec:"compra"},
+    {ticker:"B3SA3",company:"B3",ev_ebit:"14.2",pl:"21.4",pvp:"3.8",dy:"5.2%",roe:"17.8%",roic:"14.2%",score:6,classif:"justo",rec:"neutro"},
+    {ticker:"IRBR3",company:"IRB Brasil",ev_ebit:"—",pl:"24.2",pvp:"1.2",dy:"0.8%",roe:"4.8%",roic:"—",score:3,classif:"caro",rec:"venda"},
+  ]
+};
+
+const MY_TRADES = [
+  {dir:"buy",ticker:"PRIO3",date:"02 Abr 2026",pct:"+27.4%",type:"Compra"},
+  {dir:"buy",ticker:"GMAT3",date:"28 Mar 2026",pct:"+42.8%",type:"Compra"},
+  {dir:"buy",ticker:"VALE3",date:"20 Mar 2026",pct:"+14.2%",type:"Compra"},
+  {dir:"buy",ticker:"JHSF3",date:"14 Mar 2026",pct:"+67.3%",type:"Compra"},
+  {dir:"sell",ticker:"SIMH3",date:"07 Mar 2026",pct:"-8.4%",type:"Venda (parcial)"},
+  {dir:"buy",ticker:"HASH11",date:"28 Fev 2026",pct:"+31.2%",type:"Compra"},
+  {dir:"buy",ticker:"WEGE3",date:"14 Fev 2026",pct:"+18.7%",type:"Compra"},
+  {dir:"buy",ticker:"INTB3",date:"07 Fev 2026",pct:"+24.1%",type:"Compra"},
+  {dir:"buy",ticker:"RADL3",date:"28 Jan 2026",pct:"+12.1%",type:"Compra"},
+  {dir:"sell",ticker:"MILS3",date:"15 Jan 2026",pct:"-5.2%",type:"Venda (parcial)"},
+  {dir:"buy",ticker:"SUZB3",date:"05 Jan 2026",pct:"+8.4%",type:"Compra"},
+];
+
+/* ══════════════════════════════════════════════════════════
+   HELPERS
+══════════════════════════════════════════════════════════ */
+function userById(id){ return USERS.find(u=>u.id===id)||USERS[0]; }
+function fmtPct(v){ return (v>0?'+':'')+v.toFixed(1)+'%'; }
+function avatar(u,size=36){
+  return `<div style="width:${size}px;height:${size}px;border-radius:50%;background:${u.color};display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:${Math.round(size*0.38)}px;font-weight:700;color:#fff;flex-shrink:0;">${u.initials}</div>`;
+}
+function openCurso(file,name){
+  showToast('Abrindo '+name+' em nova aba...',2000);
+  window.open(file,'_blank');
+}
+
+function showToast(msg,duration=2200){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),duration);
+}
+
+/* ══════════════════════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════════════════════ */
+const PAGES = ['feed','comunidades','ranking','mercado','factor','educacao','portfolio','perfil'];
+const PAGE_TITLES = {feed:'Feed de Ideias',comunidades:'Comunidades',ranking:'Ranking',mercado:'Mercado',factor:'Factor Invest — Análise Setorial',educacao:'Educação Financeira',portfolio:'Meu Portfólio',perfil:'Meu Perfil'};
+
+let currentPage = 'feed';
+let allocationChartInstance = null;
+
+function navigate(page){
+  // Hide all
+  PAGES.forEach(p=>{
+    document.getElementById('page-'+p).classList.remove('active');
+    const nav=document.getElementById('nav-'+p);
+    const bnav=document.getElementById('bnav-'+p);
+    if(nav) nav.classList.remove('active');
+    if(bnav) bnav.classList.remove('active');
+  });
+  // Show target
+  document.getElementById('page-'+page).classList.add('active');
+  document.getElementById('topbarTitle').textContent=PAGE_TITLES[page]||page;
+  const nav=document.getElementById('nav-'+page);
+  const bnav=document.getElementById('bnav-'+page);
+  if(nav) nav.classList.add('active');
+  if(bnav) bnav.classList.add('active');
+  currentPage=page;
+  // Close sidebar on mobile
+  if(window.innerWidth<900) document.getElementById('sidebar').classList.remove('open');
+  // Render
+  if(page==='portfolio') renderPortfolio();
+  if(page==='perfil') renderPerfil(ME.id);
+  if(page==='ranking') renderRanking('semanal');
+  if(page==='factor') renderFactor();
+  // Scroll top
+  document.querySelector('.main-content').scrollTo({top:0,behavior:'smooth'});
+}
+
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+/* ══════════════════════════════════════════════════════════
+   LOGIN
+══════════════════════════════════════════════════════════ */
+function doLogin(){
+  const ls=document.getElementById('login-screen');
+  ls.style.transition='opacity 0.5s ease';
+  ls.style.opacity='0';
+  setTimeout(()=>{
+    ls.style.display='none';
+    document.getElementById('app').style.display='block';
+    initApp();
+  },500);
+}
+
+/* ══════════════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════════════ */
+function initApp(){
+  updateUserUI(ME);
+  renderFeed();
+  renderFeedSidebar();
+  renderComunidades();
+  renderMercado();
+  renderFactor();
+  checkMobile();
+  window.addEventListener('resize',checkMobile);
+  // Scroll progress
+  document.querySelector('.main-content').addEventListener('scroll',updateScrollProgress);
+}
+
+function checkMobile(){
+  const isMobile=window.innerWidth<900;
+  document.getElementById('menuBtn').style.display=isMobile?'flex':'none';
+}
+
+function updateScrollProgress(){
+  const mc=document.querySelector('.main-content');
+  const pct=(mc.scrollTop/(mc.scrollHeight-mc.clientHeight))*100;
+  document.getElementById('scrollProgress').style.width=pct+'%';
+}
+
+function updateUserUI(u){
+  ['sidebarAvatar','topbarAvatar','composerAvatar'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.textContent=u.initials;el.style.background=u.color;}
+  });
+  document.getElementById('sidebarName').textContent=u.name;
+  document.getElementById('sidebarHandle').textContent='@'+u.username;
+}
+
+/* ══════════════════════════════════════════════════════════
+   FEED
+══════════════════════════════════════════════════════════ */
+function renderFeed(){
+  const el=document.getElementById('feedPosts');
+  el.innerHTML=POSTS_DATA.map(p=>renderPostCard(p)).join('');
+}
+
+function renderPostCard(p){
+  const u=userById(p.userId);
+  const comm=p.community?COMMUNITIES.find(c=>c.id===p.community):null;
+  const commTag=comm?`<div class="post-community-tag">${comm.emoji} ${comm.name}</div>`:'';
+  const tickers=p.tickers.length?`<div class="post-ticker-tags">${p.tickers.map(t=>`<span class="ticker-tag" onclick="showToast('${t} — abrindo no Mercado...');navigate('mercado')">${t}</span>`).join('')}</div>`:'';
+  const analysis=p.analysis?`
+    <div class="post-analysis-card">
+      <div class="post-analysis-title">📊 ${p.analysis.title}</div>
+      <div class="post-analysis-meta">Atualizado em ${p.analysis.updated}</div>
+      <div class="post-analysis-metrics">
+        ${p.analysis.metrics.map(m=>`
+          <div class="analysis-metric">
+            <div class="analysis-metric-value val-green">${m.v}</div>
+            <div class="analysis-metric-label">${m.l}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>`:'';
+  return `
+    <div class="post-card" id="post-${p.id}">
+      <div class="post-header">
+        <div class="post-avatar" style="background:${u.color}" onclick="viewProfile(${u.id})">${u.initials}</div>
+        <div class="post-user-info">
+          <div class="post-user-name" onclick="viewProfile(${u.id})">${u.name}</div>
+          <div class="post-user-handle">@${u.username} · ${p.time}</div>
+        </div>
+        <button class="post-more-btn">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+        </button>
+      </div>
+      ${commTag}
+      <div class="post-content">${p.content}</div>
+      ${tickers}${analysis}
+      <div class="post-actions">
+        <button class="post-action-btn ${p.liked?'liked':''}" onclick="toggleLike(${p.id},this)">
+          <svg width="16" height="16" fill="${p.liked?'currentColor':'none'}" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          <span class="post-action-count">${p.likes}</span>
+        </button>
+        <button class="post-action-btn" onclick="showToast('Comentários em breve!')">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          <span class="post-action-count">${p.comments}</span>
+        </button>
+        <button class="post-action-btn" onclick="showToast('Post compartilhado!')">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="17,1 21,5 17,9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7,23 3,19 7,15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+          <span class="post-action-count">${p.shares}</span>
+        </button>
+        <button class="post-action-btn ${p.saved?'saved':''}" onclick="toggleSave(${p.id},this)">
+          <svg width="16" height="16" fill="${p.saved?'currentColor':'none'}" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+        </button>
+      </div>
+    </div>`;
+}
+
+function toggleLike(id,btn){
+  const p=POSTS_DATA.find(x=>x.id===id);
+  if(!p)return;
+  p.liked=!p.liked;
+  p.likes+=p.liked?1:-1;
+  btn.classList.toggle('liked');
+  const svg=btn.querySelector('svg');
+  svg.setAttribute('fill',p.liked?'currentColor':'none');
+  btn.querySelector('.post-action-count').textContent=p.likes;
+  if(p.liked) showToast('❤️ Você curtiu esta publicação');
+}
+
+function toggleSave(id,btn){
+  const p=POSTS_DATA.find(x=>x.id===id);
+  if(!p)return;
+  p.saved=!p.saved;
+  btn.classList.toggle('saved');
+  const svg=btn.querySelector('svg');
+  svg.setAttribute('fill',p.saved?'currentColor':'none');
+  showToast(p.saved?'🔖 Salvo!':'Removido dos salvos');
+}
+
+function publishPost(){
+  const ta=document.querySelector('.composer-textarea');
+  const text=ta.value.trim();
+  if(!text){showToast('Escreva algo antes de publicar!');return;}
+  const newPost={id:Date.now(),userId:ME.id,community:null,time:"agora",
+    content:text,tickers:[],likes:0,comments:0,shares:0,saved:false,liked:false};
+  POSTS_DATA.unshift(newPost);
+  ta.value='';
+  renderFeed();
+  showToast('✅ Publicado com sucesso!');
+}
+
+function submitPost(){
+  const text=document.getElementById('modalPostText').value.trim();
+  if(!text){showToast('Escreva algo!');return;}
+  const newPost={id:Date.now(),userId:ME.id,community:null,time:"agora",
+    content:text,tickers:[],likes:0,comments:0,shares:0,saved:false,liked:false};
+  POSTS_DATA.unshift(newPost);
+  document.getElementById('modalPostText').value='';
+  closePostModal();
+  renderFeed();
+  showToast('✅ Publicado!');
+}
+
+/* ══════════════════════════════════════════════════════════
+   FEED SIDEBAR
+══════════════════════════════════════════════════════════ */
+function renderFeedSidebar(){
+  // Market mini
+  const mm=document.getElementById('marketMiniWidget');
+  if(mm) mm.innerHTML=MARKET_DATA.today.slice(0,5).map(m=>`
+    <div class="market-item">
+      <div>
+        <div class="market-ticker">${m.ticker}</div>
+        <div class="market-name">${m.name}</div>
+      </div>
+      <div class="market-change ${m.dir}">${m.dir==='up'?'▲':'▼'} ${Math.abs(m.change).toFixed(2)}%</div>
+    </div>`).join('');
+
+  // Suggested users
+  const su=document.getElementById('suggestedUsers');
+  if(su){
+    const suggestions=USERS.filter(u=>u.id!==ME.id).sort(()=>Math.random()-0.5).slice(0,4);
+    su.innerHTML=suggestions.map(u=>`
+      <div class="suggest-user">
+        ${avatar(u,34)}
+        <div class="suggest-info">
+          <div class="suggest-name">${u.name}</div>
+          <div class="suggest-handle">@${u.username}</div>
+          <div class="suggest-return">↑ ${fmtPct(u.perf.a)} no ano</div>
+        </div>
+        <button class="btn-follow" onclick="toggleFollow(this)">${Math.random()>0.5?'Seguindo':'Seguir'}</button>
+      </div>`).join('');
+  }
+
+  // Top communities
+  const tc=document.getElementById('topCommunities');
+  if(tc) tc.innerHTML=COMMUNITIES.slice(0,4).map(c=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--slate-100);">
+      <div style="width:32px;height:32px;border-radius:8px;background:${c.bg};display:flex;align-items:center;justify-content:center;font-size:16px;">${c.emoji}</div>
+      <div style="flex:1;">
+        <div style="font-size:13px;font-weight:600;color:var(--slate-900);cursor:pointer;" onclick="navigate('comunidades')">${c.name}</div>
+        <div style="font-size:11px;color:var(--slate-400);">${c.members.toLocaleString('pt-BR')} membros</div>
+      </div>
+    </div>`).join('');
+}
+
+function toggleFollow(btn){
+  const isFollowing=btn.textContent==='Seguindo';
+  btn.textContent=isFollowing?'Seguir':'Seguindo';
+  btn.className=`btn-follow${isFollowing?'':' following'}`;
+  showToast(isFollowing?'Deixou de seguir':'✅ Seguindo agora!');
+}
+
+/* ══════════════════════════════════════════════════════════
+   COMUNIDADES
+══════════════════════════════════════════════════════════ */
+function renderComunidades(){
+  const my=document.getElementById('myCommunities');
+  const all=document.getElementById('allCommunities');
+  if(!my||!all) return;
+
+  const joined=COMMUNITIES.filter(c=>c.joined);
+  const other=COMMUNITIES.filter(c=>!c.joined);
+
+  my.innerHTML=joined.map(c=>communityCard(c)).join('');
+  all.innerHTML=other.map(c=>communityCard(c)).join('');
+}
+
+const COMMUNITY_ICONS = {
+  commodities:`<svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>`,
+  energia:`<svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
+  dividendos:`<svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>`,
+  crescimento:`<svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`,
+  cripto:`<svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 8h6M9 12h6M9 16h6"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg>`,
+  fiis:`<svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 22h18M9 7H6a2 2 0 00-2 2v13h5V9a2 2 0 00-2-2zm12 0h-3a2 2 0 00-2 2v13h5V9a2 2 0 00-2-2zm-6-5H9a2 2 0 00-2 2v2h10V4a2 2 0 00-2-2h-4z"/></svg>`,
+  tecnologia:`<svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8 21 12 17 16 21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
+  petroleo:`<svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M19 3H5v9a7 7 0 0014 0V3z"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>`,
+  saude:`<svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`,
+  equipamentos:`<svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41"/></svg>`,
+};
+
+function communityCard(c){
+  const icon = COMMUNITY_ICONS[c.id] || `<svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>`;
+  return `
+    <div class="community-card" onclick="showToast('Entrando em ${c.name}...')">
+      <div class="community-banner" style="background:linear-gradient(135deg,${c.color}33,${c.color}18);">
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:1;">
+          <div style="width:52px;height:52px;border-radius:14px;background:${c.color}28;border:1.5px solid ${c.color}55;display:flex;align-items:center;justify-content:center;color:${c.color};filter:saturate(1.2);">${icon}</div>
+        </div>
+      </div>
+      <div class="community-body">
+        <div class="community-name" style="display:flex;align-items:center;gap:8px;">
+          <span style="width:8px;height:8px;border-radius:50%;background:${c.color};flex-shrink:0;display:inline-block;"></span>
+          ${c.name}
+        </div>
+        <div class="community-desc">${c.desc}</div>
+        <div class="community-footer">
+          <div class="community-meta">
+            <span>${c.members.toLocaleString('pt-BR')}</span> membros · <span>${c.posts}</span>/sem
+          </div>
+          <button class="btn-join ${c.joined?'joined':''}" onclick="event.stopPropagation();toggleJoin(this,'${c.id}')">
+            ${c.joined?'<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="display:inline;vertical-align:middle;margin-right:3px;"><polyline points="20 6 9 17 4 12"/></svg> Participando':'Entrar'}
+          </button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function toggleJoin(btn,cid){
+  const c=COMMUNITIES.find(x=>x.id===cid);
+  if(!c)return;
+  c.joined=!c.joined;
+  btn.innerHTML=c.joined?'<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="display:inline;vertical-align:middle;margin-right:3px;"><polyline points="20 6 9 17 4 12"/></svg> Participando':'Entrar';
+  btn.className=`btn-join${c.joined?' joined':''}`;
+  showToast(c.joined?`Entrou em "${c.name}"!`:`Saiu de "${c.name}"`);
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   RANKING
+══════════════════════════════════════════════════════════ */
+let currentRankingPeriod = 'semanal';
+
+function renderRanking(period){
+  currentRankingPeriod=period;
+  const sorted=[...USERS].sort((a,b)=>{
+    const key={semanal:'s',mensal:'m',anual:'a',historico:'h'}[period]||'a';
+    return b.perf[key]-a.perf[key];
+  });
+  const tbody=document.getElementById('rankingTbody');
+  if(!tbody)return;
+  const key={semanal:'s',mensal:'m',anual:'a',historico:'h'}[period]||'a';
+  tbody.innerHTML=sorted.map((u,i)=>{
+    const medalColors=['#F59E0B','#94A3B8','#B45309'];
+    const medalLabels=['1º','2º','3º'];
+    const ret=u.perf[key];
+    const tickers=u.portfolio.slice(0,3).map(p=>`<span class="rank-ticker">${p.t}</span>`).join('');
+    const posDisplay = i < 3
+      ? `<span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:${medalColors[i]}22;border:1.5px solid ${medalColors[i]}66;font-family:'Sora',sans-serif;font-size:11px;font-weight:800;color:${medalColors[i]};">${medalLabels[i]}</span>`
+      : `<span class="rank-num">${i+1}</span>`;
+    return `
+      <tr onclick="viewProfile(${u.id})">
+        <td>${posDisplay}</td>
+        <td>
+          <div class="rank-user">
+            ${avatar(u,38)}
+            <div>
+              <div class="rank-user-name">${u.name}</div>
+              <div class="rank-user-handle">@${u.username}</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="rank-return ${ret>=0?'positive':'negative'}">${fmtPct(ret)}</div>
+        </td>
+        <td><div class="rank-portfolio-tags">${tickers}</div></td>
+        <td><span style="font-size:13px;color:var(--slate-600);font-weight:600;">${u.followers.toLocaleString('pt-BR')}</span></td>
+      </tr>`;
+  }).join('');
+}
+
+function switchRankingTab(period,btn){
+  document.querySelectorAll('#page-ranking .stab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderRanking(period);
+}
+
+/* ══════════════════════════════════════════════════════════
+   MERCADO
+══════════════════════════════════════════════════════════ */
+function renderMercado(){
+  const bm=document.getElementById('bestMovers');
+  const wm=document.getElementById('worstMovers');
+  if(bm) bm.innerHTML=MARKET_DATA.bestMovers.map(m=>`
+    <div class="mover-row">
+      <div><div class="mover-ticker">${m.ticker}</div><div class="mover-name">${m.name}</div></div>
+      <div class="mover-pct up">${m.pct}</div>
+    </div>`).join('');
+  if(wm) wm.innerHTML=MARKET_DATA.worstMovers.map(m=>`
+    <div class="mover-row">
+      <div><div class="mover-ticker">${m.ticker}</div><div class="mover-name">${m.name}</div></div>
+      <div class="mover-pct down">${m.pct}</div>
+    </div>`).join('');
+  // Render tickers overview grid
+  const tg=document.getElementById('allTickersGrid');
+  const allTickers=[
+    {t:"VALE3",n:"Vale",c:2.87,d:"up"},{t:"PETR4",n:"Petrobras",c:1.43,d:"up"},
+    {t:"ITUB4",n:"Itaú",c:0.54,d:"up"},{t:"BBAS3",n:"BB",c:0.67,d:"up"},
+    {t:"WEGE3",n:"WEG",c:0.92,d:"up"},{t:"PRIO3",n:"PetroRio",c:-1.21,d:"down"},
+    {t:"MELI34",n:"MercadoLibre",c:5.78,d:"up"},{t:"RDOR3",n:"Rede D'Or",c:4.91,d:"up"},
+    {t:"SUZB3",n:"Suzano",c:1.34,d:"up"},{t:"BBDC4",n:"Bradesco",c:-0.32,d:"down"},
+    {t:"HGLG11",n:"CSHG Log.",c:0.41,d:"up"},{t:"CPFE3",n:"CPFL",c:2.12,d:"up"},
+    {t:"TAEE11",n:"Transmissão",c:1.87,d:"up"},{t:"HASH11",n:"Hashdex",c:4.32,d:"up"},
+    {t:"ELET3",n:"Eletrobras",c:0.78,d:"up"},{t:"RECV3",n:"PetroRecôncavo",c:6.12,d:"up"},
+    {t:"FLRY3",n:"Fleury",c:2.41,d:"up"},{t:"JHSF3",n:"JHSF",c:3.14,d:"up"},
+    {t:"HAPV3",n:"Hapvida",c:-2.98,d:"down"},{t:"ABEV3",n:"Ambev",c:-0.64,d:"down"},
+  ];
+  if(tg) tg.innerHTML=allTickers.map(t=>`
+    <div onclick="window.open('https://www.google.com/finance/quote/${t.t}:BVMF','_blank')" style="padding:12px 14px;border-right:1px solid var(--slate-100);border-bottom:1px solid var(--slate-100);cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='var(--green-50)'" onmouseout="this.style.background=''">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--slate-900);">${t.t}</div>
+      <div style="font-size:11px;color:var(--slate-400);margin-bottom:4px;">${t.n}</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;padding:2px 8px;border-radius:5px;display:inline-block;background:${t.d==='up'?'var(--green-100)':'var(--red-100)'};color:${t.d==='up'?'var(--green-700)':'var(--red-600)'};">${t.d==='up'?'▲':'▼'} ${Math.abs(t.c).toFixed(2)}%</div>
+    </div>`).join('');
+}
+
+function renderFactor(){
+  renderFactorTable('energia');
+}
+
+function switchSectorTab(sector,btn){
+  document.querySelectorAll('#page-factor .stab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderFactorTable(sector);
+}
+
+function renderFactorTable(sector){
+  const el=document.getElementById('factorInvestTable');
+  if(!el)return;
+
+  // Sectors with dedicated HTML analysis files → show as iframe
+  const iframeSectors={
+    energia:'ENERGIA_Factor_Invest.html',
+    saude:'SAUDE_Factor_Invest_2.html',
+    equipamentos:'EQUIPAMENTOS_Factor_Invest.html'
+  };
+
+  if(iframeSectors[sector]){
+    const fileName=iframeSectors[sector];
+    const sectorLabels={energia:'Energia Elétrica',saude:'Saúde',equipamentos:'Equipamentos & Indústria'};
+    el.innerHTML=
+      '<div style="background:var(--slate-50);border:1px solid var(--slate-200);border-radius:var(--radius);overflow:hidden;">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:linear-gradient(90deg,var(--green-700),var(--green-600));color:#fff;">'
+      +'<div style="font-size:13px;font-weight:600;">📊 Análise Completa — '+sectorLabels[sector]+'</div>'
+      +'<a href="'+fileName+'" target="_blank" style="font-size:12px;color:rgba(255,255,255,0.85);text-decoration:none;border:1px solid rgba(255,255,255,0.35);border-radius:5px;padding:3px 10px;">Abrir em nova aba ↗</a>'
+      +'</div>'
+      +'<iframe src="'+fileName+'" style="width:100%;height:780px;border:none;display:block;" loading="lazy" title="Factor Invest '+sectorLabels[sector]+'"></iframe>'
+      +'<div style="padding:10px 16px;background:#fff;border-top:1px solid var(--slate-100);font-size:11px;color:var(--slate-500);">'
+      +'⚠️ Análise Factor Invest — não constitui recomendação de investimento. Sempre faça sua própria análise.'
+      +'</div>'
+      +'</div>';
+    return;
+  }
+
+  // Sectors without dedicated files → render embedded table
+  const data=FACTOR_DATA[sector]||[];
+  const labels={petroleo:'Petróleo & Gás B3',bancos:'Bancos & Financeiras B3'};
+  el.innerHTML=`
+    <div class="factor-section">
+      <div class="factor-header">
+        <h3>📊 Factor Invest — ${labels[sector]||sector}</h3>
+        <div class="factor-header-meta" style="color:rgba(255,255,255,0.6);">Atualizado: 07 Abr 2026 · Score máximo: 10</div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="factor-table">
+          <thead>
+            <tr>
+              <th style="color:#e2e8f0;">#</th>
+              <th style="color:#e2e8f0;">Ticker</th>
+              <th style="color:#e2e8f0;">Empresa</th>
+              <th style="color:#e2e8f0;">EV/EBIT</th>
+              <th style="color:#e2e8f0;">P/L</th>
+              <th style="color:#e2e8f0;">P/VP</th>
+              <th style="color:#e2e8f0;">DY</th>
+              <th style="color:#e2e8f0;">ROE</th>
+              <th style="color:#e2e8f0;">ROIC</th>
+              <th style="color:#e2e8f0;">Score</th>
+              <th style="color:#e2e8f0;">Classif.</th>
+              <th style="color:#e2e8f0;">Recomendação</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${data.map((r,i)=>`
+              <tr onclick="showToast('${r.ticker} — abrindo no Google Finance...');window.open('https://www.google.com/finance/quote/${r.ticker}:BVMF','_blank')">
+                <td style="font-family:'JetBrains Mono',monospace;color:var(--slate-400);width:28px;text-align:center;font-size:12px;">${i+1}</td>
+                <td><span class="fi-ticker">${r.ticker}</span></td>
+                <td style="font-size:13px;color:var(--slate-800);font-weight:500;">${r.company}</td>
+                <td style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--slate-800);">${r.ev_ebit}x</td>
+                <td style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--slate-800);">${r.pl}x</td>
+                <td style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--slate-800);">${r.pvp}x</td>
+                <td style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--green-700);">${r.dy}</td>
+                <td style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--green-700);">${r.roe}</td>
+                <td style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--green-700);">${r.roic}</td>
+                <td>
+                  <div style="display:flex;align-items:center;gap:6px;">
+                    <div style="flex:1;height:5px;background:var(--slate-100);border-radius:3px;min-width:44px;overflow:hidden;">
+                      <div style="width:${r.score*10}%;height:100%;background:${r.score>=8?'var(--green-500)':r.score>=5?'var(--amber-600)':'var(--red-600)'};border-radius:3px;"></div>
+                    </div>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:800;color:${r.score>=8?'var(--green-700)':r.score>=5?'var(--amber-600)':'var(--red-600)'};">${r.score}</span>
+                  </div>
+                </td>
+                <td><span class="fi-classif ${r.classif}">${{pechincha:'Pechincha',barato:'Barato',justo:'Justo',caro:'Caro'}[r.classif]}</span></td>
+                <td><span class="fi-rec ${r.rec}">${{'compra-forte':'Compra Forte','compra':'Compra','neutro':'Neutro','venda':'Venda'}[r.rec]||r.rec}</span></td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div style="padding:12px 16px;background:var(--slate-50);border-top:1px solid var(--slate-100);font-size:11px;color:var(--slate-500);">
+        ⚠️ Análise Factor Invest — não constitui recomendação de investimento. Sempre faça sua própria análise.
+        <a href="https://www.google.com/finance" target="_blank" style="color:var(--green-600);font-weight:600;margin-left:8px;">Dados via Google Finance →</a>
+      </div>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════
+   PORTFOLIO
+══════════════════════════════════════════════════════════ */
+
+// YTD returns per ticker (fixed for Ian's portfolio)
+const TICKER_PERF = {
+  PRIO3:{ytd:27.4,w:21.3}, VALE3:{ytd:14.2,w:17.8}, HASH11:{ytd:31.2,w:12.6},
+  WEGE3:{ytd:18.7,w:9.5},  RADL3:{ytd:12.1,w:9.3},  SUZB3:{ytd:8.4,w:8.1},
+  MILS3:{ytd:-5.2,w:6.4},  INTB3:{ytd:24.1,w:3.8},  SIMH3:{ytd:-8.4,w:3.9},
+  JHSF3:{ytd:67.3,w:4.8},  GMAT3:{ytd:42.8,w:3.1},
+};
+
+// Benchmark data per period [portfolio, ibovespa, cdi]
+// CDI 14,65% a.a. | Selic 14,75% a.a. | IBOV fechamento 10/04/2026: 197.323 pts (+22,47% no ano)
+const BENCHMARKS = {
+  s: {port:3.2,   ibov:4.93, cdi:0.27},
+  m: {port:8.7,   ibov:12.10, cdi:1.20},
+  a: {port:42.1,  ibov:22.47, cdi:5.20},
+  h: {port:127.3, ibov:89.2, cdi:38.4},
+};
+const BENCH_LABELS = {s:'Semana',m:'Mês',a:'No Ano',h:'Histórico'};
+let perfWithDiv = true;
+
+// ── Performance por Ativo vs Benchmarks ──────────────────────────────────────
+// Dados por ticker e por período (semanal, mensal, semestral, anual, histórico)
+// ibov/cdi refletem o mesmo horizonte temporal que o ativo (desde entrada na posição para 'h')
+// CDI 14,65% a.a. | IBOV fechamento 10/04/2026: 197.323 (+22,47% no ano, +4,93% semana)
+const TICKER_BENCH = {
+  // asset = retorno do ativo no período; ibov = ibovespa no período; cdi = CDI no período
+  // 'h' usa período desde o início da posição (entryDate)
+  PRIO3: {
+    entryDate:'Mar 2024', entryMonths: 13,
+    s:    {asset: 8.4,   ibov: 4.93,  cdi: 0.27},
+    m:    {asset: 21.3,  ibov: 12.10, cdi: 1.20},
+    semi: {asset: 18.7,  ibov: 22.47, cdi: 7.09},
+    a:    {asset: 27.4,  ibov: 22.47, cdi: 14.65},
+    h:    {asset: 43.2,  ibov: 54.80, cdi: 17.90},
+  },
+  VALE3: {
+    entryDate:'Jan 2024', entryMonths: 15,
+    s:    {asset:  3.2,  ibov: 4.93,  cdi: 0.27},
+    m:    {asset: 17.8,  ibov: 12.10, cdi: 1.20},
+    semi: {asset: 12.4,  ibov: 22.47, cdi: 7.09},
+    a:    {asset: 14.2,  ibov: 22.47, cdi: 14.65},
+    h:    {asset: 28.7,  ibov: 63.20, cdi: 20.40},
+  },
+  HASH11: {
+    entryDate:'Jun 2024', entryMonths: 10,
+    s:    {asset:  6.8,  ibov: 4.93,  cdi: 0.27},
+    m:    {asset: 12.6,  ibov: 12.10, cdi: 1.20},
+    semi: {asset: 31.2,  ibov: 22.47, cdi: 7.09},
+    a:    {asset: 31.2,  ibov: 22.47, cdi: 14.65},
+    h:    {asset: 58.4,  ibov: 43.10, cdi: 13.80},
+  },
+  WEGE3: {
+    entryDate:'Fev 2024', entryMonths: 14,
+    s:    {asset:  2.1,  ibov: 4.93,  cdi: 0.27},
+    m:    {asset:  9.5,  ibov: 12.10, cdi: 1.20},
+    semi: {asset: 16.8,  ibov: 22.47, cdi: 7.09},
+    a:    {asset: 18.7,  ibov: 22.47, cdi: 14.65},
+    h:    {asset: 34.2,  ibov: 58.70, cdi: 19.10},
+  },
+  RADL3: {
+    entryDate:'Abr 2024', entryMonths: 12,
+    s:    {asset:  1.4,  ibov: 4.93,  cdi: 0.27},
+    m:    {asset:  9.3,  ibov: 12.10, cdi: 1.20},
+    semi: {asset: 10.2,  ibov: 22.47, cdi: 7.09},
+    a:    {asset: 12.1,  ibov: 22.47, cdi: 14.65},
+    h:    {asset: 24.7,  ibov: 52.30, cdi: 16.50},
+  },
+  SUZB3: {
+    entryDate:'Mai 2024', entryMonths: 11,
+    s:    {asset:  3.7,  ibov: 4.93,  cdi: 0.27},
+    m:    {asset:  8.1,  ibov: 12.10, cdi: 1.20},
+    semi: {asset:  7.9,  ibov: 22.47, cdi: 7.09},
+    a:    {asset:  8.4,  ibov: 22.47, cdi: 14.65},
+    h:    {asset: 19.3,  ibov: 48.40, cdi: 15.20},
+  },
+  MILS3: {
+    entryDate:'Set 2024', entryMonths:  7,
+    s:    {asset: -1.8,  ibov: 4.93,  cdi: 0.27},
+    m:    {asset:  6.4,  ibov: 12.10, cdi: 1.20},
+    semi: {asset: -3.1,  ibov: 22.47, cdi: 7.09},
+    a:    {asset: -5.2,  ibov: 22.47, cdi: 14.65},
+    h:    {asset: -7.8,  ibov: 32.60, cdi: 10.10},
+  },
+  INTB3: {
+    entryDate:'Out 2024', entryMonths:  6,
+    s:    {asset:  4.2,  ibov: 4.93,  cdi: 0.27},
+    m:    {asset:  3.8,  ibov: 12.10, cdi: 1.20},
+    semi: {asset: 19.4,  ibov: 22.47, cdi: 7.09},
+    a:    {asset: 24.1,  ibov: 22.47, cdi: 14.65},
+    h:    {asset: 27.3,  ibov: 29.80, cdi:  8.70},
+  },
+  SIMH3: {
+    entryDate:'Nov 2024', entryMonths:  5,
+    s:    {asset: -2.4,  ibov: 4.93,  cdi: 0.27},
+    m:    {asset:  3.9,  ibov: 12.10, cdi: 1.20},
+    semi: {asset: -6.7,  ibov: 22.47, cdi: 7.09},
+    a:    {asset: -8.4,  ibov: 22.47, cdi: 14.65},
+    h:    {asset:-11.2,  ibov: 24.90, cdi:  7.30},
+  },
+  JHSF3: {
+    entryDate:'Dez 2023', entryMonths: 16,
+    s:    {asset:  9.1,  ibov: 4.93,  cdi: 0.27},
+    m:    {asset: 24.7,  ibov: 12.10, cdi: 1.20},
+    semi: {asset: 52.4,  ibov: 22.47, cdi: 7.09},
+    a:    {asset: 67.3,  ibov: 22.47, cdi: 14.65},
+    h:    {asset: 98.7,  ibov: 68.40, cdi: 21.80},
+  },
+  GMAT3: {
+    entryDate:'Jan 2025', entryMonths:  3,
+    s:    {asset:  5.3,  ibov: 4.93,  cdi: 0.27},
+    m:    {asset: 14.2,  ibov: 12.10, cdi: 1.20},
+    semi: {asset: 38.1,  ibov: 22.47, cdi: 7.09},
+    a:    {asset: 42.8,  ibov: 22.47, cdi: 14.65},
+    h:    {asset: 42.8,  ibov: 18.10, cdi:  3.70},
+  },
+};
+
+const ASSET_PERIOD_LABELS = {
+  s:'Semanal', m:'Mensal', semi:'Semestral', a:'Anual', h:'Desde Início'
+};
+let currentAssetPeriod = 's';
+
+function switchAssetPeriod(period, btn){
+  document.querySelectorAll('#assetPeriodToggle .perf-toggle-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentAssetPeriod = period;
+  renderAssetBenchmarkCard(period);
+}
+
+function renderAssetBenchmarkCard(period){
+  const bc = document.getElementById('assetBenchmarkCard');
+  if(!bc) return;
+  const u = ME;
+  const label = ASSET_PERIOD_LABELS[period] || period;
+
+  const rows = u.portfolio.map(pos => {
+    const tb = TICKER_BENCH[pos.t];
+    if(!tb) return '';
+    const d = tb[period];
+    if(!d) return '';
+    const asset  = d.asset;
+    const ibov   = d.ibov;
+    const cdi    = d.cdi;
+    const alpha  = asset - ibov;
+    const assetPos  = asset  >= 0;
+    const alphaPos  = alpha  >= 0;
+    const beatIbov  = asset  >= ibov;
+    const beatCdi   = asset  >= cdi;
+    const entryInfo = period === 'h' ? `<span style="font-size:10px;color:var(--slate-400);display:block;margin-top:2px;">desde ${tb.entryDate}</span>` : '';
+
+    return `<tr style="border-bottom:1px solid var(--slate-50);transition:background 0.15s;" onmouseover="this.style.background='var(--slate-50)'" onmouseout="this.style.background=''">
+      <td style="padding:10px 0;white-space:nowrap;">
+        <span style="font-family:'JetBrains Mono',monospace;font-weight:700;background:var(--slate-900);color:#fff;padding:2px 7px;border-radius:4px;font-size:11px;">${pos.t}</span>
+        ${entryInfo}
+      </td>
+      <td style="padding:10px 8px;font-size:11px;color:var(--slate-500);">${pos.co}</td>
+      <td style="text-align:right;padding:10px 8px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:800;color:${assetPos?'var(--green-600)':'var(--red-600)'};">${assetPos?'+':''}${asset.toFixed(2)}%</span>
+        ${beatIbov ? '<span style="font-size:9px;color:var(--green-600);margin-left:4px;">↑ IBOV</span>' : '<span style="font-size:9px;color:var(--red-600);margin-left:4px;">↓ IBOV</span>'}
+      </td>
+      <td style="text-align:right;padding:10px 8px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--blue-600);">${ibov>=0?'+':''}${ibov.toFixed(2)}%</span>
+      </td>
+      <td style="text-align:right;padding:10px 8px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--amber-600);">${cdi>=0?'+':''}${cdi.toFixed(2)}%</span>
+      </td>
+      <td style="text-align:right;padding:10px 0;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;padding:3px 8px;border-radius:6px;background:${alphaPos?'var(--green-100)':'var(--red-100)'};color:${alphaPos?'var(--green-700)':'var(--red-600)'};">${alphaPos?'+':''}${alpha.toFixed(2)}%</span>
+      </td>
+    </tr>`;
+  }).join('');
+
+  // Summary stats
+  const validTickers = u.portfolio.filter(p => TICKER_BENCH[p.t] && TICKER_BENCH[p.t][period]);
+  const beatCount = validTickers.filter(p => TICKER_BENCH[p.t][period].asset >= TICKER_BENCH[p.t][period].ibov).length;
+  const avgAlpha = validTickers.reduce((s,p) => {
+    const d = TICKER_BENCH[p.t][period];
+    return s + (d.asset - d.ibov);
+  }, 0) / (validTickers.length || 1);
+
+  bc.innerHTML = `
+    <div style="overflow-x:auto;">
+      <div style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+        <div style="background:var(--green-50);border:1px solid var(--green-200);border-radius:8px;padding:8px 14px;flex:1;min-width:120px;">
+          <div style="font-size:10px;font-weight:700;color:var(--green-700);text-transform:uppercase;letter-spacing:0.5px;">Período</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--green-800);margin-top:2px;">${label}</div>
+        </div>
+        <div style="background:var(--blue-100);border:1px solid #bfdbfe;border-radius:8px;padding:8px 14px;flex:1;min-width:120px;">
+          <div style="font-size:10px;font-weight:700;color:var(--blue-600);text-transform:uppercase;letter-spacing:0.5px;">Ibovespa período</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--blue-600);margin-top:2px;">+${(validTickers[0]?TICKER_BENCH[validTickers[0].t][period].ibov:0).toFixed(2)}%</div>
+        </div>
+        <div style="background:var(--amber-100);border:1px solid #fde68a;border-radius:8px;padding:8px 14px;flex:1;min-width:120px;">
+          <div style="font-size:10px;font-weight:700;color:var(--amber-600);text-transform:uppercase;letter-spacing:0.5px;">CDI período</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--amber-600);margin-top:2px;">+${(validTickers[0]?TICKER_BENCH[validTickers[0].t][period].cdi:0).toFixed(2)}%</div>
+        </div>
+        <div style="background:${avgAlpha>=0?'var(--green-50)':'var(--red-100)'};border:1px solid ${avgAlpha>=0?'var(--green-200)':'#fecaca'};border-radius:8px;padding:8px 14px;flex:1;min-width:120px;">
+          <div style="font-size:10px;font-weight:700;color:${avgAlpha>=0?'var(--green-700)':'var(--red-600)'};text-transform:uppercase;letter-spacing:0.5px;">Alpha médio</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:${avgAlpha>=0?'var(--green-700)':'var(--red-600)'};margin-top:2px;">${avgAlpha>=0?'+':''}${avgAlpha.toFixed(2)}%</div>
+        </div>
+        <div style="background:var(--slate-50);border:1px solid var(--slate-200);border-radius:8px;padding:8px 14px;flex:1;min-width:120px;">
+          <div style="font-size:10px;font-weight:700;color:var(--slate-500);text-transform:uppercase;letter-spacing:0.5px;">Bateram IBOV</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--slate-700);margin-top:2px;">${beatCount}/${validTickers.length} ativos</div>
+        </div>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr style="border-bottom:2px solid var(--slate-100);">
+            <th style="text-align:left;padding:8px 0;font-size:10px;font-weight:700;color:var(--slate-400);letter-spacing:0.5px;text-transform:uppercase;">Ticker</th>
+            <th style="text-align:left;padding:8px 8px;font-size:10px;font-weight:700;color:var(--slate-400);letter-spacing:0.5px;text-transform:uppercase;">Empresa</th>
+            <th style="text-align:right;padding:8px 8px;font-size:10px;font-weight:700;color:var(--green-700);letter-spacing:0.5px;text-transform:uppercase;">📊 Ativo</th>
+            <th style="text-align:right;padding:8px 8px;font-size:10px;font-weight:700;color:var(--blue-600);letter-spacing:0.5px;text-transform:uppercase;">🔵 Ibovespa</th>
+            <th style="text-align:right;padding:8px 8px;font-size:10px;font-weight:700;color:var(--amber-600);letter-spacing:0.5px;text-transform:uppercase;">🟡 CDI</th>
+            <th style="text-align:right;padding:8px 0;font-size:10px;font-weight:700;color:var(--slate-400);letter-spacing:0.5px;text-transform:uppercase;">Alpha</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <div style="margin-top:14px;padding:10px 14px;background:var(--slate-50);border-radius:8px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+      <div style="font-size:11px;color:var(--slate-500);">
+        📌 ${period==='h'?'Retorno calculado desde o início de cada posição':'Retorno do ativo no período selecionado vs benchmarks correspondentes'}
+      </div>
+      <div style="font-size:11px;color:var(--slate-400);margin-left:auto;">
+        Alpha = Ativo − Ibovespa · CDI: 14,65% a.a. | Selic: 14,75% a.a.
+      </div>
+    </div>`;
+}
+
+function renderPortfolio(){
+  const u=ME;
+  // Perf grid
+  const pg=document.getElementById('portfolioPerfGrid');
+  if(pg) pg.innerHTML=[
+    {label:'Semana',val:u.perf.s,sub:'7 dias'},
+    {label:'Mês',val:u.perf.m,sub:'30 dias'},
+    {label:'Ano',val:u.perf.a,sub:'Jan–Abr'},
+    {label:'Histórico',val:u.perf.h,sub:'Desde início'},
+  ].map(p=>`
+    <div class="portfolio-perf-item">
+      <div class="portfolio-perf-period">${p.label}</div>
+      <div class="portfolio-perf-value ${p.val>=0?'pos':'neg'}">${fmtPct(p.val)}</div>
+      <div class="portfolio-perf-sub">${p.sub}</div>
+    </div>`).join('');
+
+  // Benchmark card
+  renderBenchmarkCard(perfWithDiv);
+
+  // Asset benchmark card
+  renderAssetBenchmarkCard(currentAssetPeriod);
+
+  // Positions table
+  const pt=document.getElementById('positionsTable');
+  if(pt){
+    pt.innerHTML=`
+      <thead><tr>
+        <th>Ticker</th><th>Empresa</th><th style="width:60px">Qtd.</th><th style="width:80px">Preço Médio</th><th style="width:120px">Peso %</th><th>YTD</th>
+      </tr></thead>
+      <tbody>${u.portfolio.map((p,i)=>{
+        const perf=TICKER_PERF[p.t]||{ytd:0};
+        const ytd=perf.ytd.toFixed(1);
+        const cls=Number(ytd)>=0?'val-green':'val-red';
+        return `<tr>
+          <td><span style="font-family:'JetBrains Mono',monospace;font-weight:700;background:var(--slate-900);color:#fff;padding:2px 7px;border-radius:4px;font-size:12px;">${p.t}</span></td>
+          <td><span style="font-size:13px;color:var(--slate-600);">${p.co}</span></td>
+          <td style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--slate-600);">${p.qty}</td>
+          <td style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--slate-600);">R$ ${p.pm.toFixed(2)}</td>
+          <td>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;margin-bottom:3px;">${p.w}%</div>
+            <div class="pos-weight-bar"><div class="pos-weight-fill" style="width:${Math.min(p.w*3,100)}%"></div></div>
+          </td>
+          <td class="${cls}" style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;">${Number(ytd)>=0?'+':''}${ytd}%</td>
+        </tr>`;
+      }).join('')}</tbody>`;
+  }
+
+  // Trade history
+  const th=document.getElementById('tradeHistory');
+  if(th) th.innerHTML=MY_TRADES.map(t=>`
+    <div class="trade-row">
+      <div class="trade-direction ${t.dir}">${t.dir==='buy'?'↗':'↘'}</div>
+      <div class="trade-info">
+        <div class="trade-ticker">${t.ticker}</div>
+        <div class="trade-date">${t.date} · ${t.type}</div>
+      </div>
+      <div>
+        <div class="trade-result ${Number(t.pct)>=0?'gain':'loss'}">${t.pct}</div>
+        <div class="trade-type">Retorno na posição</div>
+      </div>
+    </div>`).join('');
+
+  // Allocation chart
+  renderAllocationChart(u);
+
+  // Perf summary
+  const ps=document.getElementById('perfSummary');
+  if(ps) ps.innerHTML=[
+    {label:'Semana',val:u.perf.s},
+    {label:'Mês',val:u.perf.m},
+    {label:'Ano',val:u.perf.a},
+    {label:'Histórico',val:u.perf.h},
+  ].map(p=>`
+    <div class="perf-bar-wrap">
+      <div class="perf-bar-label">${p.label}</div>
+      <div class="perf-bar-track"><div class="perf-bar-fill ${p.val>=0?'pos':'neg'}" style="width:${Math.min(Math.abs(p.val)*1.5,100)}%"></div></div>
+      <div class="perf-bar-value ${p.val>=0?'pos':'neg'}">${fmtPct(p.val)}</div>
+    </div>`).join('');
+}
+
+function renderBenchmarkCard(withDiv){
+  const bc=document.getElementById('benchmarkCard');
+  if(!bc)return;
+  const periods=['s','m','a','h'];
+  const divMult=withDiv?1.0:0.88;
+  bc.innerHTML=`
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr style="border-bottom:2px solid var(--slate-100);">
+            <th style="text-align:left;padding:8px 0;font-size:11px;font-weight:700;color:var(--slate-400);letter-spacing:0.5px;text-transform:uppercase;">Período</th>
+            <th style="text-align:right;padding:8px 12px;font-size:11px;font-weight:700;color:var(--green-700);letter-spacing:0.5px;text-transform:uppercase;">📊 Carteira</th>
+            <th style="text-align:right;padding:8px 12px;font-size:11px;font-weight:700;color:var(--blue-600);letter-spacing:0.5px;text-transform:uppercase;">🔵 Ibovespa</th>
+            <th style="text-align:right;padding:8px 12px;font-size:11px;font-weight:700;color:var(--amber-600);letter-spacing:0.5px;text-transform:uppercase;">🟡 CDI</th>
+            <th style="text-align:right;padding:8px 0;font-size:11px;font-weight:700;color:var(--slate-400);letter-spacing:0.5px;text-transform:uppercase;">Alpha</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${periods.map(k=>{
+            const b=BENCHMARKS[k];
+            const port=(b.port*divMult);
+            const alpha=port-b.ibov;
+            const alphaPos=alpha>=0;
+            return `<tr style="border-bottom:1px solid var(--slate-50);">
+              <td style="padding:12px 0;font-weight:600;color:var(--slate-700);">${BENCH_LABELS[k]}</td>
+              <td style="text-align:right;padding:12px;">
+                <span style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:800;color:${port>=0?'var(--green-600)':'var(--red-600)'};">${port>=0?'+':''}${port.toFixed(1)}%</span>
+              </td>
+              <td style="text-align:right;padding:12px;">
+                <span style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:var(--blue-600);">${b.ibov>=0?'+':''}${b.ibov.toFixed(2)}%</span>
+              </td>
+              <td style="text-align:right;padding:12px;">
+                <span style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:var(--amber-600);">${b.cdi>=0?'+':''}${b.cdi.toFixed(2)}%</span>
+              </td>
+              <td style="text-align:right;padding:12px 0;">
+                <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;padding:3px 10px;border-radius:6px;background:${alphaPos?'var(--green-100)':'var(--red-100)'};color:${alphaPos?'var(--green-700)':'var(--red-600)'};">${alphaPos?'+':''}${alpha.toFixed(1)}%</span>
+              </td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:14px;padding:10px 14px;background:var(--slate-50);border-radius:8px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+      <div style="font-size:11px;color:var(--slate-500);">
+        ${withDiv?'✅ Retorno total incluindo dividendos e JCP':'📌 Retorno excluindo proventos'}
+      </div>
+      <div style="font-size:11px;color:var(--slate-400);margin-left:auto;">
+        Alpha = Carteira − Ibovespa · Positivo indica superação do benchmark
+      </div>
+    </div>`;
+}
+
+function switchPerfMode(withDiv,btn){
+  document.querySelectorAll('#perfDivToggle .perf-toggle-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  perfWithDiv=withDiv;
+  renderBenchmarkCard(withDiv);
+  showToast(withDiv?'✅ Retorno com dividendos':'📌 Retorno sem dividendos');
+}
+
+function renderAllocationChart(u){
+  const canvas=document.getElementById('allocationChart');
+  if(!canvas)return;
+  if(allocationChartInstance){allocationChartInstance.destroy();allocationChartInstance=null;}
+  const CHART_COLORS=['#16a34a','#22c55e','#4ade80','#86efac','#059669','#0284c7','#7c3aed'];
+  allocationChartInstance=new Chart(canvas,{
+    type:'doughnut',
+    data:{
+      labels:u.portfolio.map(p=>p.t),
+      datasets:[{data:u.portfolio.map(p=>p.w),backgroundColor:CHART_COLORS,borderWidth:2,borderColor:'#fff',hoverOffset:6}]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:true,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.label}: ${c.raw}%`}}},
+      cutout:'65%',
+    }
+  });
+  // Legend
+  const leg=document.getElementById('chartLegend');
+  if(leg) leg.innerHTML=u.portfolio.map((p,i)=>`
+    <div class="legend-item">
+      <div class="legend-dot" style="background:${CHART_COLORS[i%CHART_COLORS.length]}"></div>
+      <div class="legend-label">${p.t}</div>
+      <div class="legend-pct">${p.w}%</div>
+    </div>`).join('');
+}
+
+function toggleDividends(withDiv,btn){
+  document.querySelectorAll('#divToggle .perf-toggle-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const adjustment=withDiv?1.0:0.85;
+  const th=document.getElementById('tradeHistory');
+  if(!th)return;
+  th.querySelectorAll('.trade-result').forEach(el=>{
+    const base=parseFloat(el.textContent);
+    if(!isNaN(base)){
+      const adj=(base*adjustment).toFixed(1);
+      el.textContent=(Number(adj)>=0?'+':'')+adj+'%';
+    }
+  });
+  showToast(withDiv?'Mostrando retorno com dividendos':'Mostrando retorno sem dividendos');
+}
+
+/* ══════════════════════════════════════════════════════════
+   PERFIL
+══════════════════════════════════════════════════════════ */
+function viewProfile(userId){
+  const u=userById(userId);
+  const el=document.getElementById('profileContent');
+  if(!el)return;
+  renderProfileContent(u);
+  navigate('perfil');
+}
+
+function renderPerfil(userId){
+  const u=userById(userId);
+  renderProfileContent(u);
+}
+
+function renderProfileContent(u){
+  const el=document.getElementById('profileContent');
+  if(!el)return;
+  const isMe=u.id===ME.id;
+  const joined=COMMUNITIES.filter(c=>u.joined.includes(c.id));
+  const userPosts=POSTS_DATA.filter(p=>p.userId===u.id);
+  const CHART_COLORS=['#16a34a','#22c55e','#4ade80','#86efac','#059669','#0284c7','#7c3aed'];
+
+  const coverGrad=`linear-gradient(135deg,${u.color}cc,${u.color}44)`;
+
+  el.innerHTML=`
+    <div class="profile-header-card">
+      <div class="profile-cover" style="background:${coverGrad};"></div>
+      <div class="profile-info-row">
+        <div class="profile-avatar-wrap" style="background:${u.color}">${u.initials}</div>
+        <div class="profile-info">
+          <div class="profile-name">${u.name}</div>
+          <div class="profile-handle">@${u.username}</div>
+          <div class="profile-bio">${u.bio}</div>
+          <div class="profile-stats">
+            <div class="profile-stat">
+              <div class="profile-stat-value">${u.posts}</div>
+              <div class="profile-stat-label">Posts</div>
+            </div>
+            <div class="profile-stat">
+              <div class="profile-stat-value">${u.followers.toLocaleString('pt-BR')}</div>
+              <div class="profile-stat-label">Seguidores</div>
+            </div>
+            <div class="profile-stat">
+              <div class="profile-stat-value">${u.following}</div>
+              <div class="profile-stat-label">Seguindo</div>
+            </div>
+          </div>
+        </div>
+        <div class="profile-actions">
+          ${isMe
+            ?`<button class="btn-secondary" onclick="showToast('Editar perfil em breve!')">✏️ Editar Perfil</button>`
+            :`<button class="btn-primary" onclick="toggleFollow(this)">Seguir</button>
+              <button class="btn-secondary" onclick="showToast('Mensagem em breve!')">Mensagem</button>`}
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-grid">
+      <div>
+        <!-- Posts -->
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-header">
+            <div class="card-title">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+              Posts Recentes
+            </div>
+          </div>
+          <div style="padding:8px 0;">
+            ${userPosts.length?userPosts.slice(0,3).map(p=>renderPostCard(p)).join('')
+              :'<div class="empty-state"><div class="empty-state-icon">📝</div><div class="empty-state-title">Sem posts ainda</div><div class="empty-state-desc">Este usuário ainda não publicou nada</div></div>'}
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <!-- Portfolio mini -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+              Portfólio Público
+            </div>
+          </div>
+          <div class="card-body">
+            <canvas id="profileChart" style="max-height:160px;margin:0 auto;display:block;"></canvas>
+            <div style="margin-top:12px;">
+              ${u.portfolio.map((p,i)=>`
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                  <div style="width:8px;height:8px;border-radius:50%;background:${CHART_COLORS[i%CHART_COLORS.length]};flex-shrink:0;"></div>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;background:var(--slate-900);color:#fff;padding:1px 5px;border-radius:3px;">${p.t}</span>
+                  <div style="flex:1;height:3px;background:var(--slate-100);border-radius:2px;overflow:hidden;">
+                    <div style="width:${p.w}%;height:100%;background:${CHART_COLORS[i%CHART_COLORS.length]};border-radius:2px;"></div>
+                  </div>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;">${p.w}%</span>
+                </div>`).join('')}
+            </div>
+          </div>
+        </div>
+
+        <!-- Performance -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Performance</div>
+          </div>
+          <div class="card-body">
+            ${[{l:'Semana',v:u.perf.s},{l:'Mês',v:u.perf.m},{l:'Ano',v:u.perf.a},{l:'Histórico',v:u.perf.h}].map(p=>`
+              <div class="perf-bar-wrap">
+                <div class="perf-bar-label">${p.l}</div>
+                <div class="perf-bar-track"><div class="perf-bar-fill ${p.v>=0?'pos':'neg'}" style="width:${Math.min(Math.abs(p.v)*1.2,100)}%"></div></div>
+                <div class="perf-bar-value ${p.v>=0?'pos':'neg'}">${fmtPct(p.v)}</div>
+              </div>`).join('')}
+          </div>
+        </div>
+
+        <!-- Communities -->
+        ${joined.length?`
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Comunidades</div>
+          </div>
+          <div class="card-body" style="padding:8px 16px;">
+            ${joined.map(c=>`
+              <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--slate-100);">
+                <div style="font-size:18px;">${c.emoji}</div>
+                <div style="font-size:13px;font-weight:600;color:var(--slate-900);">${c.name}</div>
+              </div>`).join('')}
+          </div>
+        </div>`:''}
+      </div>
+    </div>`;
+
+  // Draw profile chart
+  setTimeout(()=>{
+    const canvas=document.getElementById('profileChart');
+    if(!canvas)return;
+    new Chart(canvas,{
+      type:'doughnut',
+      data:{
+        labels:u.portfolio.map(p=>p.t),
+        datasets:[{data:u.portfolio.map(p=>p.w),backgroundColor:CHART_COLORS,borderWidth:2,borderColor:'#fff'}]
+      },
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false}},
+        cutout:'60%',
+      }
+    });
+  },50);
+}
+
+/* ══════════════════════════════════════════════════════════
+   MODALS
+══════════════════════════════════════════════════════════ */
+function openPostModal(){document.getElementById('postModal').classList.add('open');}
+function closePostModal(){document.getElementById('postModal').classList.remove('open');}
+document.getElementById('postModal').addEventListener('click',function(e){
+  if(e.target===this)closePostModal();
+});
+
+/* ══════════════════════════════════════════════════════════
+   INIT ON LOAD
+══════════════════════════════════════════════════════════ */
+window.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closePostModal();}
+});
+
+// Auto login check
+document.addEventListener('DOMContentLoaded',()=>{
+  // nothing — wait for user click
+});
+</script>
+</body>
+</html>
